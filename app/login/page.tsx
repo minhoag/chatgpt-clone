@@ -1,25 +1,24 @@
-"use client"
+'use client'
 
 import { useRouter } from 'next/navigation'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import {Button} from "@/components/ui/button"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Button } from '@/components/ui/button'
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
-    FormMessage
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import Link from "next/link";
+    FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import Link from 'next/link'
 
 const formSchema = z.object({
-    username: z.string()
-        .email("Please enter a valid email address."),
-    password: z.string()
+    username: z.string().email('Please enter a valid email address.'),
+    password: z.string(),
 })
 
 export default function LoginPage() {
@@ -27,8 +26,8 @@ export default function LoginPage() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
-            password: ""
+            username: '',
+            password: '',
         },
     })
 
@@ -47,10 +46,13 @@ export default function LoginPage() {
             // Handle errors
         }
     }
-    return(
+    return (
         <div className="max-w-xl mx-auto">
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-4"
+                >
                     <FormField
                         control={form.control}
                         name="username"
@@ -58,7 +60,10 @@ export default function LoginPage() {
                             <FormItem>
                                 <FormLabel>Username</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="chatgpt@openai.com" {...field} />
+                                    <Input
+                                        placeholder="chatgpt@openai.com"
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -71,7 +76,11 @@ export default function LoginPage() {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input type="password" required {...field} />
+                                    <Input
+                                        type="password"
+                                        required
+                                        {...field}
+                                    />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -86,14 +95,10 @@ export default function LoginPage() {
                         <Button type="submit">Continue</Button>
                         <span>
                             Don&#39;t have an account?
-                            <Link
-                                href="#"
-                                className="ml-2 hover:underline"
-                            >
+                            <Link href="#" className="ml-2 hover:underline">
                                 Sign up.
                             </Link>
                         </span>
-
                     </div>
                 </form>
             </Form>
