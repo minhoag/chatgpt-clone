@@ -23,10 +23,13 @@ import { useEffect, useState } from "react";
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [state, setState] = useState({ message: "" });
+  const [state, setState] = useState({ variant: "", title: "", message: "" });
 
   useEffect(() => {
     toast({
+      // @ts-ignore
+      variant: state.variant ?? "default",
+      title: state.title,
       description: state.message,
     });
   }, [state, toast]);
@@ -41,10 +44,12 @@ export default function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const res: 200 | 404 = await login(values);
+      const res = await login(values);
       if (res === 404) {
         return setState({
-          message: "Logged in failed: User not found",
+          variant: "destructive",
+          title: 'Login Failed',
+          message: "Please check again your email/passwords.",
         });
       }
       return router.push("/");

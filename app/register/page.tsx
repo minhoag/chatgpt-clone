@@ -14,10 +14,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useToast } from '@/components/ui/use-toast'
-import { login } from '@/app/login/submit'
+import { useToast } from "@/components/ui/use-toast";
+import { login } from "@/app/login/submit";
 
 const formSchema = z
   .object({
@@ -49,9 +49,9 @@ const formSchema = z
   });
 
 export default function RegisterPage() {
-    const router = useRouter();
-    const { toast } = useToast();
-    const [state, setState] = useState({ message: "" });
+  const router = useRouter();
+  const { toast } = useToast();
+  const [state, setState] = useState({ message: "" });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,11 +64,11 @@ export default function RegisterPage() {
     },
   });
 
-    useEffect(() => {
-        toast({
-            description: state.message,
-        });
-    }, [state, toast]);
+  useEffect(() => {
+    toast({
+      description: state.message,
+    });
+  }, [state, toast]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const response = await fetch("/api/register", {
@@ -76,18 +76,18 @@ export default function RegisterPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
-      const data = await response.json();
-      if (data.error) {
-          setState({
-              message: data.error,
-          });
-      } else {
-          setState({
-              message: 'Register successfully! Redirecting you back to homepage.',
-          });
-          await login({ email: values.email, password: values.password });
-          return router.push("/");
-      }
+    const data = await response.json();
+    if (data.error) {
+      setState({
+        message: data.error,
+      });
+    } else {
+      setState({
+        message: "Register successfully! Redirecting you back to homepage.",
+      });
+      await login({ email: values.email, password: values.password });
+      return router.push("/");
+    }
   }
   return (
     <div className="max-w-xl mx-auto">

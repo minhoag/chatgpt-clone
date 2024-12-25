@@ -6,9 +6,14 @@ import { formSchema } from "./zod";
 
 export async function login(values: z.infer<typeof formSchema>) {
   try {
-    const { email, password } = values;
-    const res = await signIn("credentials", { email, password });
-    return 200;
+    await signIn("credentials", { ...values, redirect: false })
+        .then(({ ok, error }) => {
+          if (ok) {
+            return 200
+          } else {
+            return 500
+          }
+        })
   } catch (error: any) {
     return 404;
   }
