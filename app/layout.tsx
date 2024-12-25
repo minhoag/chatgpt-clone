@@ -9,7 +9,6 @@ import NextAuthProvider from "@/components/session-provider";
 import "./globals.css";
 
 const font = Space_Grotesk({ subsets: ["latin"], weight: "400" });
-const user = await auth();
 
 export const metadata: Metadata = {
   title: "ChatGPT",
@@ -21,6 +20,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await auth();
   return (
     <NextAuthProvider>
       <html lang="en" suppressHydrationWarning>
@@ -32,7 +32,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <Navigation user={user} />
-            <main className="sm:px-10 px-5">{children}</main>
+            <main className="max-w-6xl mx-auto sm:px-10 px-5">{children}</main>
             <Toaster />
           </ThemeProvider>
         </body>

@@ -1,14 +1,12 @@
-import { buttonVariants } from "@/components/ui/button";
-import { ArrowChatGPT } from "@/components/icon/icon";
-import Link from "next/link";
+import { auth } from '@/lib/auth'
+import GetStartedButton from '@/components/get-started'
 
-export default function Home() {
+export default async function Home() {
+    const user = await auth();
   return (
     <div className="flex flex-col items-center gap-5 justify-center h-[70vh]">
       <h1 className="text-4xl font-bold text-center">Introducing ChatGPT</h1>
-      <Link href="/login" className={buttonVariants({ size: "lg" })}>
-        Get started <ArrowChatGPT props="ml-2" />
-      </Link>
+        <GetStartedButton link={ user ? '/chat' : '/login'} />
       <p className="sm:w-[75%] mx-auto text-center text-muted-foreground ">
         ChatGPT is a cutting-edge language model developed by OpenAI, designed
         to engage in natural, intelligent conversations with you. Whether you’re
