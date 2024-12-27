@@ -1,6 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
-import { checkEnvironment } from '@/lib/utils'
+import { checkEnvironment } from "@/lib/utils";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,

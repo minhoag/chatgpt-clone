@@ -45,12 +45,12 @@ export default function LoginPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const { email, password } = values;
-      const res = await signIn('credentials', {
+      const res = await signIn("credentials", {
         redirect: false,
         email,
         password,
       });
-      if (res?.error ) {
+      if (res?.error) {
         return setState({
           variant: "destructive",
           title: "Login Failed",

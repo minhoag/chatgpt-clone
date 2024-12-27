@@ -17,7 +17,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { checkEnvironment } from '@/lib/utils'
+import { checkEnvironment } from "@/lib/utils";
 
 const formSchema = z
   .object({

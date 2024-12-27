@@ -1,7 +1,7 @@
-import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
-import bcrypt from 'bcryptjs'
-import db from '@/lib/prisma'
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+import bcrypt from "bcryptjs";
+import db from "@/lib/prisma";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -9,8 +9,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export const checkEnvironment = () => {
   return process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://example.com";
+    ? "http://localhost:3000"
+    : "https://example.com";
 };
 
 export function generateRandomId(length: number) {
