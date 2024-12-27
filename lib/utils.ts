@@ -1,10 +1,22 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import jwt from 'jsonwebtoken'
 import bcrypt from "bcryptjs";
 import db from "@/lib/prisma";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+export function isUserLoggedIn(token: string | undefined): boolean {
+  if (!token) return false;
+  try {
+    jwt.verify(token, process.env.JWT_SECRET!);
+    return true;
+  } catch (error) {
+    console.error('JWT verification failed:', error);
+    return false;
+  }
 }
 
 export function generateRandomId(length: number) {
@@ -19,9 +31,18 @@ export function generateRandomId(length: number) {
   return randomId;
 }
 
-export function saltAndHashPassword(password: string) {
-  const salt = bcrypt.genSaltSync(10);
-  return bcrypt.hashSync(password, salt);
+export function generateToken(userID: any, res: any) {
+    const secret = process.env.JWT_SECRET || 'default_secret';
+    const token = jwt.sign({ userID }, secret, {
+      expiresIn: "7d",
+    });
+    res.cookie("jwt", token, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== "development",
+    })
+    return token;
 }
 
 export function verifyPassword(password: string, hash: string) {

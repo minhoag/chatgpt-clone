@@ -2,17 +2,25 @@
 
 import Link from "next/link";
 import { LogoChatGPT } from "./logo";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from '@/components/ui/button'
 import ToggleTheme from "./toggle";
-import { ButtonSignOut } from "@/components/sign-out";
 
-export default function Navigation({ user }: { user: any }) {
-  return (
+export default function Navigation({ login } : {login: boolean}) {
+    const handleLogout = async () => {
+        try {
+            await fetch('/api/logout', {
+                method: 'POST',
+            });
+        } catch (error) {
+            console.error('An error occurred during logout:', error);
+        }
+    };
+    return (
     <nav className="w-full mx-auto max-w-6xl flex flex-row items-center justify-between h-24 mb-7 top-0 sticky bg-background">
       <LogoChatGPT />
       <div className="flex flex-row items-center">
         <ToggleTheme />
-        {!user ? (
+        {!login ? (
           <>
             <Link
               href="/login"
@@ -37,7 +45,13 @@ export default function Navigation({ user }: { user: any }) {
           </>
         ) : (
           <>
-            <ButtonSignOut />
+              <Button
+                  variant="link"
+                  className="text-base"
+                  onClick={handleLogout}
+              >
+                  Logout
+              </Button>
           </>
         )}
       </div>

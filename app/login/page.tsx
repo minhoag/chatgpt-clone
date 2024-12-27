@@ -15,7 +15,6 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { formSchema } from "./zod";
-import { login } from "./submit";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
@@ -44,8 +43,14 @@ export default function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const res = await login(values);
-      if (res === 404) {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      if (res.status !== 200) {
         return setState({
           variant: "destructive",
           title: 'Login Failed',

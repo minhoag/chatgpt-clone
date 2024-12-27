@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { auth } from "@/lib/auth";
 import Navigation from "@/components/navigation";
 import { Toaster } from "@/components/ui/toaster";
-import NextAuthProvider from "@/components/session-provider";
-
+import { cookies } from "next/headers";
 import "./globals.css";
+import { isUserLoggedIn } from '@/lib/utils'
 
 const font = Space_Grotesk({ subsets: ["latin"], weight: "400" });
 
@@ -20,9 +19,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await auth();
+    const cookieStore = await cookies()
+    const token = cookieStore.get('authToken')?.value;
+    const authenticated = !isUserLoggedIn(token);
   return (
-    <NextAuthProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={`${font.className}`} suppressHydrationWarning>
           <ThemeProvider
@@ -31,12 +31,11 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navigation user={user} />
+            <Navigation login={authenticated} />
             <main className="max-w-6xl mx-auto sm:px-10 px-5">{children}</main>
             <Toaster />
           </ThemeProvider>
         </body>
       </html>
-    </NextAuthProvider>
   );
 }

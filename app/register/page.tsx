@@ -17,7 +17,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { login } from "@/app/login/submit";
 
 const formSchema = z
   .object({
@@ -85,7 +84,6 @@ export default function RegisterPage() {
       setState({
         message: "Register successfully! Redirecting you back to homepage.",
       });
-      await login({ email: values.email, password: values.password });
       return router.push("/");
     }
   }
