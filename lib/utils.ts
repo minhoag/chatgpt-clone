@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcryptjs";
 import db from "@/lib/prisma";
+import { NextResponse } from 'next/server'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,12 +32,12 @@ export function generateRandomId(length: number) {
   return randomId;
 }
 
-export function generateToken(userID: any, res: any) {
+export function generateToken(userID: any, res: NextResponse | any) {
     const secret = process.env.JWT_SECRET || 'default_secret';
     const token = jwt.sign({ userID }, secret, {
       expiresIn: "7d",
     });
-    res.cookie("jwt", token, {
+    res.cookies.set("jwt", token, {
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       sameSite: "strict",
