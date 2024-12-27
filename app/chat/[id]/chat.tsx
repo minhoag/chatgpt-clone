@@ -10,7 +10,6 @@ import { useRouter } from "next/navigation";
 import { ElementRef, useEffect, useOptimistic, useRef } from "react";
 import { JSONMessage } from "@/types";
 
-
 type ChatProps = {
   messages: JSONMessage[];
   id: string;
@@ -27,7 +26,7 @@ export default function Chat({ messages, id }: ChatProps) {
         id: generateRandomId(4),
         question: newMessage,
       },
-    ]
+    ],
   );
 
   useEffect(() => {

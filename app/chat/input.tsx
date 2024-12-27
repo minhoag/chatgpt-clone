@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -13,19 +13,26 @@ export default function ChatInput({ onSendMessage }: ChatInputProps) {
   }
 
   return (
-      <form
-          action={handleSubmit}
-          className="flex flex-row items-center gap-2 sm:pr-5"
-      >
-        <div className="flex w-full items-center space-x-2">
-          <Input
-              autoComplete="off"
-              name="message"
-              placeholder="Message ChatGPT..."
-              className="h-12"
-          />
-          <Button type="submit">Send</Button>
-        </div>
-      </form>
+    <form
+      action={handleSubmit}
+      className="flex flex-row items-center gap-2 sm:pr-5"
+    >
+      <div className="flex w-full items-center space-x-2">
+        <Input
+          autoComplete="off"
+          name="message"
+          placeholder="Message ChatGPT..."
+        />
+        <Button type="submit"
+                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 w-9">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               className="lucide lucide-send ">
+            <path d="m22 2-7 20-4-9-9-4Z"></path>
+            <path d="M22 2 11 13"></path>
+          </svg>
+        </Button>
+      </div>
+    </form>
   );
 }

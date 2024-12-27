@@ -2,16 +2,18 @@
 
 import Link from "next/link";
 import { LogoChatGPT } from "./logo";
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button, buttonVariants } from "@/components/ui/button";
 import ToggleTheme from "./toggle";
+import { useSession, signOut } from "next-auth/react";
 
-export default function Navigation({ login } : {login: boolean}) {
-    return (
+export default function Navigation() {
+    const { data: session } = useSession()
+  return (
     <nav className="w-full mx-auto max-w-6xl flex flex-row items-center justify-between h-24 mb-7 top-0 sticky bg-background">
       <LogoChatGPT />
       <div className="flex flex-row items-center">
         <ToggleTheme />
-        {!login ? (
+        {!session ? (
           <>
             <Link
               href="/login"
@@ -36,12 +38,9 @@ export default function Navigation({ login } : {login: boolean}) {
           </>
         ) : (
           <>
-              <Button
-                  variant="link"
-                  className="text-base"
-              >
-                  Logout
-              </Button>
+            <Button variant="link" onClick={() => signOut()} className="text-base">
+              Logout
+            </Button>
           </>
         )}
       </div>

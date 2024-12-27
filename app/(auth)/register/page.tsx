@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { checkEnvironment } from '@/lib/utils'
 
 const formSchema = z
   .object({
@@ -70,7 +71,7 @@ export default function RegisterPage() {
   }, [state, toast]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const response = await fetch("/api/register", {
+    const response = await fetch(checkEnvironment().concat("/api/register"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),

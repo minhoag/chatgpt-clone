@@ -1,28 +1,21 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-import jwt from 'jsonwebtoken'
-import bcrypt from "bcryptjs";
-import db from "@/lib/prisma";
-import { NextResponse } from 'next/server'
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+import bcrypt from 'bcryptjs'
+import db from '@/lib/prisma'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function isUserLoggedIn(token: string | undefined): boolean {
-  if (!token) return false;
-  try {
-    jwt.verify(token, process.env.JWT_SECRET!);
-    return true;
-  } catch (error) {
-    console.error('JWT verification failed:', error);
-    return false;
-  }
-}
+export const checkEnvironment = () => {
+  return process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "https://example.com";
+};
 
 export function generateRandomId(length: number) {
   const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let randomId = "";
 
   for (let i = 0; i < length; i++) {
@@ -30,20 +23,6 @@ export function generateRandomId(length: number) {
     randomId += characters.charAt(randomIndex);
   }
   return randomId;
-}
-
-export function generateToken(userID: any, res: NextResponse | any) {
-    const secret = process.env.JWT_SECRET || 'default_secret';
-    const token = jwt.sign({ userID }, secret, {
-      expiresIn: "7d",
-    });
-    res.cookies.set("jwt", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV !== "development",
-    })
-    return token;
 }
 
 export function verifyPassword(password: string, hash: string) {

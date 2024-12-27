@@ -29,6 +29,7 @@
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.314.0",
     "next": "15.0.1",
+    "next-auth": "^4.24.11",
     "next-themes": "^0.2.1",
     "openai": "^4.25.0",
     "prettier-plugin-prisma": "^5.0.0",

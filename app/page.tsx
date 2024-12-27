@@ -1,10 +1,10 @@
-import GetStartedButton from '@/components/get-started'
+import GetStartedButton from "@/components/get-started";
 
 export default async function Home() {
   return (
     <div className="flex flex-col items-center gap-5 justify-center h-[70vh]">
       <h1 className="text-4xl font-bold text-center">Introducing ChatGPT</h1>
-        <GetStartedButton />
+      <GetStartedButton />
       <p className="sm:w-[75%] mx-auto text-center text-muted-foreground ">
         ChatGPT is a cutting-edge language model developed by OpenAI, designed
         to engage in natural, intelligent conversations with you. Whether you’re

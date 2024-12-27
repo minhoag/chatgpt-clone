@@ -18,6 +18,7 @@ import { formSchema } from "./zod";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,17 +44,16 @@ export default function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
+      const { email, password } = values;
+      const res = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
       });
-      if (res.status !== 200) {
+      if (res?.error ) {
         return setState({
           variant: "destructive",
-          title: 'Login Failed',
+          title: "Login Failed",
           message: "Please check again your email/passwords.",
         });
       }
