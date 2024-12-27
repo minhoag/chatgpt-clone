@@ -29,7 +29,7 @@ export default async function RootLayout({
         >
           <NextSessionProvider>
             <Navigation />
-            <main className="max-w-6xl mx-auto sm:px-10 px-5">{children}</main>
+            <main className="mx-auto sm:px-10 px-5">{children}</main>
             <Toaster />
           </NextSessionProvider>
         </ThemeProvider>

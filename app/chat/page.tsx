@@ -30,15 +30,20 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col h-screen p-4">
-      <div className="flex-grow overflow-y-auto">
-        {messages.map((msg, index) => (
-          <ChatBubble key={index} message={msg.text} isUser={msg.isUser} />
-        ))}
+      <div className="relative h-[80vh]">
+        <div className="max-w-2xl mx-auto flex flex-col h-[90%]">
+          <div className="flex-grow pr-8 overflow-y-auto">
+            {messages.map((msg, index) => (
+                <ChatBubble key={index} message={msg.text} isUser={msg.isUser} />
+            ))}
+          </div>
+        </div>
+          <div className="relative flex items-center justify-center">
+              <div className="fixed w-2/3 mt-5 bottom-0 pb-8 pt-1 bg-background md:w-1/2">
+                  <ChatInput onSendMessage={handleSendMessage} />
+              </div>
+          </div>
       </div>
-      <div className="mt-5 bottom-0 sticky pb-8 pt-1 bg-background">
-        <ChatInput onSendMessage={handleSendMessage} />
-      </div>
-    </div>
-  );
+  )
+
 }
