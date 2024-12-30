@@ -14,10 +14,6 @@ export const checkEnvironment = () => {
     : "https://example.com";
 };
 
-export function generateRandomId(): number {
-  return Date.now() + Math.random();
-}
-
 export function verifyPassword(password: string, hash: string) {
   return bcrypt.compareSync(password, hash);
 }
@@ -26,6 +22,13 @@ export function getUserFromDb(email: string) {
   return db.user.findFirst({
     where: {
       email: email,
+    },
+    select: {
+      email: true,
+      firstname: true,
+      lastname: true,
+      passwordHash: true,
+      conversations: true,
     },
   });
 }

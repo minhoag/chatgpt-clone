@@ -1,9 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
+import { getConversation } from "@/app/chat/action";
+
 const isEmpty = (str: string) => !str.trim().length;
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } },
+) {
+  const id = request.nextUrl.searchParams.get("id");
+
+  if (!id)
+    return NextResponse.json({ status: 404, error: "Params not found." });
+  const conversations = await getConversation(id);
+
+  return NextResponse.json({
+    status: 200,
+    conversations,
+  });
+}
+
+export async function POST(req: NextRequest) {
   const { message } = await req.json();
 
   if (isEmpty(message)) {

@@ -7,7 +7,7 @@ interface ChatInputProps {
 
 export default function ChatInput({ onSendMessage }: ChatInputProps) {
   async function handleSubmit(formData: FormData) {
-    const message = formData.get("message") as string;
+    const message: string = formData.get("message") as string;
 
     if (!message) return;
     onSendMessage(message);

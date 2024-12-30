@@ -1,50 +1,94 @@
 interface ChatBubbleProps {
-  message: string;
-  isUser: boolean;
+  id: string;
+  question: string;
+  answer: string;
 }
 
-export function ChatBubble({ message, isUser }: ChatBubbleProps) {
-  return (
-    <>
-      {isUser ? (
-        <article className="flex w-max max-w-[75%] rounded-lg px-3 py-2 text-sm ml-auto bg-primary text-primary-foreground">
-          {message}
-        </article>
-      ) : (
-        <article className="flex w-full text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]">
-          <h6 className="sr-only">ChatGPT said:</h6>
-          <div className="m-auto text-base py-[18px] px-3 md:px-4 w-full lg:px-4 xl:px-5">
-            <div className="mx-auto flex flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">
-              <div className="flex-shrink-0 flex flex-col relative items-end">
-                <div className="pt-0">
-                  <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full">
-                    <div className="relative p-1 rounded-sm flex items-center justify-center bg-token-main-surface-primary text-token-text-primary h-8 w-8">
-                      <ChatGPTAvatar />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="relative flex w-full min-w-0 flex-col agent-turn">
-                <div className="flex-col gap-1 md:gap-3">
-                  <div className="flex max-w-full flex-col flex-grow">
-                    <div className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start">
-                      <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
-                        <div className="markdown prose w-full break-words dark:prose-invert dark">
-                          {message}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pr-2 lg:pr-0" />
-                  <div className="mt-3 w-full empty:hidden">
-                    <div className="text-center" />
+export function ChatBubble({ id, question, answer }: ChatBubbleProps) {
+  if (!question)
+    return (
+      <article
+        key={id + "A"}
+        className="flex w-full text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]"
+      >
+        <h6 className="sr-only">ChatGPT said:</h6>
+        <div className="m-auto text-base py-[18px] px-3 md:px-4 w-full lg:px-4 xl:px-5">
+          <div className="mx-auto flex flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">
+            <div className="flex-shrink-0 flex flex-col relative items-end">
+              <div className="pt-0">
+                <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full">
+                  <div className="relative p-1 rounded-sm flex items-center justify-center bg-token-main-surface-primary text-token-text-primary h-8 w-8">
+                    <ChatGPTAvatar />
                   </div>
                 </div>
               </div>
             </div>
+            <div className="relative flex w-full min-w-0 flex-col agent-turn">
+              <div className="flex-col gap-1 md:gap-3">
+                <div className="flex max-w-full flex-col flex-grow">
+                  <div className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start">
+                    <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
+                      <div className="markdown prose w-full break-words dark:prose-invert dark">
+                        {answer}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="pr-2 lg:pr-0" />
+                <div className="mt-3 w-full empty:hidden">
+                  <div className="text-center" />
+                </div>
+              </div>
+            </div>
           </div>
-        </article>
-      )}
+        </div>
+      </article>
+    );
+
+  return (
+    <>
+      <article
+        key={id + "Q"}
+        className="flex w-max max-w-[75%] rounded-lg px-3 py-2 text-sm ml-auto bg-primary text-primary-foreground"
+      >
+        {question}
+      </article>
+      <article
+        key={id + "A"}
+        className="flex w-full text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]"
+      >
+        <h6 className="sr-only">ChatGPT said:</h6>
+        <div className="m-auto text-base py-[18px] px-3 md:px-4 w-full lg:px-4 xl:px-5">
+          <div className="mx-auto flex flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">
+            <div className="flex-shrink-0 flex flex-col relative items-end">
+              <div className="pt-0">
+                <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full">
+                  <div className="relative p-1 rounded-sm flex items-center justify-center bg-token-main-surface-primary text-token-text-primary h-8 w-8">
+                    <ChatGPTAvatar />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="relative flex w-full min-w-0 flex-col agent-turn">
+              <div className="flex-col gap-1 md:gap-3">
+                <div className="flex max-w-full flex-col flex-grow">
+                  <div className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start">
+                    <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
+                      <div className="markdown prose w-full break-words dark:prose-invert dark">
+                        {answer}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="pr-2 lg:pr-0" />
+                <div className="mt-3 w-full empty:hidden">
+                  <div className="text-center" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
     </>
   );
 }

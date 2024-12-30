@@ -1,10 +1,12 @@
-import { generateRandomId } from "@/lib/utils";
+"use server";
+
 import db from "@/lib/prisma";
 
-export type Message = {
-  id: number;
-  message: string;
-  isUser: boolean;
+export type Conversation = {
+  conversationId: string;
+  messageId: string;
+  question: string;
+  answer: string;
 };
 
 interface ChatResponse {
@@ -16,57 +18,66 @@ interface ChatResponse {
   status: number;
 }
 
-export async function getResponse(message: string) {
+const checkEnvironment = () => {
+  return process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://example.com";
+};
+
+export async function requestOpenAi(
+  message: Omit<Conversation, "answer">,
+): Promise<string> {
   try {
-    const response = await fetch("/api/chat", {
+    const url = checkEnvironment().concat("/api/chat");
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ message: message.question }),
     });
-
     const data: ChatResponse = await response.json();
 
-    return data.result;
-  } catch (error) {
-    console.error("Error:", error);
+    if (!data || !data.result.content) return "Error with fetching response";
+
+    await saveConversation({
+      conversationId: message.conversationId,
+      messageId: message.messageId,
+      question: message.question,
+      answer: data.result.content,
+    });
+
+    return data.result.content;
+  } catch (error: any) {
+    return "Problem: " + error.message;
   }
 }
 
-export async function createChatSession(name: string, userId: string) {
-  const session = await db.conversation.create({
-    data: {
-      name: name,
-      messages: [
-        {
-          id: generateRandomId(),
-          message: "Hello! How can I help you today?",
-          isUser: false,
-        },
-      ],
-      userId: userId,
-    },
-  });
-
-  return session;
-}
-
-export async function storeMessage(sessionId: string, message: Message) {
-  await db.conversation.update({
-    where: {
-      id: sessionId,
-    },
-    data: {
-      messages: {
-        push: message,
+export async function saveConversation(params: Conversation): Promise<void> {
+  try {
+    await db.conversation.update({
+      where: {
+        id: params.conversationId,
       },
-    },
-  });
+      data: {
+        messages: {
+          push: {
+            messageId: Date.now().toString(),
+            question: params.question,
+            answer: params.answer,
+          },
+        },
+      },
+    });
+  } catch (error: any) {
+    console.error("Error fetching response", error);
+  }
 }
 
-export async function getChatSession(userId: string) {
-  return db.conversation.findMany({
-    where: { userId },
+export async function getConversation(id: string): Promise<any> {
+  return db.conversation.findUnique({
+    where: {
+      id: id,
+    },
   });
 }
