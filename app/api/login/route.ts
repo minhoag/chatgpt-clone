@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { getUserFromDb, verifyPassword } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
@@ -10,6 +11,7 @@ export async function POST(request: NextRequest) {
     console.log(reqBody);
 
     const user = await getUserFromDb(email);
+
     if (!user) {
       return NextResponse.json(
         {
@@ -21,6 +23,7 @@ export async function POST(request: NextRequest) {
 
     // compare hashed password
     const passwordOk = user && verifyPassword(password, user.passwordHash);
+
     if (!passwordOk) {
       return NextResponse.json(
         {
@@ -29,6 +32,7 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
+
     return NextResponse.json({
       message: "Logged In successfully",
       data: {
@@ -39,6 +43,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     console.log("error", error);
+
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

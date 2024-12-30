@@ -84,6 +84,7 @@ const FormItem = React.forwardRef<
     </FormItemContext.Provider>
   );
 });
+
 FormItem.displayName = "FormItem";
 
 const FormLabel = React.forwardRef<
@@ -101,6 +102,7 @@ const FormLabel = React.forwardRef<
     />
   );
 });
+
 FormLabel.displayName = "FormLabel";
 
 const FormControl = React.forwardRef<
@@ -113,17 +115,18 @@ const FormControl = React.forwardRef<
   return (
     <Slot
       ref={ref}
-      id={formItemId}
       aria-describedby={
         !error
           ? `${formDescriptionId}`
           : `${formDescriptionId} ${formMessageId}`
       }
       aria-invalid={!!error}
+      id={formItemId}
       {...props}
     />
   );
 });
+
 FormControl.displayName = "FormControl";
 
 const FormDescription = React.forwardRef<
@@ -135,12 +138,13 @@ const FormDescription = React.forwardRef<
   return (
     <p
       ref={ref}
-      id={formDescriptionId}
       className={cn("text-sm text-muted-foreground", className)}
+      id={formDescriptionId}
       {...props}
     />
   );
 });
+
 FormDescription.displayName = "FormDescription";
 
 const FormMessage = React.forwardRef<
@@ -157,14 +161,15 @@ const FormMessage = React.forwardRef<
   return (
     <p
       ref={ref}
-      id={formMessageId}
       className={cn("text-sm font-medium text-error", className)}
+      id={formMessageId}
       {...props}
     >
       {body}
     </p>
   );
 });
+
 FormMessage.displayName = "FormMessage";
 
 export {

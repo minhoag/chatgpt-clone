@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createUser, getUserFromDb } from "@/lib/utils";
 import bcryptjs from "bcryptjs";
+
+import { createUser, getUserFromDb } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,6 +12,7 @@ export async function POST(request: NextRequest) {
     console.log(reqBody);
 
     const user = await getUserFromDb(email);
+
     if (user) {
       return NextResponse.json(
         {
@@ -23,7 +25,9 @@ export async function POST(request: NextRequest) {
     // hash password
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
+
     await createUser(email, firstname, lastname, hashedPassword);
+
     return NextResponse.json({
       message: "User created!",
       success: true,

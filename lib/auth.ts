@@ -1,6 +1,11 @@
+import type { JWT } from "next-auth/jwt";
+
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
+import { getServerSession } from "next-auth/next";
+
 import { checkEnvironment } from "@/lib/utils";
+import db from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
@@ -17,12 +22,15 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password", value: "admin" },
       },
 
-      async authorize(credentials, req) {
+      async authorize(
+        credentials: Record<"email" | "password", string> | undefined,
+      ) {
         if (!credentials) return null;
         const data = {
           email: credentials.email,
           password: credentials.password,
         };
+
         try {
           const res = await fetch(checkEnvironment().concat("/api/login"), {
             method: "POST",
@@ -32,14 +40,13 @@ export const authOptions: NextAuthOptions = {
             },
           });
           const response = await res.json();
+
           if (res.ok && response && response.data) {
             return response.data;
           } else {
-            console.error("Authorization failed:", response);
             return null;
           }
         } catch (error) {
-          console.error("Authorization error:", error);
           return null;
         }
       },
@@ -50,12 +57,31 @@ export const authOptions: NextAuthOptions = {
   },
   session: { strategy: "jwt" },
   callbacks: {
-    async jwt({ token, user }) {
-      return { ...token, ...user };
+    jwt: async ({ token }: { token: JWT }) => {
+      if (!token.email) return token;
+      const db_user = await db.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      });
+
+      if (db_user) token.id = db_user.id;
+
+      return token;
     },
-    async session({ session, token, user }) {
-      session.user = token as any;
+    session: ({ session, token }: { session: any; token: JWT }) => {
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+      }
+
       return session;
     },
   },
 };
+
+export async function getUser() {
+  return await getServerSession(authOptions);
+}

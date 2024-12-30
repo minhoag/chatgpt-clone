@@ -3,6 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,12 +18,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { formSchema } from "./zod";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { useEffect, useState } from "react";
-import { signIn } from "next-auth/react";
+
+import { formSchema } from "./zod";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -50,23 +52,29 @@ export default function LoginPage() {
         email,
         password,
       });
+
       if (res?.error) {
         return setState({
           variant: "destructive",
-          title: "Login Failed",
-          message: "Please check again your email/passwords.",
+          title: "Authentication Failed",
+          message: "Please check again your email and passwords.",
         });
       }
+
       return router.push("/");
     } catch (error: any) {
-      console.log(error);
+      return setState({
+        variant: "destructive",
+        title: "Something went wrong",
+        message: "Internal Server Error (500). " + error.message,
+      });
     }
   }
 
   return (
     <div className="max-w-xl mx-auto">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="email"
@@ -87,19 +95,19 @@ export default function LoginPage() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" required {...field} />
+                  <Input required type="password" {...field} />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Link href="#" className="relative top-2 text-sm hover:underline">
+          <Link className="relative top-2 text-sm hover:underline" href="#">
             Forgot password?
           </Link>
           <div className="flex flex-wrap flex-col items-center gap-3 text-sm md:flex-row md:justify-between">
             <Button type="submit">Continue</Button>
             <span>
               Don&#39;t have an account?
-              <Link href="/register" className="ml-2 hover:underline">
+              <Link className="ml-2 hover:underline" href="/register">
                 Sign up.
               </Link>
             </span>

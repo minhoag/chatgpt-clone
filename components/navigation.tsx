@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { LogoChatGPT } from "./logo";
-import { Button, buttonVariants } from "@/components/ui/button";
-import ToggleTheme from "./toggle";
 import { useSession, signOut } from "next-auth/react";
 import React from "react";
 
+import { Button, buttonVariants } from "@/components/ui/button";
+
+import { LogoChatGPT } from "./logo";
+import ToggleTheme from "./toggle";
+
 export default function Navigation() {
   const { data: session } = useSession();
+
   return (
     <nav
       className="w-full max-w-xs mx-auto flex flex-row items-center justify-between h-24 mb-7 top-0 sticky bg-background sm:max-w-lg lg:max-w-4xl"
@@ -20,22 +23,22 @@ export default function Navigation() {
         {!session ? (
           <>
             <Link
-              href="/login"
               className={buttonVariants({
                 variant: "link",
                 className: "text-base sm:ml-3",
                 size: "sm",
               })}
+              href="/login"
             >
               Login
             </Link>
             <Link
-              href="/register"
               className={buttonVariants({
                 variant: "link",
                 className: "text-base",
                 size: "sm",
               })}
+              href="/register"
             >
               Register
             </Link>
@@ -43,9 +46,9 @@ export default function Navigation() {
         ) : (
           <>
             <Button
+              className="text-base"
               variant="link"
               onClick={() => signOut()}
-              className="text-base"
             >
               <span className="hidden mr-2 lg:block">Logout </span>
               <LogOutIcon className="h-4 w-4" />
@@ -61,15 +64,15 @@ function LogOutIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
       fill="none"
+      height="24"
       stroke="currentColor"
-      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
       <polyline points="16 17 21 12 16 7" />

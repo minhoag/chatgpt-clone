@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+
 import { Space_Grotesk } from "next/font/google";
+
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import NextSessionProvider from "@/components/session-provider";
@@ -19,13 +21,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${font.className}`} suppressHydrationWarning>
+    <html suppressHydrationWarning lang="en">
+      <body suppressHydrationWarning className={`${font.className}`}>
         <ThemeProvider
+          disableTransitionOnChange
+          enableSystem
           attribute="class"
           defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
         >
           <NextSessionProvider>
             <Navigation />

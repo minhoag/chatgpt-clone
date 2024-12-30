@@ -1,32 +1,68 @@
 "use client";
 
 import { useState } from "react";
-import ChatInput from "./input";
+
 import { ChatBubble } from "@/components/chat-bubble";
+
+import ChatInput from "./input";
+
+interface ChatResponse {
+  result: {
+    role: string;
+    content: string | undefined;
+    refusal: string | null;
+  };
+  status: number;
+}
+async function getResponse(message: string) {
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message }),
+    });
+
+    const data: ChatResponse = await response.json();
+
+    return data.result;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
 
 export default function Chat() {
   const [messages, setMessages] = useState([
     { text: "Hello! How can I help you today?", isUser: false },
   ]);
 
-  const handleSendMessage = (message: string) => {
+  const handleSendMessage = async (message: string) => {
     setMessages([...messages, { text: message, isUser: true }]);
-    setTimeout(() => {
-      setMessages((prevMessages) => [
+    try {
+      const data = await getResponse(message);
+
+      if (!data || !data.content) {
+        return setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            text: "There is something wrong when requesting for response.",
+            isUser: false,
+          },
+        ]);
+      }
+      if (data.content) {
+        return setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: data.content ?? "No content available", isUser: false },
+        ]);
+      }
+    } catch (error: any) {
+      return setMessages((prevMessages) => [
         ...prevMessages,
-        {
-          text:
-            "This is a response from ChatGPT. Lorem ipsum dolor sit amet, " +
-            "consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut " +
-            "labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud " +
-            "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore " +
-            "eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt " +
-            "in culpa qui officia deserunt mollit anim id est laborum.",
-          isUser: false,
-        },
+        { text: error.message, isUser: false },
       ]);
-    }, 1000);
+    }
   };
 
   return (
@@ -34,7 +70,7 @@ export default function Chat() {
       <div className="max-w-2xl mx-auto flex flex-col mb-20">
         <div className="flex-grow pr-8 overflow-y-auto">
           {messages.map((msg, index) => (
-            <ChatBubble key={index} message={msg.text} isUser={msg.isUser} />
+            <ChatBubble key={index} isUser={msg.isUser} message={msg.text} />
           ))}
         </div>
       </div>

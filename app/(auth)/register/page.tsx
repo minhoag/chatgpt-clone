@@ -3,6 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,9 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { checkEnvironment } from "@/lib/utils";
 
@@ -77,6 +78,7 @@ export default function RegisterPage() {
       body: JSON.stringify(values),
     });
     const data = await response.json();
+
     if (data.error) {
       setState({
         message: data.error,
@@ -85,13 +87,15 @@ export default function RegisterPage() {
       setState({
         message: "Register successfully! Redirecting you back to homepage.",
       });
+
       return router.push("/");
     }
   }
+
   return (
     <div className="max-w-xl mx-auto">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="email"
@@ -112,7 +116,7 @@ export default function RegisterPage() {
               <FormItem>
                 <FormLabel>First Name</FormLabel>
                 <FormControl>
-                  <Input type="string" placeholder="Nguyen" {...field} />
+                  <Input placeholder="Nguyen" type="string" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -125,7 +129,7 @@ export default function RegisterPage() {
               <FormItem>
                 <FormLabel>Last Name</FormLabel>
                 <FormControl>
-                  <Input type="string" placeholder="Van A" {...field} />
+                  <Input placeholder="Van A" type="string" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -161,7 +165,7 @@ export default function RegisterPage() {
             <Button type="submit">Continue</Button>
             <span>
               Already have an account?
-              <Link href="/login" className="ml-2 hover:underline">
+              <Link className="ml-2 hover:underline" href="/login">
                 Login instead.
               </Link>
             </span>
