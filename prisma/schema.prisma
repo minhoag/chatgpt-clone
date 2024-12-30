@@ -20,7 +20,7 @@ model User {
 model Conversation {
   id        String   @id @default(cuid())
   name      String
-  messages  Json
+  messages  Json[]
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())

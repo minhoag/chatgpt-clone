@@ -4,8 +4,6 @@ interface ChatBubbleProps {
 }
 
 export function ChatBubble({ message, isUser }: ChatBubbleProps) {
-  console.log(message);
-
   return (
     <>
       {isUser ? (
