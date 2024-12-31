@@ -115,5 +115,7 @@ export async function createNewChatSession(message: string): Promise<any> {
   } catch (error: any) {
     console.error(error);
   }
-  redirect(`/chat/${dataRef.id}`);
+  const url = checkEnvironment().concat(`/chat/${dataRef.id}`);
+
+  redirect(url);
 }
