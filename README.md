@@ -13,6 +13,14 @@ This is a chat application built with TypeScript, PostgreSQL, and Next.js. It fe
    <img src="https://i.ibb.co/gTJCg7W/image.png" alt="response_interface">
 </div>
 
+## To-Do
+
+- [ ] Create a user profile feature to allow users to change their name, password, etc.
+- [x] Implement chat interface
+- [x] Implement chat session management
+- [x] Implement delete chat session
+- [x] Implement skeleton for loading chat
+
 ## Technologies Used
 
 - Next.js
