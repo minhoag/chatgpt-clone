@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -51,7 +51,6 @@ const formSchema = z
   });
 
 export default function RegisterPage() {
-  const router = useRouter();
   const { toast } = useToast();
   const [state, setState] = useState({ message: "" });
 
@@ -89,8 +88,11 @@ export default function RegisterPage() {
         setState({
           message: "Register successfully! Redirecting you back to homepage.",
         });
-
-        return router.push("/");
+        await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          callbackUrl: checkEnvironment(),
+        });
       }
     } catch (error: any) {
       console.error(error);
