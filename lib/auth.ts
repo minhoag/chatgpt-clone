@@ -8,7 +8,7 @@ import { checkEnvironment } from "@/lib/utils";
 import db from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Credentials",
