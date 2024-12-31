@@ -1,3 +1,5 @@
+import React from "react";
+
 import GetStartedButton from "@/components/get-started";
 import Navigation from "@/components/navigation";
 
