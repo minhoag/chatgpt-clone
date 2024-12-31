@@ -1,17 +1,22 @@
+"use client";
+import { useState } from "react";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-interface ChatInputProps {
+type ChatInputProps = {
   onSendMessage: (message: string) => void;
-}
+};
 
 export default function ChatInput({ onSendMessage }: ChatInputProps) {
+  const [inputValue, setInputValue] = useState("");
+
   function handleSubmit(formData: FormData) {
     const message: string = formData.get("message") as string;
 
     if (!message) return;
-
-    return onSendMessage(message);
+    setInputValue("");
+    onSendMessage(message);
   }
 
   return (
@@ -24,6 +29,8 @@ export default function ChatInput({ onSendMessage }: ChatInputProps) {
           autoComplete="off"
           name="message"
           placeholder="Message ChatGPT..."
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
         />
         <Button
           className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 w-9"

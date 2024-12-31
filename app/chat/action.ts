@@ -113,8 +113,7 @@ export async function createNewChatSession(message: string): Promise<any> {
       question: message,
     });
   } catch (error: any) {
-    console.log(error);
-    console.error("Error creating new chat session");
+    console.error(error);
   }
   redirect(`/chat/${dataRef.id}`);
 }

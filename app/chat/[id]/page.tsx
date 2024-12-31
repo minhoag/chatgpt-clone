@@ -1,11 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  ElementRef,
+  startTransition,
+} from "react";
 import { useParams } from "next/navigation";
+import { useOptimistic } from "react";
 
 import { ChatBubble } from "@/components/chat-bubble";
 import ChatInput from "@/app/chat/input";
 import { requestOpenAi } from "@/app/chat/action";
+import ChatLoading from "@/app/chat/loading";
 
 type Conversation = {
   messageId: string;
@@ -14,9 +22,11 @@ type Conversation = {
 };
 
 export default function ChatWindowProps() {
+  const scrollRef = useRef<ElementRef<"div">>(null);
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<Conversation[]>([]);
+  const [optimisticMessages, setOptimisticMessages] = useOptimistic(messages);
 
   useEffect(() => {
     fetch(`/api/chat?id=${id}`)
@@ -27,8 +37,19 @@ export default function ChatWindowProps() {
       });
   }, []);
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [optimisticMessages]);
+
   const handleSendMessage = async (message: string): Promise<void> => {
     const messageId = Date.now().toString();
+
+    startTransition(() => {
+      setOptimisticMessages((prevMessages) => [
+        ...prevMessages,
+        { messageId, question: message, answer: "" },
+      ]);
+    });
 
     try {
       const data: string = await requestOpenAi({
@@ -37,22 +58,29 @@ export default function ChatWindowProps() {
         question: message,
       });
 
-      return setMessages([
-        ...messages,
-        { messageId: Date.now().toString(), question: message, answer: data },
-      ]);
+      startTransition(() => {
+        setOptimisticMessages((prevMessages) =>
+          prevMessages.map((msg) =>
+            msg.messageId === messageId ? { ...msg, answer: data } : msg,
+          ),
+        );
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { messageId, question: message, answer: data },
+        ]);
+      });
     } catch (error: any) {
-      return console.error("Error fetching response", error);
+      console.error(error);
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <ChatLoading />;
 
   return (
     <div className="relative">
       <div className="max-w-2xl mx-auto flex flex-col mb-28">
         <div className="flex-grow px-4 overflow-y-auto">
-          {messages.map((msg: Conversation, index: number) => (
+          {optimisticMessages.map((msg: Conversation, index: number) => (
             <ChatBubble
               key={index}
               answer={msg.answer}
@@ -60,6 +88,7 @@ export default function ChatWindowProps() {
               question={msg.question}
             />
           ))}
+          <div ref={scrollRef} />
         </div>
       </div>
       <div className="relative flex items-center justify-center">

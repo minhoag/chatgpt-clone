@@ -7,9 +7,6 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     const { email, password } = reqBody;
 
-    // REMOVE IN PRODUCTION
-    console.log(reqBody);
-
     const user = await getUserFromDb(email);
 
     if (!user) {
@@ -42,8 +39,6 @@ export async function POST(request: NextRequest) {
       success: true,
     });
   } catch (error: any) {
-    console.error("error", error);
-
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

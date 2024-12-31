@@ -8,9 +8,6 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     const { email, firstname, lastname, password } = reqBody;
 
-    // REMOVE IN PRODUCTION
-    console.log(reqBody);
-
     const user = await getUserFromDb(email);
 
     if (user) {

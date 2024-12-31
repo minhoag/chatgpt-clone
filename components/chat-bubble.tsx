@@ -9,7 +9,7 @@ export function ChatBubble({ id, question, answer }: ChatBubbleProps) {
     return (
       <article
         key={id + "A"}
-        className="flex w-full text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]"
+        className="flex w-full focus-visible:outline-2 focus-visible:outline-offset-[-4px]"
       >
         <h6 className="sr-only">ChatGPT said:</h6>
         <div className="m-auto text-base py-[18px] px-3 md:px-4 w-full lg:px-4 xl:px-5">
@@ -49,13 +49,13 @@ export function ChatBubble({ id, question, answer }: ChatBubbleProps) {
     <>
       <article
         key={id + "Q"}
-        className="flex w-max max-w-[75%] rounded-lg px-3 py-2 text-sm ml-auto bg-primary text-primary-foreground"
+        className="flex w-max max-w-[75%] markdown prose break-words dark:prose-invert rounded-lg px-3 py-2 text-sm ml-auto bg-primary text-primary-foreground"
       >
         {question}
       </article>
       <article
         key={id + "A"}
-        className="flex w-full text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]"
+        className="flex w-full markdown prose break-words dark:prose-invert text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]"
       >
         <h6 className="sr-only">ChatGPT said:</h6>
         <div className="m-auto text-base py-[18px] px-3 md:px-4 w-full lg:px-4 xl:px-5">
@@ -74,9 +74,7 @@ export function ChatBubble({ id, question, answer }: ChatBubbleProps) {
                 <div className="flex max-w-full flex-col flex-grow">
                   <div className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start">
                     <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
-                      <div className="markdown prose w-full break-words dark:prose-invert dark">
-                        {answer}
-                      </div>
+                      {answer}
                     </div>
                   </div>
                 </div>

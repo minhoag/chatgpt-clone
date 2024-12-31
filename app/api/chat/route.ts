@@ -5,10 +5,7 @@ import { getConversation } from "@/app/chat/action";
 
 const isEmpty = (str: string) => !str.trim().length;
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } },
-) {
+export async function GET(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
 
   if (!id)
@@ -67,15 +64,11 @@ export async function POST(req: NextRequest) {
     });
   } catch (error: any) {
     if (error.response) {
-      console.error(error.response.status, error.response.data);
-
       return NextResponse.json({
         status: 500,
         error: error.response.data,
       });
     } else {
-      console.error(`Error with OpenAI API request: ${error.message}`);
-
       return NextResponse.json({
         status: 500,
         error: error.message,
