@@ -10,7 +10,6 @@ import {
   SidebarGroupLabel,
   SidebarGroupContent,
   SidebarMenu,
-  SidebarGroupAction,
 } from "@/components/ui/sidebar";
 import { getUser } from "@/lib/auth";
 import db from "@/lib/prisma";
@@ -42,12 +41,12 @@ export default async function ChatSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="ml-1">Chat History</SidebarGroupLabel>
-          <SidebarGroupAction title="Add Project">
-            <Link href="/chat">
-              <Plus className="w-4 h-4" />
+          <div className="absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none">
+            <Link className="bg-transparent w-full h-full" href="/chat">
+              <Plus className="w-5 h-5" />
             </Link>
             <span className="sr-only">New Chat</span>
-          </SidebarGroupAction>
+          </div>
           <SidebarGroupContent>
             <SidebarMenu>
               <ConversationList initialConversations={conversations} />
