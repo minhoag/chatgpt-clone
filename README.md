@@ -8,7 +8,7 @@ This is a chat application built with TypeScript, PostgreSQL, and Next.js. It fe
 - Conversation management
 - Responsive design
 
-<div style="display: flex; flex-direction: column; gap: 0.5rem; max-width: 25rem">
+<div style="display: flex; flex-direction: column; gap: 0.5rem; max-width: 15rem">
    <img src="https://i.ibb.co/TkBvDd0/image.png" alt="home_interface">
    <img src="https://i.ibb.co/gTJCg7W/image.png" alt="response_interface">
 </div>
