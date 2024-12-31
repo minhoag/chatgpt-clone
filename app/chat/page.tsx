@@ -18,9 +18,9 @@ export default function NewChat() {
         </div>
       </div>
       <div className="relative flex items-center justify-center">
-        <div className="fixed mb-4 w-4/5 px-4 py-4 bottom-0 bg-chat rounded-xl text-center md:w-1/2 md:pt-8 md:pb-3 md:px-8">
+        <div className="fixed mb-4 w-4/5 px-4 py-4 bottom-0 bg-chat rounded-xl text-center md:w-1/2 md:pt-8 md:pb-3 md:pl-8 md:pr-4">
           <NewChatInput />
-          <span className="relative text-xs top-1 text-foreground hidden md:block">
+          <span className="relative text-xs top-1 text-foreground hidden md:block md:py-1">
             ChatGPT can make mistakes. Check important info.
           </span>
         </div>
