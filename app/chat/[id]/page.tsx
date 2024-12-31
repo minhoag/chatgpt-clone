@@ -106,13 +106,13 @@ export default function ChatWindowProps() {
         </div>
       </div>
       <div className="relative flex items-center justify-center">
-        <div className="fixed mb-4 w-4/5 bottom-0 bg-chat pt-8 pb-3 px-8 rounded-xl text-center md:w-1/2">
+        <div className="fixed mb-8 w-4/5 px-4 py-4 bottom-0 bg-chat rounded-xl text-center md:w-1/2 md:mb-4 md:pt-8 md:pb-3 md:pl-8 md:pr-4">
           {waiting ? (
             <LoadingChat text="Message ChatGPT..." />
           ) : (
             <ChatInput sendMessage={handleSendMessage} />
           )}
-          <span className="relative text-xs top-1 text-foreground">
+          <span className="relative text-xs top-1 text-foreground hidden md:block md:py-1">
             ChatGPT can make mistakes. Check important info.
           </span>
         </div>
