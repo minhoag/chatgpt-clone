@@ -73,23 +73,30 @@ export default function RegisterPage() {
   }, [state, toast]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const response = await fetch(checkEnvironment().concat("/api/register"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    const data = await response.json();
-
-    if (data.error) {
-      setState({
-        message: data.error,
+    try {
+      const response = await fetch(checkEnvironment().concat("/api/register"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
       });
-    } else {
-      setState({
-        message: "Register successfully! Redirecting you back to homepage.",
-      });
+      const data = await response.json();
 
-      return router.push("/");
+      if (data.error) {
+        setState({
+          message: data.error,
+        });
+      } else {
+        setState({
+          message: "Register successfully! Redirecting you back to homepage.",
+        });
+
+        return router.push("/");
+      }
+    } catch (error: any) {
+      console.error(error);
+      setState({
+        message: "An error occurred. Please try again later.",
+      });
     }
   }
 

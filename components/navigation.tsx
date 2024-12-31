@@ -3,11 +3,9 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import React from "react";
-import { redirect } from "next/navigation";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { checkEnvironment } from "@/lib/utils";
 
 import { LogoChatGPT } from "./logo";
 import ToggleTheme from "./toggle";
@@ -56,7 +54,7 @@ export default function Navigation({
             <Button
               className="text-base"
               variant="link"
-              onClick={() => signOut().then(() => redirect(checkEnvironment()))}
+              onClick={() => signOut({ callbackUrl: "http://localhost:3000" })}
             >
               <span className="hidden text-sm mr-2 lg:block">Logout </span>
               <LogOutIcon className="h-3 w-3" />

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import db from "@/lib/prisma";
 import { getUser } from "@/lib/auth";
+import { checkEnvironment } from "@/lib/utils";
 
 export type Conversation = {
   conversationId: string;
@@ -20,12 +21,6 @@ interface ChatResponse {
   };
   status: number;
 }
-
-const checkEnvironment = () => {
-  return process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
-    : "https://chatgpt-clone-three-eta.vercel.app";
-};
 
 export async function requestOpenAi(
   message: Omit<Conversation, "answer">,
@@ -117,5 +112,5 @@ export async function createNewChatSession(message: string): Promise<any> {
   }
   const url = checkEnvironment().concat(`/chat/${dataRef.id}`);
 
-  redirect(url);
+  return redirect(url);
 }
