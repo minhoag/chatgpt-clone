@@ -26,7 +26,7 @@ export default function GetStartedButton() {
           below.
         </span>
       </div>
-      <div className="flex">
+      <div className="flex flex-col gap-4 md:flex-row md:gap-2">
         <Link
           className={buttonVariants({ size: "lg" })}
           href={checkEnvironment().concat(url)}
