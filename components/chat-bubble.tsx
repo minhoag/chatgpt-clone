@@ -33,7 +33,10 @@ export function ChatBubble({ id, question, answer }: ChatBubbleProps) {
                   <div className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start">
                     <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
                       <div className="markdown prose w-full break-words dark:prose-invert dark">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        <ReactMarkdown
+                          className="markdown-body"
+                          remarkPlugins={[remarkGfm]}
+                        >
                           {answer}
                         </ReactMarkdown>
                       </div>
@@ -80,7 +83,10 @@ export function ChatBubble({ id, question, answer }: ChatBubbleProps) {
                 <div className="flex max-w-full flex-col flex-grow">
                   <div className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start">
                     <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      <ReactMarkdown
+                        className="markdown-body"
+                        remarkPlugins={[remarkGfm]}
+                      >
                         {answer}
                       </ReactMarkdown>
                     </div>

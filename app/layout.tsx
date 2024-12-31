@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Space_Grotesk } from "next/font/google";
+import Script from "next/script";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
@@ -29,7 +30,10 @@ export default async function RootLayout({
           defaultTheme="dark"
         >
           <NextSessionProvider>
-            <main className="mx-auto sm:px-10 px-5">{children}</main>
+            <main className="mx-auto sm:px-10 px-5">
+              {children}
+              <Script src="/script.js" />
+            </main>
             <Toaster />
           </NextSessionProvider>
         </ThemeProvider>

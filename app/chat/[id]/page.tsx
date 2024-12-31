@@ -1,14 +1,14 @@
 "use client";
 
 import {
-  useState,
-  useEffect,
-  useRef,
   ElementRef,
   startTransition,
+  useEffect,
+  useOptimistic,
+  useRef,
+  useState,
 } from "react";
 import { useParams } from "next/navigation";
-import { useOptimistic } from "react";
 
 import { ChatBubble } from "@/components/chat-bubble";
 import ChatInput from "@/app/chat/input";
@@ -40,7 +40,7 @@ export default function ChatWindowProps() {
   }, [id]);
 
   useEffect(() => {
-    console.log("Waiting state set to: " + waiting);
+    console.log(waiting);
   }, [waiting]);
 
   useEffect(() => {
