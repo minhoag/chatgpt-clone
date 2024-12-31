@@ -11,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 export const checkEnvironment = () => {
   return process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
-    : "https://example.com";
+    : "https://chatgpt-clone-three-eta.vercel.app";
 };
 
 export function verifyPassword(password: string, hash: string) {

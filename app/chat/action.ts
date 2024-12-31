@@ -24,7 +24,7 @@ interface ChatResponse {
 const checkEnvironment = () => {
   return process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
-    : "https://example.com";
+    : "https://chatgpt-clone-three-eta.vercel.app";
 };
 
 export async function requestOpenAi(
