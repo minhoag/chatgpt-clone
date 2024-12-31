@@ -40,10 +40,12 @@ export default async function ChatSidebar() {
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="ml-1">Chat History</SidebarGroupLabel>
+          <SidebarGroupLabel className="ml-1 md:text-sm">
+            Chat History
+          </SidebarGroupLabel>
           <div className="absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none">
             <Link className="bg-transparent w-full h-full" href="/chat">
-              <Plus className="w-5 h-5" />
+              <Plus className="w-4 h-4 md:w-[1.15rem] md:h-[1.15rem]" />
             </Link>
             <span className="sr-only">New Chat</span>
           </div>
