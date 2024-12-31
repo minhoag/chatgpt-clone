@@ -41,10 +41,10 @@ export default async function ChatSidebar() {
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>History</SidebarGroupLabel>
+          <SidebarGroupLabel className="ml-1">Chat History</SidebarGroupLabel>
           <SidebarGroupAction title="Add Project">
             <Link href="/chat">
-              <Plus className="w-3 h-3" />
+              <Plus className="w-4 h-4" />
             </Link>
             <span className="sr-only">New Chat</span>
           </SidebarGroupAction>
