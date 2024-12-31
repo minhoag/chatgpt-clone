@@ -1,17 +1,13 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { createNewChatSession } from "@/app/chat/action";
 
-interface ChatInputProps {
-  onSendMessage: (message: string) => void;
-}
-
-export default function ChatInput({ onSendMessage }: ChatInputProps) {
-  function handleSubmit(formData: FormData) {
-    const message: string = formData.get("message") as string;
+export default function NewChatInput() {
+  async function handleSubmit(formData: FormData) {
+    const message = formData.get("message") as string;
 
     if (!message) return;
-
-    return onSendMessage(message);
+    await createNewChatSession(message);
   }
 
   return (

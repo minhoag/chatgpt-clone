@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { checkEnvironment } from "@/lib/utils";
+import Navigation from "@/components/navigation";
 
 const formSchema = z
   .object({
@@ -94,6 +95,7 @@ export default function RegisterPage() {
 
   return (
     <div className="max-w-xl mx-auto">
+      <Navigation enableSidebarTrigger={false} />
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField

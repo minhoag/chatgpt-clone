@@ -3,20 +3,27 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import React from "react";
+import { redirect } from "next/navigation";
 
 import { Button, buttonVariants } from "@/components/ui/button";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { LogoChatGPT } from "./logo";
 import ToggleTheme from "./toggle";
 
-export default function Navigation() {
+export default function Navigation({
+  enableSidebarTrigger,
+}: {
+  enableSidebarTrigger: boolean;
+}) {
   const { data: session } = useSession();
 
   return (
     <nav
-      className="w-full max-w-xs mx-auto flex flex-row items-center justify-between h-24 mb-7 top-0 sticky bg-background sm:max-w-lg lg:max-w-4xl"
-      style={{ zIndex: "99" }}
+      className="w-full mx-auto flex flex-row items-center justify-between h-24 mb-7 top-0 sticky bg-background lg:max-w-4xl"
+      style={{ zIndex: "20" }}
     >
+      {enableSidebarTrigger ? <SidebarTrigger /> : <></>}
       <LogoChatGPT />
       <div className="flex flex-row items-center">
         <ToggleTheme />
@@ -48,10 +55,10 @@ export default function Navigation() {
             <Button
               className="text-base"
               variant="link"
-              onClick={() => signOut()}
+              onClick={() => signOut().then(() => redirect("/"))}
             >
-              <span className="hidden mr-2 lg:block">Logout </span>
-              <LogOutIcon className="h-4 w-4" />
+              <span className="hidden text-sm mr-2 lg:block">Logout </span>
+              <LogOutIcon className="h-3 w-3" />
             </Button>
           </>
         )}

@@ -28,7 +28,6 @@ export function LogoChatGPT() {
   return (
     <Link className="flex flex-row items-center gap-3" href="/">
       <Logo height="24" width="24" />
-      <h3 className="hidden font-semibold text-lg lg:block">ChatGPT</h3>
     </Link>
   );
 }

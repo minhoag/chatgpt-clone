@@ -1,14 +1,19 @@
 import { PropsWithChildren } from "react";
 
-import ChatSession from "@/components/session";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import ChatSidebar from "@/components/chat-sidebar";
+import Navigation from "@/components/navigation";
 
 export default function ChatLayout({ children }: PropsWithChildren) {
   return (
-    <div className="flex sm:flex-row flex-col items-start sm:gap-12 gap-4 w-full">
-      <div className="sm:sticky bg-background sm:w-fit w-full sm:top-32 sm:mb-0 mb-4">
-        <ChatSession />
+    <SidebarProvider>
+      <ChatSidebar />
+      <div className="flex sm:flex-row flex-col items-start sm:gap-12 gap-4 w-full">
+        <div className="w-full">
+          <Navigation enableSidebarTrigger={true} />
+          {children}
+        </div>
       </div>
-      <div className="w-full">{children}</div>
-    </div>
+    </SidebarProvider>
   );
 }

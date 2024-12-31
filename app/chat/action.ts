@@ -1,6 +1,9 @@
 "use server";
 
+import { redirect } from "next/navigation";
+
 import db from "@/lib/prisma";
+import { getUser } from "@/lib/auth";
 
 export type Conversation = {
   conversationId: string;
@@ -80,4 +83,38 @@ export async function getConversation(id: string): Promise<any> {
       id: id,
     },
   });
+}
+
+export async function createNewChatSession(message: string): Promise<any> {
+  let dataRef: any;
+
+  try {
+    const session = await getUser();
+
+    if (!session?.user) redirect("/login");
+    const messageId: string = Date.now().toString();
+
+    dataRef = await db.conversation.create({
+      data: {
+        name: message,
+        userId: session.user.id,
+        messages: [
+          {
+            answer: "Hello! How can I help you today?",
+            question: "",
+            messageId: messageId,
+          },
+        ],
+      },
+    });
+    await requestOpenAi({
+      conversationId: dataRef.id,
+      messageId: messageId,
+      question: message,
+    });
+  } catch (error: any) {
+    console.log(error);
+    console.error("Error creating new chat session");
+  }
+  redirect(`/chat/${dataRef.id}`);
 }
