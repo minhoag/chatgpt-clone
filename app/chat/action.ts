@@ -82,12 +82,12 @@ export async function getConversation(id: string): Promise<any> {
 
 export async function createNewChatSession(message: string): Promise<any> {
   let dataRef: any;
+  const messageId: string = Date.now().toString();
 
   try {
     const session = await getUser();
 
     if (!session?.user) redirect("/login");
-    const messageId: string = Date.now().toString();
 
     dataRef = await db.conversation.create({
       data: {
@@ -113,4 +113,10 @@ export async function createNewChatSession(message: string): Promise<any> {
   const url = checkEnvironment().concat(`/chat/${dataRef.id}`);
 
   return redirect(url);
+}
+
+export async function deleteChatSession(chatId: string) {
+  await db.conversation.delete({
+    where: { id: chatId },
+  });
 }

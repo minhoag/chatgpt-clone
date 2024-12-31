@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import React from "react";
 
 import { buttonVariants } from "@/components/ui/button";
-import { ArrowChatGPT } from "@/components/icon/icon";
+import { ArrowChatGPT } from "@/components/icon/icon-gpt";
 import { checkEnvironment } from "@/lib/utils";
 
 export default function GetStartedButton() {
