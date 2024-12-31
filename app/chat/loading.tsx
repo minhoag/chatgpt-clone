@@ -1,7 +1,7 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import NewChatInput from "@/app/chat/new-input";
+import InputLoading from "@/app/chat/loading-chat";
 
 export default function ChatLoading() {
   return (
@@ -25,7 +25,7 @@ export default function ChatLoading() {
       </div>
       <div className="relative flex items-center justify-center">
         <div className="fixed mb-4 w-4/5 bottom-0 bg-chat pt-8 pb-3 px-8 rounded-xl text-center md:w-1/2">
-          <NewChatInput />
+          <InputLoading text="Creating new chat session..." />
           <span className="relative text-xs top-1 text-foreground">
             ChatGPT can make mistakes. Check important info.
           </span>

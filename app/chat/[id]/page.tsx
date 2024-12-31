@@ -14,6 +14,7 @@ import { ChatBubble } from "@/components/chat-bubble";
 import ChatInput from "@/app/chat/input";
 import { requestOpenAi } from "@/app/chat/action";
 import ChatLoading from "@/app/chat/loading";
+import LoadingChat from "@/app/chat/loading-chat";
 
 type Conversation = {
   messageId: string;
@@ -27,6 +28,7 @@ export default function ChatWindowProps() {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<Conversation[]>([]);
   const [optimisticMessages, setOptimisticMessages] = useOptimistic(messages);
+  const [waiting, setWaiting] = useOptimistic(false);
 
   useEffect(() => {
     fetch(`/api/chat?id=${id}`)
@@ -35,7 +37,11 @@ export default function ChatWindowProps() {
         setMessages(data.conversations.messages);
         setLoading(false);
       });
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    console.log("Waiting state set to: " + waiting);
+  }, [waiting]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -45,9 +51,13 @@ export default function ChatWindowProps() {
     const messageId = Date.now().toString();
 
     startTransition(() => {
+      setWaiting(true);
+    });
+
+    startTransition(() => {
       setOptimisticMessages((prevMessages) => [
         ...prevMessages,
-        { messageId, question: message, answer: "" },
+        { messageId, question: message, answer: "Bot is thinking..." },
       ]);
     });
 
@@ -71,6 +81,10 @@ export default function ChatWindowProps() {
       });
     } catch (error: any) {
       console.error(error);
+    } finally {
+      startTransition(() => {
+        setWaiting(false);
+      });
     }
   };
 
@@ -93,7 +107,11 @@ export default function ChatWindowProps() {
       </div>
       <div className="relative flex items-center justify-center">
         <div className="fixed mb-4 w-4/5 bottom-0 bg-chat pt-8 pb-3 px-8 rounded-xl text-center md:w-1/2">
-          <ChatInput onSendMessage={handleSendMessage} />
+          {waiting ? (
+            <LoadingChat text="Message ChatGPT..." />
+          ) : (
+            <ChatInput sendMessage={handleSendMessage} />
+          )}
           <span className="relative text-xs top-1 text-foreground">
             ChatGPT can make mistakes. Check important info.
           </span>

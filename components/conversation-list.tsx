@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Trash, Ellipsis, Share } from "lucide-react";
 import Link from "next/link";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { redirect } from "next/navigation";
 
 import {
   DropdownMenu,
@@ -31,6 +32,7 @@ export default function ConversationList({
   async function handleDelete(chatId: string) {
     await deleteChatSession(chatId);
     setConversations(conversations.filter((cn) => cn.id !== chatId));
+    redirect("/chat");
   }
 
   return (
