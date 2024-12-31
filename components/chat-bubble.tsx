@@ -1,3 +1,7 @@
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 interface ChatBubbleProps {
   id: string;
   question: string;
@@ -29,7 +33,9 @@ export function ChatBubble({ id, question, answer }: ChatBubbleProps) {
                   <div className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start">
                     <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
                       <div className="markdown prose w-full break-words dark:prose-invert dark">
-                        {answer}
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {answer}
+                        </ReactMarkdown>
                       </div>
                     </div>
                   </div>
@@ -60,7 +66,7 @@ export function ChatBubble({ id, question, answer }: ChatBubbleProps) {
         <h6 className="sr-only">ChatGPT said:</h6>
         <div className="m-auto text-base py-[18px] px-3 md:px-4 w-full lg:px-4 xl:px-5">
           <div className="mx-auto flex flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">
-            <div className="flex-shrink-0 flex flex-col relative items-end">
+            <div className="flex-shrink-0 flex flex-col relative items-end mt-4">
               <div className="pt-0">
                 <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full">
                   <div className="relative p-1 rounded-sm flex items-center justify-center bg-token-main-surface-primary text-token-text-primary h-8 w-8">
@@ -74,7 +80,9 @@ export function ChatBubble({ id, question, answer }: ChatBubbleProps) {
                 <div className="flex max-w-full flex-col flex-grow">
                   <div className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start">
                     <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
-                      {answer}
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {answer}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 </div>
