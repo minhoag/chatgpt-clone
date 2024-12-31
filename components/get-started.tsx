@@ -8,13 +8,14 @@ import { getUserFromDb } from "@/lib/utils";
 export default async function GetStartedButton() {
   const session = await getUser();
 
-  if (!session?.user) return;
+  if (!session?.user) return console.error("session not found.");
   const user = await getUserFromDb(session.user.email);
 
-  if (!user) return;
+  if (!user) return console.error("user not found.");
   const conversations = user.conversations;
 
-  if (conversations.length === 0) return;
+  if (conversations.length === 0)
+    return console.error("conversation not found.");
   const firstConversation = conversations[0];
 
   return (
