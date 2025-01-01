@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React from "react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -24,8 +24,10 @@ export default function Navigation({
     >
       {enableSidebarTrigger ? <SidebarTrigger /> : <></>}
       <LogoChatGPT />
-      <div className="flex flex-row items-center">
-        <ToggleTheme />
+      <div className="relative flex flex-row items-center">
+        <ToggleTheme
+          className={session ? `absolute right-12 lg:right-28` : ""}
+        />
         {!session ? (
           <>
             <Link
@@ -52,11 +54,11 @@ export default function Navigation({
         ) : (
           <>
             <Button
-              className="text-base"
+              className="absolute text-base right-0"
               variant="link"
               onClick={() => signOut({ callbackUrl: "http://localhost:3000" })}
             >
-              <span className="hidden text-sm mr-2 lg:block">Logout </span>
+              <span className="hidden text-sm lg:block">Logout </span>
               <LogOutIcon className="h-3 w-3" />
             </Button>
           </>

@@ -23,6 +23,7 @@ export default function ChatInput({ sendMessage }: ChatInputProps) {
       <div className="flex w-full items-center space-x-2">
         <Input
           autoComplete="off"
+          className="text-sm"
           name="message"
           placeholder="Message ChatGPT..."
         />

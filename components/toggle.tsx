@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
-export default function ToggleTheme() {
+export default function ToggleTheme({ className }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
   const { setTheme, theme } = useTheme();
 
@@ -19,11 +19,21 @@ export default function ToggleTheme() {
   return (
     <>
       {theme == "light" ? (
-        <Button size="icon" variant="ghost" onClick={() => setTheme("dark")}>
+        <Button
+          className={className}
+          size="icon"
+          variant="ghost"
+          onClick={() => setTheme("dark")}
+        >
           <MoonIcon className="w-5 h-5" />
         </Button>
       ) : (
-        <Button size="icon" variant="ghost" onClick={() => setTheme("light")}>
+        <Button
+          className={className}
+          size="icon"
+          variant="ghost"
+          onClick={() => setTheme("light")}
+        >
           <SunIcon className="w-5 h-5" />
         </Button>
       )}

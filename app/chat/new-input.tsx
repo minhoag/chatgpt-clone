@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,7 @@ export default function NewChatInput() {
       <div className="flex w-full items-center space-x-2">
         <Input
           autoComplete="off"
+          className="text-sm"
           disabled={loading}
           name="message"
           placeholder={loading ? "Chat is generating..." : "Message ChatGPT..."}
