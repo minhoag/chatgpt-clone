@@ -3,6 +3,7 @@ import OpenAI from "openai";
 
 import { getConversation } from "@/app/chat/action";
 
+/** Setting for VERCEL to let this REQUEST run more than 60 seconds **/
 export const maxDuration = 60;
 
 const isEmpty = (str: string) => !str.trim().length;
