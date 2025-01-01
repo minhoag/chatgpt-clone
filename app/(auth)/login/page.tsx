@@ -26,15 +26,22 @@ import { formSchema } from "./zod";
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [state, setState] = useState({ variant: "", title: "", message: "" });
+  const [state, setState] = useState<{
+    variant: string;
+    title: string;
+    message: string;
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    toast({
-      // @ts-ignore
-      variant: state.variant ?? "default",
-      title: state.title,
-      description: state.message,
-    });
+    if (state) {
+      toast({
+        //@ts-ignore
+        variant: state.variant ?? "default",
+        title: state.title,
+        description: state.message,
+      });
+    }
   }, [state, toast]);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -46,6 +53,7 @@ export default function LoginPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
     try {
       const { email, password } = values;
       const res = await signIn("credentials", {
@@ -55,6 +63,8 @@ export default function LoginPage() {
       });
 
       if (res?.error) {
+        setLoading(false);
+
         return setState({
           variant: "destructive",
           title: "Authentication Failed",
@@ -64,6 +74,8 @@ export default function LoginPage() {
 
       return router.push("/");
     } catch (error: any) {
+      setLoading(false);
+
       return setState({
         variant: "destructive",
         title: "Something went wrong",
@@ -106,7 +118,9 @@ export default function LoginPage() {
             Forgot password?
           </Link>
           <div className="flex flex-wrap flex-col items-center gap-3 text-sm md:flex-row md:justify-between">
-            <Button type="submit">Continue</Button>
+            <Button disabled={loading} type="submit">
+              Continue
+            </Button>
             <span>
               Don&#39;t have an account?
               <Link className="ml-2 hover:underline" href="/register">

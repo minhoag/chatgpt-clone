@@ -52,7 +52,11 @@ const formSchema = z
 
 export default function RegisterPage() {
   const { toast } = useToast();
-  const [state, setState] = useState({ message: "" });
+  const [state, setState] = useState<{
+    variant: "default" | "destructive";
+    message: string;
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,12 +70,16 @@ export default function RegisterPage() {
   });
 
   useEffect(() => {
-    toast({
-      description: state.message,
-    });
+    if (state) {
+      toast({
+        variant: state.variant ?? "default",
+        description: state.message,
+      });
+    }
   }, [state, toast]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
     try {
       const response = await fetch(checkEnvironment().concat("/api/register"), {
         method: "POST",
@@ -81,11 +89,14 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (data.error) {
+        setLoading(false);
         setState({
+          variant: "destructive",
           message: data.error,
         });
       } else {
         setState({
+          variant: "default",
           message: "Register successfully! Redirecting you back to homepage.",
         });
         await signIn("credentials", {
@@ -95,8 +106,10 @@ export default function RegisterPage() {
         });
       }
     } catch (error: any) {
+      setLoading(false);
       console.error(error);
       setState({
+        variant: "destructive",
         message: "An error occurred. Please try again later.",
       });
     }
@@ -173,7 +186,9 @@ export default function RegisterPage() {
             )}
           />
           <div className="flex flex-wrap flex-col items-center gap-3 text-sm md:flex-row md:justify-between">
-            <Button type="submit">Continue</Button>
+            <Button disabled={loading} type="submit">
+              Continue
+            </Button>
             <span>
               Already have an account?
               <Link className="ml-2 hover:underline" href="/login">
