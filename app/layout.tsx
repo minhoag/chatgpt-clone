@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 
 import { Space_Grotesk } from "next/font/google";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import NextSessionProvider from "@/components/session-provider";
+
 import "./globals.css";
 
 const font = Space_Grotesk({ subsets: ["latin"], weight: "400" });
@@ -32,6 +34,7 @@ export default async function RootLayout({
           <NextSessionProvider>
             <main className="mx-auto sm:px-10 px-5">
               {children}
+              <SpeedInsights />
               <Script src="/script.js" />
             </main>
             <Toaster />
