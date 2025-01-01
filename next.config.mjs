@@ -8,7 +8,6 @@ const nextConfig = {
 
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     VERCEL_URL: process.env.VERCEL_URL,
-    NODE_ENV: "production",
   },
 };
 
