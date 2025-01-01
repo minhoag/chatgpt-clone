@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 
@@ -24,6 +25,7 @@ import { LoadingSpinner } from "@/components/icon/icon";
 import { formSchema } from "./zod";
 
 export default function LoginPage() {
+  const router = useRouter();
   const { toast } = useToast();
   const [state, setState] = useState<{
     variant: string;
@@ -56,16 +58,16 @@ export default function LoginPage() {
     try {
       const { email, password } = values;
       const res = await signIn("credentials", {
+        redirect: false,
         email,
         password,
-        callbackUrl: "/",
       });
 
       if (res?.error) {
-        console.error(process.env.VERCEL_URL);
+        console.error(res);
         console.error(process.env.NEXTAUTH_URL);
+        console.error(process.env.VERCEL_URL);
         setLoading(false);
-        console.error(res.error);
 
         return setState({
           variant: "destructive",
@@ -73,6 +75,8 @@ export default function LoginPage() {
           message: "Please check again your email and passwords.",
         });
       }
+
+      return router.push("/");
     } catch (error: any) {
       setLoading(false);
 
