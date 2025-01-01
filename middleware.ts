@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 
-import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 export async function middleware(request: NextRequest) {
   const token = await getToken({
@@ -10,11 +10,16 @@ export async function middleware(request: NextRequest) {
   });
   const isAuthPage: boolean = request.nextUrl.pathname.startsWith("/auth");
   const isChatPage: boolean = request.nextUrl.pathname.startsWith("/chat");
+  const isLoginPage: boolean = request.nextUrl.pathname.startsWith("/login");
 
   if (!token && !isAuthPage && isChatPage) {
     return NextResponse.redirect(new URL("/", request.url));
   }
   if (!token && isChatPage) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (token && isLoginPage) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -26,5 +31,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/chat/:path*", "/auth/:path*"],
+  matcher: ["/chat/:path*", "/auth/:path*", "/login"],
 };
