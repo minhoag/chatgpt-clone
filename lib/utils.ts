@@ -9,9 +9,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const checkEnvironment = () => {
-  return process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
-    : process.env.NEXTAUTH_URL!;
+  return process.env.NODE_ENV === "production"
+    ? process.env.VERCEL_URL!
+    : "http://localhost:3000";
 };
 
 export function verifyPassword(password: string, hash: string) {
