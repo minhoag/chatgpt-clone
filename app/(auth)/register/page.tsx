@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import Navigation from "@/components/navigation";
 import { LoadingSpinner } from "@/components/icon/icon";
+import { checkEnvironment } from "@/lib/utils";
 
 const formSchema = z
   .object({
@@ -82,9 +83,10 @@ export default function RegisterPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
+      const url = checkEnvironment().concat("/api/register");
       const response = await axios({
         method: "POST",
-        url: "/api/register",
+        url: url,
         headers: { "Content-Type": "application/json" },
         data: JSON.stringify(values),
       });
