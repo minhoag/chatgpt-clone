@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import Navigation from "@/components/navigation";
+import { LoadingSpinner } from "@/components/icon/icon";
 
 import { formSchema } from "./zod";
 
@@ -119,7 +120,13 @@ export default function LoginPage() {
           </Link>
           <div className="flex flex-wrap flex-col items-center gap-3 text-sm md:flex-row md:justify-between">
             <Button disabled={loading} type="submit">
-              Continue
+              {loading ? (
+                <>
+                  <LoadingSpinner className="h-5 w-5" /> Continue
+                </>
+              ) : (
+                "Continue"
+              )}
             </Button>
             <span>
               Don&#39;t have an account?
