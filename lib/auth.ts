@@ -33,6 +33,8 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const url = checkEnvironment().concat("/api/login");
+
+          console.log(url);
           const res = await fetch(url, {
             method: "POST",
             body: JSON.stringify(data),
