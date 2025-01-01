@@ -6,6 +6,7 @@ import { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
 import db from "@/lib/prisma";
+import { checkEnvironment } from "@/lib/utils";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -16,8 +17,15 @@ export const authOptions: NextAuthOptions = {
         email: {
           label: "Email",
           type: "email",
+          placeholder: "",
+          value: "",
         },
-        password: { label: "Password", type: "password" },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "",
+          value: "",
+        },
       },
 
       async authorize(
@@ -30,7 +38,7 @@ export const authOptions: NextAuthOptions = {
         };
 
         try {
-          const url = `${process.env.NEXTAUTH_URL}/api/login`;
+          const url = checkEnvironment().concat("/api/login");
           const res = await axios({
             method: "POST",
             url: url,
@@ -52,7 +60,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: `${process.env.NEXTAUTH_URL}/login`,
+    signIn: "/login",
   },
   session: { strategy: "jwt" },
   callbacks: {

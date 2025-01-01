@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const checkEnvironment = () => {
   return process.env.NODE_ENV === "production"
-    ? process.env.PUBLIC_URL!
+    ? process.env.PUBLIC_URL || "https://chatgpt4o-clone.vercel.app"
     : "http://localhost:3000";
 };
 

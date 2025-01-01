@@ -11,12 +11,12 @@ export async function POST(request: NextRequest) {
     const user = await getUserFromDb(email);
 
     if (user) {
-      return NextResponse.json(
-        {
-          error: "This user already exists",
-        },
-        { status: 400 },
-      );
+      return NextResponse.json({
+        error:
+          "Someone has already registered with this email address. Try another one?",
+        status: 400,
+        success: false,
+      });
     }
 
     // hash password
@@ -27,9 +27,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       message: "User created!",
+      status: 200,
       success: true,
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({
+      error: error.message,
+      status: 500,
+      success: false,
+    });
   }
 }
