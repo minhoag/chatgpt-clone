@@ -5,6 +5,7 @@ import { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
 import db from "@/lib/prisma";
+import { checkEnvironment } from "@/lib/utils";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -31,7 +32,8 @@ export const authOptions: NextAuthOptions = {
         };
 
         try {
-          const res = await fetch("/api/login", {
+          const url = checkEnvironment().concat("/api/login");
+          const res = await fetch(url, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {

@@ -65,8 +65,6 @@ export default function LoginPage() {
 
       if (res?.error) {
         console.error(res);
-        console.error(process.env.NEXTAUTH_URL);
-        console.error(process.env.VERCEL_URL);
         setLoading(false);
 
         return setState({
