@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 
 import db from "@/lib/prisma";
 import { getUser } from "@/lib/auth";
-import { checkEnvironment } from "@/lib/utils";
 
 export type Conversation = {
   conversationId: string;
@@ -26,7 +25,7 @@ export async function requestOpenAi(
   message: Omit<Conversation, "answer">,
 ): Promise<string> {
   try {
-    const url = checkEnvironment().concat("/api/chat");
+    const url = "/api/chat";
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -110,7 +109,7 @@ export async function createNewChatSession(message: string): Promise<any> {
   } catch (error: any) {
     console.error(error);
   }
-  const url = checkEnvironment().concat(`/chat/${dataRef.id}`);
+  const url = `/chat/${dataRef.id}`;
 
   return redirect(url);
 }

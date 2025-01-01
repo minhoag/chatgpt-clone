@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { checkEnvironment } from "@/lib/utils";
 import Navigation from "@/components/navigation";
 import { LoadingSpinner } from "@/components/icon/icon";
 
@@ -82,7 +81,7 @@ export default function RegisterPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
-      const response = await fetch(checkEnvironment().concat("/api/register"), {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -103,7 +102,7 @@ export default function RegisterPage() {
         await signIn("credentials", {
           email: values.email,
           password: values.password,
-          callbackUrl: checkEnvironment(),
+          callbackUrl: "/",
         });
       }
     } catch (error: any) {

@@ -5,7 +5,6 @@ import React from "react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { ArrowChatGPT } from "@/components/icon/icon-gpt";
-import { checkEnvironment } from "@/lib/utils";
 
 export default function GetStartedButton() {
   const { data: session, status } = useSession();
@@ -27,10 +26,7 @@ export default function GetStartedButton() {
         </span>
       </div>
       <div className="flex flex-col gap-4 md:flex-row md:gap-2">
-        <Link
-          className={buttonVariants({ size: "lg" })}
-          href={checkEnvironment().concat(url)}
-        >
+        <Link className={buttonVariants({ size: "lg" })} href={url}>
           Get started <ArrowChatGPT props="w-2 h-2 ml-2" />
         </Link>
         <Link
