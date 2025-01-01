@@ -1,9 +1,11 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import axios from "axios";
 
 import db from "@/lib/prisma";
 import { getUser } from "@/lib/auth";
+import { checkEnvironment } from "@/lib/utils";
 
 export type Conversation = {
   conversationId: string;
@@ -25,15 +27,16 @@ export async function requestOpenAi(
   message: Omit<Conversation, "answer">,
 ): Promise<string> {
   try {
-    const url = "/api/chat";
-    const response = await fetch(url, {
+    const url = checkEnvironment().concat("/api/chat");
+    const response = await axios({
       method: "POST",
+      url: url,
+      data: JSON.stringify({ message: message.question }),
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message: message.question }),
     });
-    const data: ChatResponse = await response.json();
+    const data: ChatResponse = await response.data;
 
     if (!data || !data.result.content) return "Error with fetching response";
 

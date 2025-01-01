@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { useParams } from "next/navigation";
+import axios from "axios";
 
 import { ChatBubble } from "@/components/chat-bubble";
 import ChatInput from "@/app/chat/input";
@@ -31,10 +32,17 @@ export default function ChatWindowProps() {
   const [waiting, setWaiting] = useOptimistic(false);
 
   useEffect(() => {
-    fetch(`/api/chat?id=${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setMessages(data.conversations.messages);
+    axios({
+      method: "GET",
+      url: "/api/chat",
+      params: { id },
+    })
+      .then((response) => {
+        setMessages(response.data.conversations.messages);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
         setLoading(false);
       });
   }, [id]);

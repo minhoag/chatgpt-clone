@@ -6,6 +6,7 @@ import { z } from "zod";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
+import axios from "axios";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -81,12 +82,13 @@ export default function RegisterPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
-      const response = await fetch("/api/register", {
+      const response = await axios({
         method: "POST",
+        url: "/api/register",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        data: JSON.stringify(values),
       });
-      const data = await response.json();
+      const data = response.data;
 
       if (data.error) {
         setLoading(false);
