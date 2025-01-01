@@ -10,6 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const checkEnvironment = () => {
   console.log(process.env.NODE_ENV);
+  console.log(process.env.VERCEL_URL);
 
   return process.env.NODE_ENV === "production"
     ? process.env.VERCEL_URL!
