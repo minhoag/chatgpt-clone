@@ -5,7 +5,6 @@ import axios from "axios";
 
 import db from "@/lib/prisma";
 import { getUser } from "@/lib/auth";
-import { checkEnvironment } from "@/lib/utils";
 
 export type Conversation = {
   conversationId: string;
@@ -27,7 +26,7 @@ export async function requestOpenAi(
   message: Omit<Conversation, "answer">,
 ): Promise<string> {
   try {
-    const url = checkEnvironment().concat("/api/chat");
+    const url = "/api/chat";
     const response = await axios({
       method: "POST",
       url: url,
