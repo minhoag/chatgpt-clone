@@ -26,7 +26,7 @@ export default function Navigation({
       <LogoChatGPT />
       <div className="relative flex flex-row items-center">
         <ToggleTheme
-          className={session ? `absolute right-12 lg:right-28` : ""}
+          className={session ? `absolute right-12 lg:right-24` : ""}
         />
         {!session ? (
           <>
@@ -54,7 +54,7 @@ export default function Navigation({
         ) : (
           <>
             <Button
-              className="absolute text-base right-0"
+              className="text-base"
               variant="link"
               onClick={() => signOut({ callbackUrl: "http://localhost:3000" })}
             >
