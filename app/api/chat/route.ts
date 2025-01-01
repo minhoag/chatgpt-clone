@@ -3,6 +3,8 @@ import OpenAI from "openai";
 
 import { getConversation } from "@/app/chat/action";
 
+export const maxDuration = 30;
+
 const isEmpty = (str: string) => !str.trim().length;
 
 export async function GET(request: NextRequest) {
