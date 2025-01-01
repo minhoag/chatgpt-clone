@@ -52,7 +52,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/login",
+    signIn: `${process.env.NEXTAUTH_URL}/login`,
   },
   session: { strategy: "jwt" },
   callbacks: {
