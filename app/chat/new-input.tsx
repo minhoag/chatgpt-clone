@@ -36,7 +36,7 @@ export default function NewChatInput() {
       <div className="flex w-full items-center space-x-2">
         <Input
           autoComplete="off"
-          className="text-sm"
+          className="text-base"
           disabled={loading}
           name="message"
           placeholder={loading ? "Chat is generating..." : "Message ChatGPT..."}

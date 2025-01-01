@@ -14,7 +14,7 @@ export default function InputLoading({ text }: InputLoadingProps) {
       <div className="flex w-full items-center space-x-2">
         <Input
           autoComplete="off"
-          className="text-sm"
+          className="text-base"
           disabled={true}
           name="message"
           placeholder={text}
