@@ -9,8 +9,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const checkEnvironment = () => {
-  return process.env.NODE_ENV === "production"
-    ? process.env.PUBLIC_URL || "https://chatgpt4o-clone.vercel.app"
+  return process.env.NEXT_PUBLIC_RUNTIME === "production"
+    ? process.env.NEXT_PUBLIC_URL!
     : "http://localhost:3000";
 };
 
