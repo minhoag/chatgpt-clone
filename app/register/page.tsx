@@ -52,6 +52,10 @@ const formSchema = z
   });
 
 export default function Page() {
+  const baseUrl = checkEnvironment();
+  const apiUrl = `${baseUrl}/api/register`;
+  const login = `${baseUrl}/login`;
+
   const { toast } = useToast();
   const [state, setState] = useState<{
     variant: "default" | "destructive";
@@ -81,12 +85,12 @@ export default function Page() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
+
     try {
-      const baseUrl = checkEnvironment();
       let url;
 
       try {
-        url = new URL(baseUrl.concat("/api/register"));
+        url = new URL(apiUrl);
       } catch {
         url = new URL("http://localhost:3000/api/register");
       }
@@ -207,10 +211,7 @@ export default function Page() {
             </Button>
             <span>
               Already have an account?
-              <Link
-                className="ml-2 hover:underline"
-                href={checkEnvironment().concat("/login")}
-              >
+              <Link className="ml-2 hover:underline" href={login}>
                 Login instead.
               </Link>
             </span>

@@ -26,6 +26,9 @@ import { checkEnvironment } from "@/lib/utils";
 import { formSchema } from "./zod";
 
 export default function Page() {
+  const baseUrl = checkEnvironment();
+  const register = `${baseUrl}/register`;
+
   const router = useRouter();
   const { toast } = useToast();
   const [state, setState] = useState<{
@@ -132,10 +135,7 @@ export default function Page() {
             </Button>
             <span>
               Don&#39;t have an account?
-              <Link
-                className="ml-2 hover:underline"
-                href={checkEnvironment().concat("/register")}
-              >
+              <Link className="ml-2 hover:underline" href={register}>
                 Sign up.
               </Link>
             </span>
