@@ -90,6 +90,7 @@ export default function Page() {
       let url;
 
       try {
+        console.log(apiUrl);
         url = new URL(apiUrl);
       } catch {
         url = new URL("http://localhost:3000/api/register");
