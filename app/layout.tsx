@@ -3,10 +3,12 @@ import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { getServerSession } from "next-auth/next";
 
+import { authOptions } from "@/lib/auth";
+import NextSessionProvider from "@/components/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-import NextSessionProvider from "@/components/session-provider";
 
 import "./globals.css";
 
@@ -22,6 +24,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html suppressHydrationWarning lang="en">
       <body suppressHydrationWarning className={`${font.className}`}>
@@ -31,7 +35,7 @@ export default async function RootLayout({
           attribute="class"
           defaultTheme="dark"
         >
-          <NextSessionProvider>
+          <NextSessionProvider session={session}>
             <main className="mx-auto sm:px-10 px-5">
               {children}
               <SpeedInsights />

@@ -9,7 +9,6 @@ import {
   useState,
 } from "react";
 import { useParams } from "next/navigation";
-import axios from "axios";
 
 import { ChatBubble } from "@/components/chat-bubble";
 import ChatInput from "@/app/chat/input";
@@ -32,24 +31,31 @@ export default function ChatWindowProps() {
   const [waiting, setWaiting] = useOptimistic(false);
 
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: "/api/chat",
-      params: { id },
-    })
-      .then((response) => {
-        setMessages(response.data.conversations.messages);
-        setLoading(false);
+    let isMounted = true;
+
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    fetch(`/api/chat?id=${id}`, { signal })
+      .then((response) => response.json())
+      .then((data) => {
+        if (isMounted) {
+          setMessages(data.conversations.messages);
+          setLoading(false);
+        }
       })
       .catch((error) => {
-        console.error(error);
-        setLoading(false);
+        if (isMounted && error.name !== "AbortError") {
+          console.error(error);
+          setLoading(false);
+        }
       });
-  }, [id]);
 
-  useEffect(() => {
-    console.log(waiting);
-  }, [waiting]);
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [id]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -100,7 +106,7 @@ export default function ChatWindowProps() {
 
   return (
     <div className="relative">
-      <div className="max-w-2xl mx-auto flex flex-col mb-28">
+      <div className="max-w-4xl mx-auto flex flex-col mb-28 md:pr-12">
         <div className="flex-grow px-4 overflow-y-auto">
           {optimisticMessages.map((msg: Conversation, index: number) => (
             <ChatBubble

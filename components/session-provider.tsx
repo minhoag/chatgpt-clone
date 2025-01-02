@@ -4,8 +4,9 @@ import React, { ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
+  session: any;
 }
 
-export default function NextSessionProvider({ children }: Props) {
-  return <SessionProvider>{children}</SessionProvider>;
+export default function NextSessionProvider({ children, session }: Props) {
+  return <SessionProvider session={session}>{children}</SessionProvider>;
 }

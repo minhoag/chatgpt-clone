@@ -8,7 +8,7 @@ export default function NewChat() {
 
   return (
     <div className="relative">
-      <div className="max-w-2xl mx-auto flex flex-col mb-28">
+      <div className="max-w-4xl mx-auto flex flex-col mb-28 md:pr-12">
         <div className="flex-grow px-4 overflow-y-auto">
           <ChatBubble
             answer={"Hello, how can I help you today?"}
