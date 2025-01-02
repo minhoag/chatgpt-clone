@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       status: 403,
       error: {
+        limit: user.limit,
         message: "Request limit exceeded.",
       },
     });

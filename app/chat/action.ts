@@ -41,7 +41,9 @@ export async function requestOpenAi(
 
     const data: ChatResponse = await response.json();
 
-    if (!data || !data.result.content) return "Error with fetching response";
+    if (data.status === 403)
+      return "Limit Exceeded. Your current limit is 10/10. Please try again next week!";
+    if (!data || !data.result.content) return "Error with fetching response.";
 
     await saveConversation({
       conversationId: message.conversationId,
@@ -52,9 +54,9 @@ export async function requestOpenAi(
 
     return data.result.content;
   } catch (error: any) {
-    console.error("Error fetching response", error);
+    console.error("Error fetching response: ", error.message);
 
-    return "Error with fetching response";
+    return "";
   }
 }
 
@@ -115,7 +117,7 @@ export async function createNewChatSession(message: string): Promise<any> {
       question: message,
     });
   } catch (error: any) {
-    console.error(error);
+    console.error(`Error creating new chat session: ${error.message}`);
   }
   const url = `/chat/${dataRef.id}`;
 

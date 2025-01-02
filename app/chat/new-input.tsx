@@ -1,14 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createNewChatSession } from "@/app/chat/action";
 import { LoadingSpinner } from "@/components/icon/icon";
 
-export default function NewInput() {
+export default function NewInput({
+  onMessageSent,
+}: {
+  onMessageSent: (message: string, isThinking: boolean) => void;
+}) {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (loading) {
@@ -21,8 +27,11 @@ export default function NewInput() {
 
     if (!message) return;
     setLoading(true);
-    await createNewChatSession(message);
+    onMessageSent(message, true);
+    const chatSession = await createNewChatSession(message);
+
     setLoading(false);
+    router.push(`/chat/${chatSession.id}`);
   }
 
   return (
