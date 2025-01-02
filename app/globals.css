@@ -164,29 +164,21 @@
 }
 
 .markdown-body pre {
-    position: relative;
-    background-color: hsl(240 5.9% 10%);
-    padding: 4rem 2rem;
-    border-radius: 0.25rem;
-    overflow-x: auto;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
 }
 
-.markdown-body pre::before {
-    content: attr(data-language);
-    box-sizing: border-box;
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background-color: #2f2f2f;
-    color: #b4b4b4;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    @apply text-xs font-sans select-none;
+code.hljs,
+code[class*=language-],
+pre[class*=language-] {
+    color: #fff;
 }
 
-.markdown-body pre code {
-    display: block;
-    width: 100%;
+.dark code.hljs,
+.dark code[class*=language-],
+.dark pre[class*=language-] {
+    color: #fff;
 }
 
 @media (max-width: 768px) {

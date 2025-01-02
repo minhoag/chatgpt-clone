@@ -1,8 +1,10 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeKatex from "rehype-katex";
 import React from "react";
 
 import { ChatGPTAvatar } from "@/components/icon/icon-gpt";
+import Code from "@/components/code";
 
 type ChatBubbleProps = {
   id?: string;
@@ -35,6 +37,24 @@ export default function ChatBubbleGPT({ id, answer }: ChatBubbleProps) {
                     <div className="markdown prose w-full break-words dark:prose-invert dark">
                       <ReactMarkdown
                         className="markdown-body text-sm lg:text-base"
+                        components={{
+                          code(props) {
+                            const { children, className, node, ...rest } =
+                              props;
+                            const match = /language-(\w+)/.exec(
+                              className || "",
+                            );
+
+                            return match ? (
+                              <Code content={children} language={match[1]} />
+                            ) : (
+                              <code {...rest} className={className}>
+                                {children}
+                              </code>
+                            );
+                          },
+                        }}
+                        rehypePlugins={[rehypeKatex]}
                         remarkPlugins={[remarkGfm]}
                       >
                         {answer}
