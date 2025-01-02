@@ -6,7 +6,6 @@ import { z } from "zod";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
-import axios from "axios";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -52,7 +51,7 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-export default function RegisterPage() {
+export default function Page() {
   const { toast } = useToast();
   const [state, setState] = useState<{
     variant: "default" | "destructive";
@@ -84,13 +83,12 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const url = checkEnvironment().concat("/api/register");
-      const response = await axios({
+      const response = await fetch(url, {
         method: "POST",
-        url: url,
         headers: { "Content-Type": "application/json" },
-        data: JSON.stringify(values),
+        body: JSON.stringify(values),
       });
-      const data = response.data;
+      const data = await response.json();
 
       if (data.error) {
         setLoading(false);

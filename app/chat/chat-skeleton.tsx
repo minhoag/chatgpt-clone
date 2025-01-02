@@ -1,7 +1,7 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import InputLoading from "@/app/chat/loading-chat";
+import InputLoading from "@/app/chat/chat-loading-input";
 
 export default function ChatLoading() {
   return (

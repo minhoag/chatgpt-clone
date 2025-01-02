@@ -24,7 +24,7 @@ import { LoadingSpinner } from "@/components/icon/icon";
 
 import { formSchema } from "./zod";
 
-export default function LoginPage() {
+export default function Page() {
   const router = useRouter();
   const { toast } = useToast();
   const [state, setState] = useState<{

@@ -9,13 +9,12 @@ import {
   useState,
 } from "react";
 import { useParams } from "next/navigation";
-import axios from "axios";
 
 import { ChatBubble } from "@/components/chat-bubble";
-import ChatInput from "@/app/chat/input";
+import ChatInput from "@/app/chat/chat-input";
 import { requestOpenAi } from "@/app/chat/action";
-import ChatLoading from "@/app/chat/loading";
-import LoadingChat from "@/app/chat/loading-chat";
+import ChatLoading from "@/app/chat/chat-skeleton";
+import LoadingChat from "@/app/chat/chat-loading-input";
 
 type Conversation = {
   messageId: string;
@@ -23,7 +22,7 @@ type Conversation = {
   answer: string;
 };
 
-export default function ChatWindowProps() {
+export default function Page() {
   const scrollRef = useRef<ElementRef<"div">>(null);
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
@@ -32,13 +31,10 @@ export default function ChatWindowProps() {
   const [waiting, setWaiting] = useOptimistic(false);
 
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: "/api/chat",
-      params: { id },
-    })
-      .then((response) => {
-        setMessages(response.data.conversations.messages);
+    fetch(`/api/chat?id=${id}`, { next: { tags: ["chats"] } })
+      .then((response) => response.json())
+      .then((data) => {
+        setMessages(data.conversations.messages);
         setLoading(false);
       })
       .catch((error) => {

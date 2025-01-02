@@ -12,6 +12,8 @@ model User {
   email         String         @unique
   firstname     String
   lastname      String
+  role  String
+  limit Int
   passwordHash  String
   image         String?
   conversations Conversation[]

@@ -1,9 +1,9 @@
 "use client";
 
 import { ChatBubble } from "@/components/chat-bubble";
-import NewChatInput from "@/app/chat/new-input";
+import NewChatInput from "@/app/chat/chat-new-input";
 
-export default function NewChat() {
+export default function Page() {
   const id = Date.now().toString();
 
   return (
