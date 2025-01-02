@@ -23,7 +23,7 @@ export default function GetStartedButton() {
             ? `Welcome back, ${session.user.name}`
             : "Hi there, stranger!"}
         </strong>
-        <br />
+        <br className={session ? "block" : "hidden"} />
         <span className={`${session ? "block" : "hidden"} sm:inline`}>
           {" "}
           You are currently using our <b>{role}</b> plan. You have {10 - limit}{" "}
