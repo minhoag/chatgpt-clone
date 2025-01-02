@@ -1,9 +1,9 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import InputLoading from "@/app/chat/chat-loading-input";
+import InputLoading from "@/app/chat/input-loading";
 
-export default function ChatLoading() {
+export default function ChatSkeleton() {
   return (
     <div className="relative">
       <div className="max-w-xs mx-auto flex flex-col gap-12 min-h-[80vh] md:max-w-2xl">

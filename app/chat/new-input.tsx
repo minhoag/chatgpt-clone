@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { createNewChatSession } from "@/app/chat/action";
 import { LoadingSpinner } from "@/components/icon/icon";
 
-export default function NewChatInput() {
+export default function NewInput() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

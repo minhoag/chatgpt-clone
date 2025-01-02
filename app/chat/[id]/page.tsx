@@ -11,10 +11,10 @@ import {
 import { useParams } from "next/navigation";
 
 import { ChatBubble } from "@/components/chat-bubble";
-import ChatInput from "@/app/chat/chat-input";
+import ChatInput from "@/app/chat/input";
 import { requestOpenAi } from "@/app/chat/action";
-import ChatLoading from "@/app/chat/chat-skeleton";
-import InputLoading from "@/app/chat/chat-loading-input";
+import ChatSkeleton from "@/app/chat/chat-skeleton";
+import InputLoading from "@/app/chat/input-loading";
 
 type Conversation = {
   messageId: string;
@@ -102,7 +102,7 @@ export default function ChatWindowProps() {
     }
   };
 
-  if (loading) return <ChatLoading />;
+  if (loading) return <ChatSkeleton />;
 
   return (
     <div className="relative">

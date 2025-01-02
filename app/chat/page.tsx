@@ -1,7 +1,7 @@
 "use client";
 
 import { ChatBubble } from "@/components/chat-bubble";
-import NewChatInput from "@/app/chat/chat-new-input";
+import NewInput from "@/app/chat/new-input";
 
 export default function Page() {
   const id = Date.now().toString();
@@ -19,7 +19,7 @@ export default function Page() {
       </div>
       <div className="relative flex items-center justify-center">
         <div className="fixed mb-8 w-[90%] px-4 py-4 bottom-0 bg-chat rounded-xl text-center md:w-1/2 md:mb-4 md:pt-8 md:pb-3 md:pl-8 md:pr-4">
-          <NewChatInput />
+          <NewInput />
           <span className="relative text-xs top-1 text-foreground hidden md:block md:py-1">
             ChatGPT can make mistakes. Check important info.
           </span>
