@@ -60,6 +60,8 @@ export function createUser(
       firstname: firstname,
       lastname: lastname,
       passwordHash: passwordHash,
+      role: "user",
+      limit: 10,
     },
   });
 }
