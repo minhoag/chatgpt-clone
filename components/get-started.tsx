@@ -10,8 +10,9 @@ export default function GetStartedButton() {
   const { data: session, status } = useSession();
   //@ts-ignore
   const role: string = session?.user.role === "admin" ? "Premium" : "Free";
-  //@ts-ignore
-  const limit: number = session?.user.limit;
+  const limit: number =
+    // @ts-ignore
+    session?.user.role === "admin" ? "unlimited" : session?.user.limit;
   const url = status === "authenticated" ? "/chat" : "/login";
 
   return (
@@ -23,7 +24,7 @@ export default function GetStartedButton() {
             : "Hi there, stranger!"}
         </strong>
         <br />
-        <span className="block sm:inline">
+        <span className={`${session ? "block" : "hidden"} sm:inline`}>
           {" "}
           You are currently using our <b>{role}</b> plan. You have {10 - limit}{" "}
           free credits left.

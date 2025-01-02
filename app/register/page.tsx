@@ -87,8 +87,8 @@ export default function Page() {
 
       try {
         url = new URL(baseUrl.concat("/api/register"));
-      } catch (error) {
-        throw new Error(`Invalid URL: ${baseUrl.concat("/api/register")}`);
+      } catch {
+        url = new URL("http://localhost:3000/api/register");
       }
 
       const response = await fetch(url.toString(), {
