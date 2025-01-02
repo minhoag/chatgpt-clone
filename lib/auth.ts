@@ -38,6 +38,7 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const url = checkEnvironment().concat("/api/login");
+
           const res = await fetch(url, {
             method: "POST",
             headers: {
@@ -76,7 +77,11 @@ export const authOptions: NextAuthOptions = {
         },
       });
 
-      if (db_user) token.id = db_user.id;
+      if (db_user) {
+        token.id = db_user.id;
+        token.role = db_user.role;
+        token.limit = db_user.limit;
+      }
 
       return token;
     },
@@ -85,6 +90,8 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
+        session.user.role = token.role;
+        session.user.limit = token.limit;
         session.user.image = token.picture;
       }
 

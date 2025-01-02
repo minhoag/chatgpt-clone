@@ -42,7 +42,10 @@ export default function ConversationList({
           key={cn.id}
           className="flex items-center no-draggable group rounded-lg active:opacity-90 bg-transparent hover:bg-[#fff] dark:hover:bg-[#212121] h-9 text-sm relative"
         >
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton
+            asChild
+            className="active:bg-transparent active:text-sidebar-accent-foreground"
+          >
             <Link
               className="w-full -ml-5 px-8 hover:bg-transparent underline-offset-2"
               href={`/chat/${cn.id}`}

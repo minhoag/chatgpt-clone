@@ -2,11 +2,25 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 import { getUserFromDb, updateUserLimit } from "@/lib/utils";
+import { getConversation } from "@/app/chat/action";
 
 /** Setting for VERCEL to let this REQUEST run more than 60 seconds **/
 export const maxDuration = 60;
 
 const isEmpty = (str: string) => !str.trim().length;
+
+export async function GET(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get("id");
+
+  if (!id)
+    return NextResponse.json({ status: 404, error: "Params not found." });
+  const conversations = await getConversation(id);
+
+  return NextResponse.json({
+    status: 200,
+    conversations,
+  });
+}
 
 export async function POST(req: NextRequest) {
   const { message, email } = await req.json();

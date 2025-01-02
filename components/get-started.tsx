@@ -8,6 +8,10 @@ import { ArrowChatGPT } from "@/components/icon/icon-gpt";
 
 export default function GetStartedButton() {
   const { data: session, status } = useSession();
+  //@ts-ignore
+  const role: string = session?.user.role === "admin" ? "Premium" : "Free";
+  //@ts-ignore
+  const limit: number = session?.user.limit;
   const url = status === "authenticated" ? "/chat" : "/login";
 
   return (
@@ -18,6 +22,12 @@ export default function GetStartedButton() {
             ? `Welcome back, ${session.user.name}`
             : "Hi there, stranger!"}
         </strong>
+        <br />
+        <span className="block sm:inline">
+          {" "}
+          You are currently using our <b>{role}</b> plan. You have {10 - limit}{" "}
+          free credits left.
+        </span>
         <br />
         <span className="block sm:inline">
           {" "}

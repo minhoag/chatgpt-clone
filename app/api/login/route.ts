@@ -5,6 +5,7 @@ import { getUserFromDb, verifyPassword } from "@/lib/utils";
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
+
     const { email, password } = reqBody;
 
     const user = await getUserFromDb(email);

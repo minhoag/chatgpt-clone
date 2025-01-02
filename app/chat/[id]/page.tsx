@@ -37,7 +37,13 @@ export default function ChatWindowProps() {
     const signal = controller.signal;
 
     fetch(`/api/chat?id=${id}`, { signal })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        return response.json();
+      })
       .then((data) => {
         if (isMounted) {
           setMessages(data.conversations.messages);

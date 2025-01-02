@@ -66,7 +66,6 @@ export default function Page() {
       });
 
       if (res?.error) {
-        console.error(res);
         setLoading(false);
 
         return setState({
