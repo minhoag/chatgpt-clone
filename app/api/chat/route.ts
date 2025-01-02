@@ -1,28 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-import { getConversation } from "@/app/chat/action";
+import { getUserFromDb, updateUserLimit } from "@/lib/utils";
 
 /** Setting for VERCEL to let this REQUEST run more than 60 seconds **/
 export const maxDuration = 60;
 
 const isEmpty = (str: string) => !str.trim().length;
 
-export async function GET(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get("id");
-
-  if (!id)
-    return NextResponse.json({ status: 404, error: "Params not found." });
-  const conversations = await getConversation(id);
-
-  return NextResponse.json({
-    status: 200,
-    conversations,
-  });
-}
-
 export async function POST(req: NextRequest) {
-  const { message } = await req.json();
+  const { message, email } = await req.json();
 
   if (isEmpty(message)) {
     return NextResponse.json({
@@ -32,6 +19,27 @@ export async function POST(req: NextRequest) {
       },
     });
   }
+
+  const user = await getUserFromDb(email);
+
+  if (!user) {
+    return NextResponse.json({
+      status: 404,
+      error: {
+        message: "User not found.",
+      },
+    });
+  }
+
+  if (user.role !== "admin" && user.limit >= 10) {
+    return NextResponse.json({
+      status: 403,
+      error: {
+        message: "Request limit exceeded.",
+      },
+    });
+  }
+
   const apiKey: string | undefined = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
@@ -60,6 +68,10 @@ export async function POST(req: NextRequest) {
         },
       ],
     });
+
+    if (user.role !== "admin") {
+      await updateUserLimit(user.email, user.limit + 1);
+    }
 
     return NextResponse.json({
       result: completion.choices[0].message,

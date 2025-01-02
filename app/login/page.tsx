@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import Navigation from "@/components/navigation";
 import { LoadingSpinner } from "@/components/icon/icon";
+import { checkEnvironment } from "@/lib/utils";
 
 import { formSchema } from "./zod";
 
@@ -132,7 +133,10 @@ export default function Page() {
             </Button>
             <span>
               Don&#39;t have an account?
-              <Link className="ml-2 hover:underline" href="/register">
+              <Link
+                className="ml-2 hover:underline"
+                href={checkEnvironment().concat("/register")}
+              >
                 Sign up.
               </Link>
             </span>

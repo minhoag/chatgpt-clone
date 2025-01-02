@@ -42,6 +42,8 @@ export function getUserFromDb(email: string) {
       email: true,
       firstname: true,
       lastname: true,
+      role: true,
+      limit: true,
       passwordHash: true,
       conversations: true,
     },
@@ -61,7 +63,14 @@ export function createUser(
       lastname: lastname,
       passwordHash: passwordHash,
       role: "user",
-      limit: 10,
+      limit: 0,
     },
+  });
+}
+
+export function updateUserLimit(email: string, newLimit: number) {
+  return db.user.update({
+    where: { email: email },
+    data: { limit: newLimit },
   });
 }

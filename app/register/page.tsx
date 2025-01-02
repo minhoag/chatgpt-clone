@@ -82,8 +82,16 @@ export default function Page() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
-      const url = checkEnvironment().concat("/api/register");
-      const response = await fetch(url, {
+      const baseUrl = checkEnvironment();
+      let url;
+
+      try {
+        url = new URL(baseUrl.concat("/api/register"));
+      } catch (error) {
+        throw new Error(`Invalid URL: ${baseUrl.concat("/api/register")}`);
+      }
+
+      const response = await fetch(url.toString(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -199,7 +207,10 @@ export default function Page() {
             </Button>
             <span>
               Already have an account?
-              <Link className="ml-2 hover:underline" href="/login">
+              <Link
+                className="ml-2 hover:underline"
+                href={checkEnvironment().concat("/login")}
+              >
                 Login instead.
               </Link>
             </span>
