@@ -1,7 +1,6 @@
 "use client";
-
 import { useState } from "react";
-import { Trash, Ellipsis, Share } from "lucide-react";
+import { Ellipsis, Share, Trash } from "lucide-react";
 import Link from "next/link";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { redirect } from "next/navigation";
@@ -9,15 +8,15 @@ import { redirect } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { deleteChatSession } from "@/app/chat/action";
 import { Button } from "@/components/ui/button";
