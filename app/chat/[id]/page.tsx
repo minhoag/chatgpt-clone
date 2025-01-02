@@ -11,10 +11,10 @@ import {
 import { useParams } from "next/navigation";
 
 import { ChatBubble } from "@/components/chat-bubble";
-import ChatInput from "@/app/chat/input";
+import ChatInput from "@/app/chat/chat-input";
 import { requestOpenAi } from "@/app/chat/action";
-import ChatLoading from "@/app/chat/loading";
-import LoadingChat from "@/app/chat/loading-chat";
+import ChatLoading from "@/app/chat/chat-skeleton";
+import InputLoading from "@/app/chat/chat-loading-input";
 
 type Conversation = {
   messageId: string;
@@ -122,7 +122,7 @@ export default function ChatWindowProps() {
       <div className="relative flex items-center justify-center">
         <div className="fixed mb-8 w-[90%] px-4 py-4 bottom-0 bg-chat rounded-xl text-center md:w-1/2 md:mb-4 md:pt-8 md:pb-3 md:pl-8 md:pr-4">
           {waiting ? (
-            <LoadingChat text="Message ChatGPT..." />
+            <InputLoading text="Message ChatGPT..." />
           ) : (
             <ChatInput sendMessage={handleSendMessage} />
           )}
