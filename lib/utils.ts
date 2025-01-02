@@ -18,6 +18,21 @@ export function verifyPassword(password: string, hash: string) {
   return bcrypt.compareSync(password, hash);
 }
 
+export function getUserById(id: string) {
+  return db.user.findFirst({
+    where: {
+      id: id,
+    },
+    select: {
+      email: true,
+      firstname: true,
+      lastname: true,
+      passwordHash: true,
+      conversations: true,
+    },
+  });
+}
+
 export function getUserFromDb(email: string) {
   return db.user.findFirst({
     where: {

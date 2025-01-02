@@ -1,6 +1,5 @@
 import type { JWT } from "next-auth/jwt";
 
-import axios from "axios";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth/next";
@@ -39,17 +38,22 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const url = checkEnvironment().concat("/api/login");
-          const res = await axios({
+          const res = await fetch(url, {
             method: "POST",
-            url: url,
-            data: data,
             headers: {
               "Content-Type": "application/json",
             },
+            body: JSON.stringify(data),
           });
 
-          if (res.status === 200 && res.data && res.data.data) {
-            return res.data.data;
+          if (!res.ok) {
+            return null;
+          }
+
+          const result = await res.json();
+
+          if (result && result.data) {
+            return result.data;
           } else {
             return null;
           }

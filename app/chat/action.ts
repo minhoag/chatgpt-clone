@@ -1,7 +1,6 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import axios from "axios";
 
 import db from "@/lib/prisma";
 import { getUser } from "@/lib/auth";
@@ -28,15 +27,19 @@ export async function requestOpenAi(
 ): Promise<string> {
   try {
     const url = checkEnvironment().concat("/api/chat");
-    const response = await axios({
+    const response = await fetch(url, {
       method: "POST",
-      url: url,
-      data: JSON.stringify({ message: message.question }),
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({ message: message.question }),
     });
-    const data: ChatResponse = await response.data;
+
+    if (!response.ok) {
+      return "Error with fetching response";
+    }
+
+    const data: ChatResponse = await response.json();
 
     if (!data || !data.result.content) return "Error with fetching response";
 
@@ -49,7 +52,9 @@ export async function requestOpenAi(
 
     return data.result.content;
   } catch (error: any) {
-    return "Problem: " + error.message;
+    console.error("Error fetching response", error);
+
+    return "Error with fetching response";
   }
 }
 
