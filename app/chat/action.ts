@@ -90,16 +90,15 @@ export async function getConversation(id: string): Promise<any> {
 }
 
 export async function createNewChatSession(message: string): Promise<any> {
+  let dataRef: any;
   const messageId: string = Date.now().toString();
-  let data: any;
 
   try {
     const session = await getUser();
 
     if (!session?.user) redirect("/login");
 
-    // Create a new conversation in the database
-    const dataRef = await db.conversation.create({
+    dataRef = await db.conversation.create({
       data: {
         name: message,
         userId: session.user.id,
@@ -112,35 +111,23 @@ export async function createNewChatSession(message: string): Promise<any> {
         ],
       },
     });
+    const timeoutId = setTimeout(() => {
+      const url = `/chat/${dataRef.id}`;
 
-    // Request OpenAI API and save the conversation in parallel
-    const [openAiResponse] = await Promise.all([
-      requestOpenAi({
-        conversationId: dataRef.id,
-        messageId: messageId,
-        question: message,
-      }),
-      saveConversation({
-        conversationId: dataRef.id,
-        messageId: messageId,
-        question: message,
-        answer: "Pending response from OpenAI",
-      }),
-    ]);
+      return redirect(url);
+    }, 60_000);
 
-    data = dataRef;
-    // Update the conversation with the actual OpenAI response
-    await saveConversation({
+    await requestOpenAi({
       conversationId: dataRef.id,
       messageId: messageId,
       question: message,
-      answer: openAiResponse,
     });
+
+    clearTimeout(timeoutId);
   } catch (error: any) {
     console.error(`Error creating new chat session: ${error.message}`);
   }
-
-  const url = `/chat/${data.id}`;
+  const url = `/chat/${dataRef.id}`;
 
   return redirect(url);
 }
