@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { createNewChatSession } from "@/app/chat/action";
@@ -15,7 +14,6 @@ export default function NewInput({
 }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string>("");
-  const router = useRouter();
 
   useEffect(() => {
     if (loading) {
@@ -27,10 +25,8 @@ export default function NewInput({
     if (!message) return;
     setLoading(true);
     action(message, true);
-    const chatSession = await createNewChatSession(message);
-
+    await createNewChatSession(message);
     setLoading(false);
-    router.push(`/chat/${chatSession.id}`);
   }
 
   const handleKeyDown = (event: any) => {

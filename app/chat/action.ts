@@ -111,11 +111,19 @@ export async function createNewChatSession(message: string): Promise<any> {
         ],
       },
     });
+    const timeoutId = setTimeout(() => {
+      const url = `/chat/${dataRef.id}`;
+
+      return redirect(url);
+    }, 60_000);
+
     await requestOpenAi({
       conversationId: dataRef.id,
       messageId: messageId,
       question: message,
     });
+
+    clearTimeout(timeoutId);
   } catch (error: any) {
     console.error(`Error creating new chat session: ${error.message}`);
   }
