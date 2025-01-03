@@ -70,6 +70,14 @@ const config = {
           DEFAULT: "hsl(var(--chat-background))",
           foreground: "hsl(var(--chat-foreground))",
         },
+        codeheader: {
+          DEFAULT: "hsl(var(--code-header-background))",
+          foreground: "hsl(var(--code-header-foreground))",
+        },
+        code: {
+          DEFAULT: "hsl(var(--code-header-background))",
+          foreground: "hsl(var(--code-header-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
