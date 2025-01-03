@@ -26,7 +26,6 @@ export default function NewInput({
     setLoading(true);
     action(message, true);
     await createNewChatSession(message);
-    setLoading(false);
   }
 
   const handleKeyDown = (event: any) => {
@@ -41,6 +40,7 @@ export default function NewInput({
       <div className="flex w-full cursor-text flex-col rounded-3xl px-2.5 py-1 transition-colors contain-inline-size bg-[#f4f4f4] dark:bg-[#2d2d2d]">
         <Textarea
           className="block h-10 w-full text-base border-0 bg-transparent p-0"
+          disabled={loading}
           name="message"
           placeholder={loading ? "Chat is generating..." : "Message ChatGPT"}
           value={message}
