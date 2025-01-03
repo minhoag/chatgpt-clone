@@ -72,7 +72,7 @@ export default function Home() {
               : "Hi there, stranger!"}
           </strong>
           <br className={session ? "block" : "hidden"} />
-          <span className={`${session ? "block" : "hidden"} sm:inline`}>
+          <span className={`${session ? "block" : "hidden"}`}>
             {" "}
             You are currently using our <b>{role}</b> plan.
           </span>
