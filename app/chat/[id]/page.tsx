@@ -112,7 +112,7 @@ export default function ChatWindowProps() {
 
   return (
     <div className="relative">
-      <div className="max-w-4xl mx-auto flex flex-col mb-28 md:pr-12">
+      <div className="max-w-4xl mx-auto flex flex-col mb-36 md:pr-12">
         <div className="flex-grow px-4 overflow-y-auto">
           {optimisticMessages.map((msg: Conversation, index: number) => (
             <ChatBubble
