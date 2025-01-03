@@ -90,7 +90,6 @@ export async function getConversation(id: string): Promise<any> {
 }
 
 export async function createNewChatSession(message: string): Promise<any> {
-  let dataRef: any;
   const messageId: string = Date.now().toString();
 
   try {
@@ -98,7 +97,7 @@ export async function createNewChatSession(message: string): Promise<any> {
 
     if (!session?.user) redirect("/login");
 
-    dataRef = await db.conversation.create({
+    const createConversationPromise = db.conversation.create({
       data: {
         name: message,
         userId: session.user.id,
@@ -111,25 +110,31 @@ export async function createNewChatSession(message: string): Promise<any> {
         ],
       },
     });
-    const timeoutId = setTimeout(() => {
-      const url = `/chat/${dataRef.id}`;
 
-      return redirect(url);
-    }, 60_000);
-
-    await requestOpenAi({
-      conversationId: dataRef.id,
+    const requestOpenAiPromise = requestOpenAi({
+      conversationId: messageId,
       messageId: messageId,
       question: message,
     });
 
-    clearTimeout(timeoutId);
+    const [dataRef, openAiResponse] = await Promise.all([
+      createConversationPromise,
+      requestOpenAiPromise,
+    ]);
+
+    await saveConversation({
+      conversationId: dataRef.id,
+      messageId: messageId,
+      question: message,
+      answer: openAiResponse,
+    });
+
+    const url = `/chat/${dataRef.id}`;
+
+    return redirect(url);
   } catch (error: any) {
     console.error(`Error creating new chat session: ${error.message}`);
   }
-  const url = `/chat/${dataRef.id}`;
-
-  return redirect(url);
 }
 
 export async function deleteChatSession(chatId: string) {
