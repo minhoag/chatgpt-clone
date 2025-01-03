@@ -6,7 +6,7 @@ import InputLoading from "@/app/chat/input-loading";
 export default function ChatSkeleton() {
   return (
     <div className="relative">
-      <div className="max-w-xs mx-auto flex flex-col gap-12 min-h-[80vh] md:max-w-2xl">
+      <div className="max-w-sm mx-auto flex flex-col gap-12 min-h-[80vh] md:max-w-2xl">
         <div className="flex flex-col gap-4">
           <Skeleton className="max-w-[700px] h-[40px] rounded-md" />
           <Skeleton className="w-[70%] h-[20px] rounded-md" />
@@ -24,9 +24,9 @@ export default function ChatSkeleton() {
         </div>
       </div>
       <div className="relative flex items-center justify-center">
-        <div className="fixed mb-8 w-[90%] px-4 py-4 bottom-0 bg-chat rounded-xl text-center md:w-1/2 md:mb-4 md:pt-8 md:pb-3 md:pl-8 md:pr-4">
+        <div className="fixed mb-8 w-[90%] pl-4 pt-4 pb-2 bottom-0 bg-chat rounded-3xl text-center md:w-1/2 md:mb-4">
           <InputLoading text="Loading chat session..." />
-          <span className="relative text-xs top-1 text-foreground hidden md:block md:py-1">
+          <span className="absolute bottom-3 left-[25%] text-xs text-foreground hidden md:block">
             ChatGPT can make mistakes. Check important info.
           </span>
         </div>

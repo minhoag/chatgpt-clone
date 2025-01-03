@@ -172,7 +172,7 @@
 .markdown-body pre {
     background-color: transparent;
     padding: 0;
-    margin: 0;
+    margin: 1rem 0;
 }
 
 code.hljs,
@@ -189,32 +189,6 @@ pre[class*=language-] {
 
 .prose :where(pre code):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
     @apply text-code-foreground;
-}
-
-@media (max-width: 768px) {
-    .markdown-body pre {
-        padding: 2rem 1rem;
-        border-radius: 0.25rem;
-    }
-
-    .markdown-body pre::before {
-        top: 0.5rem;
-        left: 0.5rem;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-    }
-
-    .markdown-body pre code {
-        @apply text-xs;
-    }
-
-    .markdown-body p {
-        @apply text-xs;
-    }
-
-    .markdown-body {
-        margin-left: -0.5rem;
-    }
 }
 
 .markdown-body a {

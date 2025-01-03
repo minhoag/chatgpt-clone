@@ -18,7 +18,7 @@ export default function ChatBubbleGPT({ id, answer }: ChatBubbleProps) {
       className="flex w-full focus-visible:outline-2 focus-visible:outline-offset-[-4px]"
     >
       <h6 className="sr-only">ChatGPT said:</h6>
-      <div className=" w-full m-auto text-base px-4 sm:px-12 py-[18px] md:px-5">
+      <div className="w-full m-auto text-base px-3 sm:px-12 py-[18px] md:px-5">
         <div className="mx-auto flex flex-1 gap-4 md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">
           <div className="flex-shrink-0 flex flex-col relative -ml-5 items-end md:ml-0 md:mt-2">
             <div className="pt-0">
