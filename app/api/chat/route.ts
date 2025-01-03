@@ -5,8 +5,8 @@ import { getUserFromDb, updateUserLimit } from "@/lib/utils";
 import { getConversation } from "@/app/chat/action";
 
 /** Setting for VERCEL to let this REQUEST run more than 60 seconds **/
-export const maxDuration = 60;
-
+export const maxDuration = 120;
+export const dynamic = "force-dynamic";
 const isEmpty = (str: string) => !str.trim().length;
 
 export async function GET(request: NextRequest) {

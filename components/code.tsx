@@ -1,7 +1,11 @@
 "use client";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { stackoverflowDark } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import {
+  stackoverflowDark,
+  stackoverflowLight,
+} from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import { useTheme } from "next-themes";
 
 type CodeProps = {
   language: string;
@@ -9,23 +13,29 @@ type CodeProps = {
 };
 
 export default function Code({ language, content }: CodeProps) {
+  const theme = useTheme();
+  const codeTheme =
+    theme.theme === "dark" ? stackoverflowDark : stackoverflowLight;
+
   return (
-    <div className="contain-inline-size rounded-md border-[0.5px] relative bg-token-sidebar-surface-primary dark:bg-gray-950">
-      <div className="flex items-center bg-codeheader-background dark:text-white px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 dark:bg-[#2f2f2f] select-none">
+    <div className="contain-inline-size rounded-md border-[0.5px] relative">
+      <div
+        className={`flex items-center bg-code text-code-foreground px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 select-none`}
+      >
         {language}
       </div>
       <div
-        className="overflow-y-auto p-4 bg-codeheader-background dark:bg-black"
+        className={`overflow-y-auto bg-code text-code-foreground dark:bg-black p-4`}
         dir="ltr"
       >
         <SyntaxHighlighter
           customStyle={{
-            backgroundColor: "transparent",
+            background: "transparent!important",
             padding: 0,
             margin: 0,
           }}
           language={language}
-          style={stackoverflowDark}
+          style={codeTheme}
         >
           {content}
         </SyntaxHighlighter>

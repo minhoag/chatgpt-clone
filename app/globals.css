@@ -71,8 +71,8 @@
         --chat-background: 0, 0%, 93%;
         --chat-forground: 0, 0%, 93%;
 
-        --code-header-background: 0, 0%, 98%;
-        --code-header-foreground: 0, 0%, 36%;
+        --code-background: 0, 0%, 98%;
+        --code-foreground: 0, 0%, 36%;
 
     }
 
@@ -118,8 +118,8 @@
 
         --chat-background: 0, 0%, 18%;
 
-        --code-header-background: 0, 0%, 18%;
-        --code-header-foreground: 0, 0%, 100%;
+        --code-background: 0, 0%, 18%;
+        --code-foreground: 0, 0%, 100%;
     }
 }
 
@@ -178,13 +178,17 @@
 code.hljs,
 code[class*=language-],
 pre[class*=language-] {
-    color: #fff;
+    color: #383a42;
 }
 
 .dark code.hljs,
 .dark code[class*=language-],
 .dark pre[class*=language-] {
     color: #fff;
+}
+
+.prose :where(pre code):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    @apply text-code-foreground;
 }
 
 @media (max-width: 768px) {

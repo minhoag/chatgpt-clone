@@ -34,13 +34,12 @@ export default function ChatBubbleGPT({ id, answer }: ChatBubbleProps) {
               <div className="flex max-w-full flex-col flex-grow">
                 <div className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start">
                   <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
-                    <div className="markdown prose w-full break-words dark:prose-invert dark">
+                    <div className="markdown prose w-full break-words dark:prose-invert">
                       <ReactMarkdown
                         className="markdown-body text-sm lg:text-base"
                         components={{
                           code(props) {
-                            const { children, className, node, ...rest } =
-                              props;
+                            const { children, className, ...rest } = props;
                             const match = /language-(\w+)/.exec(
                               className || "",
                             );
