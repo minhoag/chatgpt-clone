@@ -14,6 +14,7 @@ export default function InputLoading({ text }: InputLoadingProps) {
       <div className="flex w-full cursor-text flex-col rounded-3xl px-2.5 py-1 transition-colors contain-inline-size bg-[#f4f4f4] dark:bg-[#2d2d2d]">
         <Textarea
           className="block h-10 w-full text-base border-0 bg-transparent p-0"
+          disabled={true}
           name="message"
           placeholder={text}
         />
