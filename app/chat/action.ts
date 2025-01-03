@@ -137,3 +137,48 @@ export async function deleteChatSession(chatId: string) {
     where: { id: chatId },
   });
 }
+
+export async function resetUserLimits(email: string): Promise<void> {
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+
+  if (dayOfWeek !== 1) return; // Only run on Mondays
+
+  try {
+    const user = await db.user.findUnique({
+      where: { email: email },
+    });
+
+    if (!user) {
+      console.error(`User with email ${email} not found.`);
+
+      return;
+    }
+
+    const lastReset = new Date(user.lastReset);
+    const oneWeekAgo = new Date(today);
+
+    oneWeekAgo.setDate(today.getDate() - 7);
+
+    if (lastReset > oneWeekAgo) {
+      console.log(`User limit for ${email} was already reset this week.`);
+
+      return;
+    }
+
+    await db.user.update({
+      where: { email: email },
+      data: {
+        limit: 0,
+        lastReset: today,
+      },
+    });
+
+    console.log(`User limit for ${email} has been reset.`);
+  } catch (error: any) {
+    console.error(
+      `Error resetting user limit for user ${email}: `,
+      error.message,
+    );
+  }
+}

@@ -76,7 +76,9 @@ export default function Home() {
             {" "}
             You are currently using our <b>{role}</b> plan.
           </span>
-          <span className="ml-2">You have {limit}.</span>
+          <span className={session ? "block ml-2" : "hidden"}>
+            You have {limit}.
+          </span>
           <br />
           <span className="block sm:inline">
             {" "}

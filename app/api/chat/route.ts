@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 import { getUserFromDb, updateUserLimit } from "@/lib/utils";
-import { getConversation } from "@/app/chat/action";
+import { getConversation, resetUserLimits } from "@/app/chat/action";
 
 /** Setting for VERCEL to let this REQUEST run more than 60 seconds **/
 export const maxDuration = 60;
@@ -86,6 +86,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (user.role !== "admin") {
+      await resetUserLimits(user.email);
       await updateUserLimit(user.email, user.limit + 1);
     }
 

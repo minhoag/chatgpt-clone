@@ -12,8 +12,9 @@ model User {
   email         String         @unique
   firstname     String
   lastname      String
-  role  String
-  limit Int @default(0)
+  role      String
+  limit     Int      @default(0)
+  lastReset DateTime @default(now())
   passwordHash  String
   image         String?
   conversations Conversation[]
