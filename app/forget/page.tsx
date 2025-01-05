@@ -99,8 +99,8 @@ export default function Page() {
           </h1>
           <div className="text-center">
             <p className="text-base inline">
-              Enter your Email address and we will send you instructions to
-              reset your password.
+              Enter your Email address and we will send you a One-time Password
+              with instructions to reset your password.
             </p>
           </div>
         </header>
