@@ -25,7 +25,28 @@ export default function NewInput({
     if (!message) return;
     setLoading(true);
     action(message, true);
-    await createNewChatSession(message);
+
+    // Polling mechanism to check for updates in the database
+    const pollInterval = 2000;
+    const maxAttempts = 10;
+    let attempts = 0;
+
+    const pollForUpdates = async () => {
+      attempts++;
+      const data = await createNewChatSession(message);
+
+      if (data && data.message) {
+        action(data.message, false);
+        setLoading(false);
+      } else if (attempts < maxAttempts) {
+        setTimeout(pollForUpdates, pollInterval);
+      } else {
+        setLoading(false);
+        console.error("Failed to fetch the latest message from the database.");
+      }
+    };
+
+    pollForUpdates();
   }
 
   const handleKeyDown = (event: any) => {
