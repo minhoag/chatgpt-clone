@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { checkEnvironment } from "@/lib/utils";
 
-import { formSchema } from "./zod";
+import { formSchema } from "./schema";
 
 export default function Page() {
   const baseUrl = checkEnvironment();
@@ -123,7 +123,7 @@ export default function Page() {
           <Link
             aria-label="Redirect to Forgot password"
             className="relative top-2 text-sm hover:underline"
-            href="/"
+            href="/forget"
           >
             Forgot password?
           </Link>
