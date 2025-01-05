@@ -11,6 +11,11 @@ export async function middleware(request: NextRequest) {
   const isAuthPage: boolean = request.nextUrl.pathname.startsWith("/auth");
   const isChatPage: boolean = request.nextUrl.pathname.startsWith("/chat");
   const isLoginPage: boolean = request.nextUrl.pathname.startsWith("/login");
+  const isForgetPage: boolean = request.nextUrl.pathname.startsWith("/forget");
+
+  if (isForgetPage) {
+    return;
+  }
 
   if (!token && !isAuthPage && isChatPage) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -23,6 +28,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  if (token && isForgetPage) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
   if (token && isAuthPage) {
     return NextResponse.redirect(new URL("/chat", request.url));
   }
@@ -31,5 +40,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/chat/:path*", "/auth/:path*", "/login"],
+  matcher: ["/chat/:path*", "/auth/:path*", "/login", "/forget/:path*"],
 };
