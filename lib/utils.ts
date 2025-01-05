@@ -40,6 +40,7 @@ export function getUserFromDb(email: string) {
       email: email,
     },
     select: {
+      id: true,
       email: true,
       firstname: true,
       lastname: true,
