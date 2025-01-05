@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { createNewChatSession } from "@/app/chat/action";
+import { createNewChatSession, getConversation } from "@/app/chat/action";
 import { LoadingSpinner } from "@/components/icon/icon";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -26,20 +26,41 @@ export default function NewInput({
     setLoading(true);
     action(message, true);
 
-    // Polling mechanism to check for updates in the database
-    const pollInterval = 2000;
+    // Create the chat session once
+    const chatSession = await createNewChatSession(message);
+
+    if (!chatSession) {
+      setLoading(false);
+      console.error("Failed to create a new chat session.");
+
+      return;
+    }
+
+    // Exponential backoff parameters
+    const initialInterval = 2000;
+    const maxInterval = 16000;
+    let currentInterval = initialInterval;
     const maxAttempts = 10;
     let attempts = 0;
 
     const pollForUpdates = async () => {
       attempts++;
-      const data = await createNewChatSession(message);
+      const data = await getConversation(chatSession.id);
 
-      if (data && data.message) {
-        action(data.message, false);
-        setLoading(false);
-      } else if (attempts < maxAttempts) {
-        setTimeout(pollForUpdates, pollInterval);
+      if (data && data.messages && data.messages.length > 0) {
+        const latestMessage = data.messages[data.messages.length - 1];
+
+        if (latestMessage.answer) {
+          action(latestMessage.answer, false);
+          setLoading(false);
+
+          return;
+        }
+      }
+
+      if (attempts < maxAttempts) {
+        setTimeout(pollForUpdates, currentInterval);
+        currentInterval = Math.min(currentInterval * 2, maxInterval);
       } else {
         setLoading(false);
         console.error("Failed to fetch the latest message from the database.");
