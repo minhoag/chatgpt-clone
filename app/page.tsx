@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 
+import { ArrowChatGPT } from "@/components/icon/icon-gpt";
 import Navigation from "@/components/navigation";
 import { buttonVariants } from "@/components/ui/button";
-import { ArrowChatGPT } from "@/components/icon/icon-gpt";
 
 export default function Home() {
   const { data: session, status } = useSession();

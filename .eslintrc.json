@@ -50,6 +50,10 @@
     "import/order": [
       "warn",
       {
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
         "groups": [
           "type",
           "builtin",

@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 
-import db from "@/lib/prisma";
 import { getUser } from "@/lib/auth";
+import db from "@/lib/prisma";
 import { checkEnvironment } from "@/lib/utils";
 
 export type Conversation = {

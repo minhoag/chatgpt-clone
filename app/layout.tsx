@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Space_Grotesk } from "next/font/google";
 import Script from "next/script";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getServerSession } from "next-auth/next";
 
-import { authOptions } from "@/lib/auth";
 import NextSessionProvider from "@/components/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { authOptions } from "@/lib/auth";
 
 import "./globals.css";
 

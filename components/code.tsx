@@ -1,11 +1,11 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {
   stackoverflowDark,
   stackoverflowLight,
 } from "react-syntax-highlighter/dist/cjs/styles/hljs";
-import { useTheme } from "next-themes";
 
 type CodeProps = {
   language: string;

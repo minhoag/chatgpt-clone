@@ -1,7 +1,7 @@
 import { signOut } from "next-auth/react";
 
-import { Button } from "@/components/ui/button";
 import { LogOutIcon } from "@/components/icon/icon";
+import { Button } from "@/components/ui/button";
 import { checkEnvironment } from "@/lib/utils";
 
 export default function Logout() {

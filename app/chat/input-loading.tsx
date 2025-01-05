@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/icon/icon";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 type InputLoadingProps = {

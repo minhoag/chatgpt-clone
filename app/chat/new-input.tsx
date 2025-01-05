@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { createNewChatSession, getConversation } from "@/app/chat/action";
 import { LoadingSpinner } from "@/components/icon/icon";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 export const maxDuration = 60;

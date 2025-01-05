@@ -1,7 +1,7 @@
 "use client";
 
-import { useFormStatus } from "react-dom";
 import { Loader2Icon, SendHorizonalIcon } from "lucide-react";
+import { useFormStatus } from "react-dom";
 
 import { Button } from "./ui/button";
 

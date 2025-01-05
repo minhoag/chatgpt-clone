@@ -1,7 +1,7 @@
 "use server";
 
-import { getServerSession } from "next-auth/next";
 import { User } from "next-auth";
+import { getServerSession } from "next-auth/next";
 
 import { authOptions } from "@/lib/auth";
 

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-import { getUserFromDb, updateUserLimit } from "@/lib/utils";
 import { getConversation, resetUserLimits } from "@/app/chat/action";
+import { getUserFromDb, updateUserLimit } from "@/lib/utils";
 
 /** Setting for VERCEL to let this REQUEST run more than 60 seconds **/
 export const maxDuration = 60;

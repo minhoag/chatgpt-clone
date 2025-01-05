@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
+import { NextRequest, NextResponse } from "next/server";
 
 import { createUser, getUserFromDb } from "@/lib/utils";
 

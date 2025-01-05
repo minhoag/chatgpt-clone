@@ -1,6 +1,6 @@
+import bcrypt from "bcryptjs";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import bcrypt from "bcryptjs";
 
 import db from "@/lib/prisma";
 

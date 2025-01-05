@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Ellipsis, Share, Trash } from "lucide-react";
 import Link from "next/link";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
 
+import { deleteChatSession } from "@/app/chat/action";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,8 +22,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { deleteChatSession } from "@/app/chat/action";
-import { Button } from "@/components/ui/button";
 
 export default function ConversationList({
   initialConversations,

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-import { ChatBubble } from "@/components/chat-bubble";
 import NewInput from "@/app/chat/new-input";
+import { ChatBubble } from "@/components/chat-bubble";
 
 export default function Page() {
   const [messages, setMessages] = useState<

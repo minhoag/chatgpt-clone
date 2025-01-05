@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react";
 
-import { SidebarProvider } from "@/components/ui/sidebar";
 import ChatSidebar from "@/components/chat-sidebar";
 import Navigation from "@/components/navigation";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function ChatLayout({ children }: PropsWithChildren) {
   return (

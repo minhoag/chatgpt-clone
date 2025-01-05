@@ -3,9 +3,9 @@
 import { useSession } from "next-auth/react";
 import React from "react";
 
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import Login from "@/components/login";
 import Logout from "@/components/logout";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { LogoChatGPT } from "./logo";
 import ToggleTheme from "./toggle";

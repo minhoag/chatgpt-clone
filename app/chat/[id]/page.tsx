@@ -1,5 +1,6 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import {
   ElementRef,
   startTransition,
@@ -8,13 +9,12 @@ import {
   useRef,
   useState,
 } from "react";
-import { useParams } from "next/navigation";
 
-import { ChatBubble } from "@/components/chat-bubble";
-import ChatInput from "@/app/chat/input";
 import { requestOpenAi } from "@/app/chat/action";
 import ChatSkeleton from "@/app/chat/chat-skeleton";
+import ChatInput from "@/app/chat/input";
 import InputLoading from "@/app/chat/input-loading";
+import { ChatBubble } from "@/components/chat-bubble";
 
 type Conversation = {
   messageId: string;

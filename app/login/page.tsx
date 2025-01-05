@@ -1,13 +1,15 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
+import { LoadingSpinner } from "@/components/icon/icon";
+import Navigation from "@/components/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,8 +21,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import Navigation from "@/components/navigation";
-import { LoadingSpinner } from "@/components/icon/icon";
 import { checkEnvironment } from "@/lib/utils";
 
 import { formSchema } from "./zod";

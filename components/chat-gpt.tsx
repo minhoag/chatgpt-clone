@@ -1,10 +1,10 @@
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeKatex from "rehype-katex";
 import React from "react";
+import ReactMarkdown from "react-markdown";
+import rehypeKatex from "rehype-katex";
+import remarkGfm from "remark-gfm";
 
-import { ChatGPTAvatar } from "@/components/icon/icon-gpt";
 import Code from "@/components/code";
+import { ChatGPTAvatar } from "@/components/icon/icon-gpt";
 
 type ChatBubbleProps = {
   id?: string;

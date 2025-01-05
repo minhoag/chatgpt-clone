@@ -1,6 +1,7 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 
+import ConversationList from "@/components/conversation-list";
 import {
   Sidebar,
   SidebarContent,
@@ -13,7 +14,6 @@ import {
 } from "@/components/ui/sidebar";
 import { getUser } from "@/lib/auth";
 import db from "@/lib/prisma";
-import ConversationList from "@/components/conversation-list";
 
 export default async function ChatSidebar() {
   const session = await getUser();
