@@ -77,6 +77,7 @@ export default function ConversationList({
               className="active:bg-transparent active:text-sidebar-accent-foreground"
             >
               <Link
+                aria-label="Redirect to chat session"
                 className="w-full -ml-5 px-8 hover:bg-transparent underline-offset-2"
                 href={`/chat/${cn.id}`}
               >

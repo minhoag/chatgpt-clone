@@ -120,7 +120,11 @@ export default function Page() {
               </FormItem>
             )}
           />
-          <Link className="relative top-2 text-sm hover:underline" href="#">
+          <Link
+            aria-label="Redirect to Forgot password"
+            className="relative top-2 text-sm hover:underline"
+            href="/"
+          >
             Forgot password?
           </Link>
           <div className="flex flex-wrap flex-col items-center gap-3 text-sm md:flex-row md:justify-between">

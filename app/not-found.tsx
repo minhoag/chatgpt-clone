@@ -9,7 +9,11 @@ export default function NotFound() {
         <div className="text-2xl font-semibold">404</div>
         <div>Not found</div>
       </div>
-      <Link className={buttonVariants()} href="/">
+      <Link
+        aria-label="Redirect to Homepage"
+        className={buttonVariants()}
+        href="/"
+      >
         Back to homepage
       </Link>
     </div>
