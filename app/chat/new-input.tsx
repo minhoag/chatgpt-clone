@@ -7,6 +7,8 @@ import { createNewChatSession, getConversation } from "@/app/chat/action";
 import { LoadingSpinner } from "@/components/icon/icon";
 import { Textarea } from "@/components/ui/textarea";
 
+export const maxDuration = 60;
+
 export default function NewInput({
   action,
 }: {
