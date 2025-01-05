@@ -9,9 +9,7 @@ export default function Logout() {
       <Button
         className="text-base"
         variant="link"
-        onClick={() =>
-          signOut({ callbackUrl: "https://chatgpt4o-clone.vercel.app" })
-        }
+        onClick={() => signOut({ callbackUrl: "/", redirect: true })}
       >
         <span className="hidden text-sm lg:block">Logout </span>
         <LogOutIcon className="h-3 w-3" />
