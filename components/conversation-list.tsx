@@ -65,7 +65,7 @@ export default function ConversationList({
       {conversations.map((cn: any) => {
         const isLatestAndRecent =
           cn.id === latestConversationId &&
-          new Date().getTime() - new Date(cn.createdAt).getTime() <= 10000;
+          new Date().getTime() - new Date(cn.createdAt).getTime() <= 90000;
 
         return (
           <SidebarMenuItem
