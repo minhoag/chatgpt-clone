@@ -13,6 +13,8 @@ export type Conversation = {
   answer: string;
 };
 
+export type Model = "gpt-4o" | "gpt-4o-mini" | "gpt-3.5-turbo-0125" | string;
+
 interface ChatResponse {
   result: {
     role: string;
@@ -23,6 +25,7 @@ interface ChatResponse {
 }
 
 export async function requestOpenAi(
+  model: Model,
   conversationId: string,
   message: Omit<Conversation, "answer">,
 ): Promise<string> {
@@ -34,6 +37,7 @@ export async function requestOpenAi(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        model: model,
         message: message.question,
         conversationId: conversationId,
       }),
@@ -60,7 +64,7 @@ export async function requestOpenAi(
   } catch (error: any) {
     console.error("Error fetching response: ", error.message);
 
-    return "";
+    return "Error occured while fetching response.";
   }
 }
 
@@ -93,7 +97,10 @@ export async function getConversation(id: string): Promise<any> {
   });
 }
 
-export async function createNewChatSession(message: string): Promise<any> {
+export async function createNewChatSession(
+  model: Model,
+  message: string,
+): Promise<any> {
   let dataRef: any;
   const messageId: string = Date.now().toString();
 
@@ -121,7 +128,7 @@ export async function createNewChatSession(message: string): Promise<any> {
       return redirect(url);
     }, 60_000);
 
-    await requestOpenAi(dataRef.id, {
+    await requestOpenAi(model, dataRef.id, {
       conversationId: dataRef.id,
       messageId: messageId,
       question: message,

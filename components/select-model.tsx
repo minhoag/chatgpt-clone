@@ -1,3 +1,6 @@
+"use client";
+import { useEffect, useState } from "react";
+
 import {
   Select,
   SelectContent,
@@ -8,20 +11,42 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+function onValueChange(value: string) {
+  localStorage.setItem("selectedModel", value);
+}
+
 export function SelectModel() {
+  const [defaultValue, setDefaultValue] = useState("gpt-4o");
+
+  useEffect(() => {
+    const savedValue = window.localStorage.getItem("selectedModel") || "gpt-4o";
+
+    setDefaultValue(savedValue);
+  }, []);
+
   return (
-    <Select>
+    <Select defaultValue={defaultValue} onValueChange={onValueChange}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select Model" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="bg-background border border-1 border-foreground">
         <SelectGroup>
           <SelectLabel>Model</SelectLabel>
-          <SelectItem defaultChecked={true} value="gpt-4o">
+          <SelectItem defaultChecked={defaultValue == "gpt-4o"} value="gpt-4o">
             gpt-4o
           </SelectItem>
-          <SelectItem value="gpt-4o-mini">gpt-4o-mini</SelectItem>
-          <SelectItem value="gpt-3.5-turbo-0125">gpt-3.5-turbo-0125</SelectItem>
+          <SelectItem
+            defaultChecked={defaultValue == "gpt-4o-mini"}
+            value="gpt-4o-mini"
+          >
+            gpt-4o-mini
+          </SelectItem>
+          <SelectItem
+            defaultChecked={defaultValue == "gpt-3.5-turbo-0125"}
+            value="gpt-3.5-turbo-0125"
+          >
+            gpt-3.5-turbo-0125
+          </SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

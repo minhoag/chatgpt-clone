@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { conversationId, message, email } = await req.json();
+  const { conversationId, message, email, model } = await req.json();
 
   if (isEmpty(message)) {
     return NextResponse.json({
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
           ])
         : [{ role: "user", content: "" }];
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini-2024-07-18",
+      model: model,
       max_tokens: 2048,
       temperature: 0.5,
       top_p: 0.5,

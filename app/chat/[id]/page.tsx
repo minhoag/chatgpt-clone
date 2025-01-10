@@ -39,9 +39,16 @@ export default function ChatWindowProps() {
   const scrollRef = useRef<ElementRef<"div">>(null);
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
+  const [model, setModel] = useState("gpt-4o");
   const [messages, setMessages] = useState<Conversation[]>([]);
   const [optimisticMessages, setOptimisticMessages] = useOptimistic(messages);
   const [waiting, setWaiting] = useOptimistic(false);
+
+  useEffect(() => {
+    const savedValue = window.localStorage.getItem("selectedModel") || "gpt-4o";
+
+    setModel(savedValue);
+  }, []);
 
   // Fetch conversation messages from the server.
   useEffect(() => {
@@ -111,7 +118,7 @@ export default function ChatWindowProps() {
       });
 
       try {
-        const data: string = await requestOpenAi(id, {
+        const data: string = await requestOpenAi(model, id, {
           conversationId: id,
           messageId: messageId,
           question: message,
