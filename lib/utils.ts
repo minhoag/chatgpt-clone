@@ -4,6 +4,17 @@ import { twMerge } from "tailwind-merge";
 
 import db from "@/lib/prisma";
 
+export interface Conversation {
+  /**
+   * messageId: Date.now().toString();
+   * question: message from user;
+   * answer: response from ChatGPT;
+   * **/
+  messageId: string;
+  question: string;
+  answer: string;
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -75,4 +86,33 @@ export function updateUserLimit(email: string, newLimit: number) {
     where: { email: email },
     data: { limit: newLimit },
   });
+}
+
+export function saveChatHistory(
+  conversationId: string,
+  messages: Conversation[],
+): void {
+  localStorage.setItem(conversationId, JSON.stringify(messages));
+}
+
+export function isChatHistoryDifferent(
+  conversationId: string,
+  serverMessages: Conversation[],
+): boolean {
+  const storedMessages = localStorage.getItem(conversationId);
+
+  if (!storedMessages) return true;
+  const parsedStoredMessages: Conversation[] = JSON.parse(storedMessages);
+
+  return (
+    JSON.stringify(parsedStoredMessages) !== JSON.stringify(serverMessages)
+  );
+}
+
+export function getChatHistory(conversationId: string): Conversation[] | null {
+  const storedMessages = localStorage.getItem(conversationId);
+
+  if (!storedMessages) return null;
+
+  return JSON.parse(storedMessages) as Conversation[];
 }
