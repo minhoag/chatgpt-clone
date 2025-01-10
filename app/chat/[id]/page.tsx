@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import {
   ElementRef,
   startTransition,
+  useCallback,
   useEffect,
   useOptimistic,
   useRef,
@@ -15,14 +16,26 @@ import ChatSkeleton from "@/app/chat/chat-skeleton";
 import ChatInput from "@/app/chat/input";
 import InputLoading from "@/app/chat/input-loading";
 import { ChatBubble } from "@/components/chat-bubble";
-
-type Conversation = {
-  messageId: string;
-  question: string;
-  answer: string;
-};
+import {
+  Conversation,
+  isChatHistoryDifferent,
+  saveChatHistory,
+} from "@/lib/utils";
 
 export default function ChatWindowProps() {
+  /**
+   * Create chat window for a specific conversation.
+   * @logic:
+   * - Users can send messages to already created conversations fetching from
+   *   database.
+   * - Messages are optimistically rendered while waiting for a response
+   *   from the server using `useOptimistic` hook.
+   * - When a message is sent, it is added to [messages] and [optimisticMessages].
+   *   If the message is successfully sent, the message is removed from
+   *   [optimisticMessages] and added to [messages] state.
+   *
+   * @returns {JSX.Element} Chat window for a specific conversation.
+   */
   const scrollRef = useRef<ElementRef<"div">>(null);
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
@@ -30,12 +43,14 @@ export default function ChatWindowProps() {
   const [optimisticMessages, setOptimisticMessages] = useOptimistic(messages);
   const [waiting, setWaiting] = useOptimistic(false);
 
+  // Fetch conversation messages from the server.
   useEffect(() => {
     let isMounted = true;
 
     const controller = new AbortController();
     const signal = controller.signal;
 
+    // Params `id` is from the URL: https://{baseUrl}/chat/{id}
     fetch(`/api/chat?id=${id}`, { signal })
       .then((response) => {
         if (!response.ok) {
@@ -46,7 +61,16 @@ export default function ChatWindowProps() {
       })
       .then((data) => {
         if (isMounted) {
-          setMessages(data.conversations.messages);
+          if (isChatHistoryDifferent(id, data.conversations.messages)) {
+            setMessages(data.conversations.messages);
+            saveChatHistory(id, data.conversations.messages);
+          } else {
+            const storedMessages = localStorage.getItem(id);
+
+            if (storedMessages) {
+              setMessages(JSON.parse(storedMessages));
+            }
+          }
           setLoading(false);
         }
       })
@@ -67,46 +91,53 @@ export default function ChatWindowProps() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [optimisticMessages]);
 
-  const handleSendMessage = async (message: string): Promise<void> => {
-    const messageId = Date.now().toString();
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-    startTransition(() => {
-      setWaiting(true);
-    });
+  const handleSendMessage = useCallback(
+    async (message: string): Promise<void> => {
+      const messageId = Date.now().toString();
 
-    startTransition(() => {
-      setOptimisticMessages((prevMessages) => [
-        ...prevMessages,
-        { messageId, question: message, answer: "Bot is thinking..." },
-      ]);
-    });
-
-    try {
-      const data: string = await requestOpenAi({
-        conversationId: id,
-        messageId: messageId,
-        question: message,
+      startTransition(() => {
+        setWaiting(true);
       });
 
       startTransition(() => {
-        setOptimisticMessages((prevMessages) =>
-          prevMessages.map((msg) =>
-            msg.messageId === messageId ? { ...msg, answer: data } : msg,
-          ),
-        );
-        setMessages((prevMessages) => [
+        setOptimisticMessages((prevMessages) => [
           ...prevMessages,
-          { messageId, question: message, answer: data },
+          { messageId, question: message, answer: "Bot is thinking..." },
         ]);
       });
-    } catch (error: any) {
-      console.error(error);
-    } finally {
-      startTransition(() => {
-        setWaiting(false);
-      });
-    }
-  };
+
+      try {
+        const data: string = await requestOpenAi(id, {
+          conversationId: id,
+          messageId: messageId,
+          question: message,
+        });
+
+        startTransition(() => {
+          setOptimisticMessages((prevMessages) =>
+            prevMessages.map((msg) =>
+              msg.messageId === messageId ? { ...msg, answer: data } : msg,
+            ),
+          );
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { messageId, question: message, answer: data },
+          ]);
+        });
+      } catch (error: any) {
+        console.error(error);
+      } finally {
+        startTransition(() => {
+          setWaiting(false);
+        });
+      }
+    },
+    [id, setMessages, setOptimisticMessages, setWaiting],
+  );
 
   if (loading) return <ChatSkeleton />;
 
@@ -120,6 +151,7 @@ export default function ChatWindowProps() {
               answer={msg.answer}
               id={msg.messageId}
               question={msg.question}
+              timeStamp={msg.messageId}
             />
           ))}
           <div ref={scrollRef} />
