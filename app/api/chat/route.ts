@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { message, email } = await req.json();
+  const { conversationId, message, email } = await req.json();
 
   if (isEmpty(message)) {
     return NextResponse.json({
@@ -72,17 +72,20 @@ export async function POST(req: NextRequest) {
   });
 
   try {
+    const chatHistory = await getConversation(conversationId);
+    let prevChat: { role: "assistant" | "user"; content: string }[] =
+      chatHistory
+        ? chatHistory.messages.flatMap((msg: any) => [
+            { role: "user", content: msg.question },
+            { role: "assistant", content: msg.answer },
+          ])
+        : [{ role: "user", content: "" }];
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini-2024-07-18",
       max_tokens: 2048,
       temperature: 0.5,
       top_p: 0.5,
-      messages: [
-        {
-          role: "user",
-          content: message,
-        },
-      ],
+      messages: [...prevChat, { role: "user", content: message }],
     });
 
     if (user.role !== "admin") {
