@@ -5,6 +5,7 @@ import React from "react";
 
 import Login from "@/components/login";
 import Logout from "@/components/logout";
+import { SelectModel } from "@/components/select-model";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { LogoChatGPT } from "./logo";
@@ -22,7 +23,10 @@ export default function Navigation({
       className="w-full mx-auto flex flex-row items-center justify-between h-24 mb-7 top-0 sticky bg-background lg:max-w-4xl"
       style={{ zIndex: "20" }}
     >
-      {enableSidebarTrigger ? <SidebarTrigger /> : <></>}
+      <div className="flex gap-2 items-center">
+        {enableSidebarTrigger ? <SidebarTrigger /> : <></>}
+        {enableSidebarTrigger ? <SelectModel /> : <></>}
+      </div>
       <LogoChatGPT />
       <div className="relative flex flex-row items-center">
         <ToggleTheme
