@@ -23,6 +23,7 @@ interface ChatResponse {
 }
 
 export async function requestOpenAi(
+  conversationId: string,
   message: Omit<Conversation, "answer">,
 ): Promise<string> {
   try {
@@ -32,7 +33,10 @@ export async function requestOpenAi(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message: message.question }),
+      body: JSON.stringify({
+        message: message.question,
+        conversationId: conversationId,
+      }),
     });
 
     if (!response.ok) {
@@ -117,7 +121,7 @@ export async function createNewChatSession(message: string): Promise<any> {
       return redirect(url);
     }, 60_000);
 
-    await requestOpenAi({
+    await requestOpenAi(dataRef.id, {
       conversationId: dataRef.id,
       messageId: messageId,
       question: message,
