@@ -22,6 +22,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import {
+  getChatHistory,
+  isChatHistoryDifferent,
+  saveChatHistory,
+} from "@/lib/utils";
 
 export default function ConversationList({
   initialConversations,
@@ -39,7 +44,17 @@ export default function ConversationList({
     eventSource.onmessage = (event) => {
       const newConversations = JSON.parse(event.data);
 
-      setConversations(newConversations);
+      if (isChatHistoryDifferent("conversations", newConversations)) {
+        setConversations(newConversations);
+        saveChatHistory("conversations", newConversations);
+      } else {
+        const storedConversations = getChatHistory("conversations");
+
+        if (storedConversations) {
+          setConversations(storedConversations);
+        }
+      }
+
       if (newConversations.length > 0) {
         setLatestConversationId(newConversations[0].id);
       }

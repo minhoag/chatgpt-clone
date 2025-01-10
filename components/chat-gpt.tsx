@@ -1,4 +1,5 @@
-import React from "react";
+import { motion } from "motion/react";
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
@@ -8,10 +9,58 @@ import { ChatGPTAvatar } from "@/components/icon/icon-gpt";
 
 type ChatBubbleProps = {
   id?: string;
-  answer: string;
+  answer?: string;
+  timeStamps: string;
 };
 
-export default function ChatBubbleGPT({ id, answer }: ChatBubbleProps) {
+const ThinkingAnimation = () => (
+  <div className="flex items-center">
+    <span>Bot is thinking</span>
+    <div className="flex ml-1">
+      {[...Array(3)].map((_, i) => (
+        <motion.span
+          key={i}
+          animate={{ y: [0, -5, 0] }}
+          className="ml-[.1rem], mr-[.1rem]"
+          transition={{ repeat: Infinity, duration: 0.6, delay: i * 0.2 }}
+        >
+          .
+        </motion.span>
+      ))}
+    </div>
+  </div>
+);
+
+export default function ChatBubbleGPT({
+  id,
+  answer = "",
+  timeStamps,
+}: ChatBubbleProps) {
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    if (answer === "Bot is thinking...") return;
+
+    const now = new Date().getTime();
+    const messageTime = new Date(Number(timeStamps)).getTime();
+    const isRecent = now - messageTime < 15000;
+
+    if (isRecent) {
+      let currentIndex = 0;
+      const interval = setInterval(() => {
+        setDisplayedText(answer.slice(0, currentIndex));
+        currentIndex++;
+        if (currentIndex > answer.length) {
+          clearInterval(interval);
+        }
+      }, 20);
+
+      return () => clearInterval(interval);
+    } else {
+      setDisplayedText(answer);
+    }
+  }, [answer, timeStamps]);
+
   return (
     <article
       key={id + "A"}
@@ -35,29 +84,33 @@ export default function ChatBubbleGPT({ id, answer }: ChatBubbleProps) {
                 <div className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start">
                   <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
                     <div className="markdown prose w-full break-words dark:prose-invert">
-                      <ReactMarkdown
-                        className="markdown-body text-sm lg:text-base"
-                        components={{
-                          code(props) {
-                            const { children, className, ...rest } = props;
-                            const match = /language-(\w+)/.exec(
-                              className || "",
-                            );
+                      {answer === "Bot is thinking..." ? (
+                        <ThinkingAnimation />
+                      ) : (
+                        <ReactMarkdown
+                          className="markdown-body text-sm lg:text-base"
+                          components={{
+                            code(props) {
+                              const { children, className, ...rest } = props;
+                              const match = /language-(\w+)/.exec(
+                                className || "",
+                              );
 
-                            return match ? (
-                              <Code content={children} language={match[1]} />
-                            ) : (
-                              <code {...rest} className={className}>
-                                {children}
-                              </code>
-                            );
-                          },
-                        }}
-                        rehypePlugins={[rehypeKatex]}
-                        remarkPlugins={[remarkGfm]}
-                      >
-                        {answer}
-                      </ReactMarkdown>
+                              return match ? (
+                                <Code content={children} language={match[1]} />
+                              ) : (
+                                <code {...rest} className={className}>
+                                  {children}
+                                </code>
+                              );
+                            },
+                          }}
+                          rehypePlugins={[rehypeKatex]}
+                          remarkPlugins={[remarkGfm]}
+                        >
+                          {displayedText}
+                        </ReactMarkdown>
+                      )}
                     </div>
                   </div>
                 </div>
