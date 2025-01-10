@@ -16,7 +16,13 @@ export default function NewInput({
 }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string>("");
+  const [defaultValue, setDefaultValue] = useState("gpt-4o");
 
+  useEffect(() => {
+    const savedValue = window.localStorage.getItem("selectedModel") || "gpt-4o";
+
+    setDefaultValue(savedValue);
+  }, []);
   useEffect(() => {
     if (loading) {
       console.log("Loading state is true");
@@ -29,7 +35,7 @@ export default function NewInput({
     action(message, true);
 
     // Create the chat session once
-    const chatSession = await createNewChatSession(message);
+    const chatSession = await createNewChatSession(message, defaultValue);
 
     if (!chatSession) {
       setLoading(false);
