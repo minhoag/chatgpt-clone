@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 
 import NewInput from "@/app/chat/new-input";
@@ -23,6 +22,7 @@ export default function Page() {
             answer={"Hello, how can I help you today?"}
             id={id}
             question={""}
+            timeStamp={id}
           />
           {messages.map((msg) => (
             <ChatBubble
@@ -30,6 +30,7 @@ export default function Page() {
               answer={msg.isThinking ? "Bot is thinking..." : ""}
               id={msg.id}
               question={msg.question}
+              timeStamp={id}
             />
           ))}
         </div>
