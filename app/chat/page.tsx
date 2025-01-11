@@ -22,7 +22,7 @@ export default function Page() {
             answer={"Hello, how can I help you today?"}
             id={id}
             question={""}
-            timeStamp={id}
+            timeStamp={"0"}
           />
           {messages.map((msg) => (
             <ChatBubble

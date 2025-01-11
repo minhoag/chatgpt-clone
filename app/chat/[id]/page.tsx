@@ -11,7 +11,7 @@ import {
   useState,
 } from "react";
 
-import { requestOpenAi } from "@/app/chat/action";
+import { Model, requestOpenAi } from "@/app/chat/action";
 import ChatSkeleton from "@/app/chat/chat-skeleton";
 import ChatInput from "@/app/chat/input";
 import InputLoading from "@/app/chat/input-loading";
@@ -36,18 +36,25 @@ export default function ChatWindowProps() {
    *
    * @returns {JSX.Element} Chat window for a specific conversation.
    */
+  const [model, setModel] = useState<Model>("gpt-4o");
   const scrollRef = useRef<ElementRef<"div">>(null);
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
-  const [model, setModel] = useState("gpt-4o");
   const [messages, setMessages] = useState<Conversation[]>([]);
   const [optimisticMessages, setOptimisticMessages] = useOptimistic(messages);
   const [waiting, setWaiting] = useOptimistic(false);
 
+  // Get the selected model from localStorage
   useEffect(() => {
-    const savedValue = window.localStorage.getItem("selectedModel") || "gpt-4o";
+    if (typeof window !== "undefined") {
+      const selectedModel = window.localStorage.getItem(
+        "selectedModel",
+      ) as Model;
 
-    setModel(savedValue);
+      if (selectedModel) {
+        setModel(selectedModel);
+      }
+    }
   }, []);
 
   // Fetch conversation messages from the server.
@@ -97,10 +104,6 @@ export default function ChatWindowProps() {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [optimisticMessages]);
-
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
 
   const handleSendMessage = useCallback(
     async (message: string): Promise<void> => {
