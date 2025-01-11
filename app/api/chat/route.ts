@@ -2,12 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 import { getConversation, resetUserLimits } from "@/app/chat/action";
-import { getUserFromDb, updateUserLimit } from "@/lib/utils";
+import { getUserFromDb, isEmpty, updateUserLimit } from "@/lib/utils";
 
 /** Setting for VERCEL to let this REQUEST run more than 60 seconds **/
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
-const isEmpty = (str: string) => !str.trim().length;
 
 export async function GET(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
