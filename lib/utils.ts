@@ -116,3 +116,5 @@ export function getChatHistory(conversationId: string): Conversation[] | null {
 
   return JSON.parse(storedMessages) as Conversation[];
 }
+
+export const isEmpty = (str: string) => !str.trim().length;

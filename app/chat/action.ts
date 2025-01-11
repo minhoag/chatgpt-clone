@@ -108,10 +108,11 @@ export async function createNewChatSession(
     const session = await getUser();
 
     if (!session?.user) redirect("/login");
+    const name = await chatNameGenerator(message);
 
     dataRef = await db.conversation.create({
       data: {
-        name: message,
+        name: name,
         userId: session.user.id,
         messages: [
           {
@@ -147,6 +148,27 @@ export async function deleteChatSession(chatId: string) {
   await db.conversation.delete({
     where: { id: chatId },
   });
+}
+
+export async function chatNameGenerator(message: string): Promise<any> {
+  const url = checkEnvironment().concat("/api/name");
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      message: message,
+    }),
+  });
+
+  if (!response.ok) {
+    return "Error with fetching response";
+  }
+
+  const name: ChatResponse = await response.json();
+
+  return name.result.content;
 }
 
 export async function resetUserLimits(email: string): Promise<void> {

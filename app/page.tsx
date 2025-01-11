@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 
 import { Connecting } from "@/app/connecting";
-import { ArrowChatGPT } from "@/components/icon/icon-gpt";
+import { Introducing } from "@/components/introducting";
 import Navigation from "@/components/navigation";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -44,36 +44,48 @@ export default function Home() {
   return (
     <>
       <Navigation enableSidebarTrigger={false} />
-      <div className="flex flex-col items-center gap-5 justify-center h-[70vh]">
-        <h1 className="text-4xl font-bold text-center">Introducing ChatGPT</h1>
+      <div className="flex flex-col items-center gap-5 justify-center">
+        <Introducing />
         <div className="px-4 py-3 relative text-center">
-          <strong className="font-bold">
+          <strong className="font-bold text-sm md:text-base">
             {session
               ? `Welcome back, ${session.user.name}`
               : "Hi there, stranger!"}
           </strong>
-          <br className={session ? "block" : "hidden"} />
-          <span className={`${session ? "block" : "hidden"}`}>
-            {" "}
-            You are currently using our <b>{role}</b> plan.
-          </span>
-          <span className={session ? "block ml-2" : "hidden"}>
-            You have {limit}.
-          </span>
           <br />
-          <span className="block sm:inline">
+          <span className="block text-sm md:text-base sm:inline">
             {" "}
             We&#39;re glad to have you here. Get started by clicking the button
             below.
           </span>
         </div>
         <div className="flex flex-col gap-4 md:flex-row md:gap-2">
-          <button
-            className={buttonVariants({ size: "lg" })}
-            onClick={handleClick}
+          <div
+            className="flex w-full max-w-2xl flex-col items-start justify-start space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
+            style={{ opacity: 1, willChange: "auto", transform: "none" }}
           >
-            Get started <ArrowChatGPT props="w-2 h-2 ml-2" />
-          </button>
+            <button
+              className="items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 h-10 px-4 py-2 w-full sm:w-auto text-background flex gap-2 rounded-lg"
+              onClick={handleClick}
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                height={24}
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polyline points="4 17 10 11 4 5" />
+                <line x1={12} x2={20} y1={19} y2={19} />
+              </svg>
+              Get Started
+            </button>
+          </div>
           <Link
             className={buttonVariants({
               variant: "link",
