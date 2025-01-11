@@ -43,7 +43,7 @@ export default function ChatBubbleGPT({
 
     const now = new Date().getTime();
     const messageTime = new Date(Number(timeStamps)).getTime();
-    const isRecent = now - messageTime < 15000;
+    const isRecent = now - messageTime < 10000;
 
     if (isRecent) {
       let currentIndex = 0;
