@@ -13,7 +13,7 @@ export type Conversation = {
   answer: string;
 };
 
-export type Model = "gpt-4o" | "gpt-4o-mini" | "gpt-3.5-turbo-0125" | string;
+export type Model = "gpt-4o" | "gpt-4o-mini" | "gpt-3.5-turbo-0125";
 
 interface ChatResponse {
   result: {
@@ -62,7 +62,7 @@ export async function requestOpenAi(
 
     return data.result.content;
   } catch (error: any) {
-    console.error("Error fetching response: ", error.message);
+    console.error("Error returning response:", error.message);
 
     return "Error occured while fetching response.";
   }
@@ -117,7 +117,7 @@ export async function createNewChatSession(
           {
             answer: "Hello! How can I help you today?",
             question: "",
-            messageId: messageId,
+            messageId: "0",
           },
         ],
       },
