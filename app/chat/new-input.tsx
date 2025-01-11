@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-import { createNewChatSession, getConversation } from "@/app/chat/action";
+import {
+  createNewChatSession,
+  getConversation,
+  Model,
+} from "@/app/chat/action";
 import { LoadingSpinner } from "@/components/icon/icon";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,18 +20,20 @@ export default function NewInput({
 }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string>("");
-  const [defaultValue, setDefaultValue] = useState("gpt-4o");
+  const [model, setModel] = useState<Model>("gpt-4o");
 
+  // Get the selected model from localStorage
   useEffect(() => {
-    const savedValue = window.localStorage.getItem("selectedModel") || "gpt-4o";
+    if (typeof window !== "undefined") {
+      const selectedModel = window.localStorage.getItem(
+        "selectedModel",
+      ) as Model;
 
-    setDefaultValue(savedValue);
-  }, []);
-  useEffect(() => {
-    if (loading) {
-      console.log("Loading state is true");
+      if (selectedModel) {
+        setModel(selectedModel);
+      }
     }
-  }, [loading]);
+  }, []);
 
   async function handleSubmit() {
     if (!message) return;
@@ -35,7 +41,7 @@ export default function NewInput({
     action(message, true);
 
     // Create the chat session once
-    const chatSession = await createNewChatSession(message, defaultValue);
+    const chatSession = await createNewChatSession(model, message);
 
     if (!chatSession) {
       setLoading(false);
@@ -75,7 +81,7 @@ export default function NewInput({
       }
     };
 
-    pollForUpdates();
+    await pollForUpdates();
   }
 
   const handleKeyDown = (event: any) => {
