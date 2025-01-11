@@ -25,9 +25,9 @@ export default function Navigation({
     >
       <div className="flex gap-2 items-center">
         {enableSidebarTrigger ? <SidebarTrigger /> : <></>}
-        {enableSidebarTrigger ? <SelectModel /> : <></>}
       </div>
-      <LogoChatGPT />
+      {enableSidebarTrigger ? <SelectModel /> : <></>}
+      {enableSidebarTrigger ? <></> : <LogoChatGPT />}
       <div className="relative flex flex-row items-center">
         <ToggleTheme
           className={session ? `absolute right-12 lg:right-24` : ""}
