@@ -15,12 +15,6 @@ export default function Home() {
   const router = useRouter();
   //@ts-ignore
   const role: string = session?.user.role === "admin" ? "Premium" : "Free";
-  const limit: string =
-    //@ts-ignore
-    session?.user.role === "admin"
-      ? "unlimited usage"
-      : //@ts-ignore
-        `${10 - session?.user.limit} free credits`;
 
   const handleClick = () => {
     if (status === "authenticated") {
@@ -46,17 +40,17 @@ export default function Home() {
       <Navigation enableSidebarTrigger={false} />
       <div className="flex flex-col items-center gap-5 justify-center">
         <Introducing />
-        <div className="px-4 py-3 relative text-center">
+        <div className="max-w-xl px-4 py-3 relative text-center">
           <strong className="font-bold text-sm md:text-base">
             {session
-              ? `Welcome back, ${session.user.name}`
+              ? `Welcome back, ${session.user.name}!\nYou are using ${role} subscription.`
               : "Hi there, stranger!"}
           </strong>
           <br />
           <span className="block text-sm md:text-base sm:inline">
             {" "}
-            We&#39;re glad to have you here. Get started by clicking the button
-            below.
+            We&#39;re glad to have you here. Get fast, timely answers with links
+            to relevant web sources by clicking the button below.
           </span>
         </div>
         <div className="flex flex-col gap-4 md:flex-row md:gap-2">
