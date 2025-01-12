@@ -8,7 +8,6 @@ import Login from "@/components/login";
 import { SelectModel } from "@/components/select-model";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
-import { LogoChatGPT } from "./logo";
 import ToggleTheme from "./toggle";
 
 export default function Navigation({
@@ -20,16 +19,15 @@ export default function Navigation({
 
   return (
     <nav
-      className="w-full mx-auto flex flex-row items-center justify-between h-14 top-0 sticky bg-background lg:max-w-4xl"
+      className="w-full mx-auto flex flex-row items-center justify-between h-20 top-0 sticky bg-background lg:max-w-4xl"
       style={{ zIndex: "20" }}
     >
       <div className="flex gap-2 items-center">
         {enableSidebarTrigger ? <SidebarTrigger /> : <></>}
       </div>
       {enableSidebarTrigger ? <SelectModel /> : <></>}
-      {enableSidebarTrigger ? <></> : <LogoChatGPT />}
       <div className="relative flex flex-row items-center justify-center">
-        <ToggleTheme className={session ? `absolute right-12` : ""} />
+        <ToggleTheme />
         {!session ? (
           <Login />
         ) : (

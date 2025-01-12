@@ -39,8 +39,8 @@ export function Connecting() {
           <Circle ref={div1Ref}>
             <Icons.user />
           </Circle>
-          <span className="text-foreground py-10 text-lg font-bold">
-            Connecting you to Chat...
+          <span className="text-foreground py-10 text-xs font-bold md:text-lg">
+            Direct you to Chat...
           </span>
           <Circle ref={div2Ref}>
             <Icons.openai />
