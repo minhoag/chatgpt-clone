@@ -36,26 +36,12 @@ export default function ChatWindowProps() {
    *
    * @returns {JSX.Element} Chat window for a specific conversation.
    */
-  const [model, setModel] = useState<Model>("gpt-4o");
   const scrollRef = useRef<ElementRef<"div">>(null);
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<Conversation[]>([]);
   const [optimisticMessages, setOptimisticMessages] = useOptimistic(messages);
   const [waiting, setWaiting] = useOptimistic(false);
-
-  // Get the selected model from localStorage
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const selectedModel = window.localStorage.getItem(
-        "selectedModel",
-      ) as Model;
-
-      if (selectedModel) {
-        setModel(selectedModel);
-      }
-    }
-  }, []);
 
   // Fetch conversation messages from the server.
   useEffect(() => {
@@ -121,6 +107,7 @@ export default function ChatWindowProps() {
       });
 
       try {
+        const model = getModel();
         const data: string = await requestOpenAi(model, id, {
           conversationId: id,
           messageId: messageId,
@@ -181,4 +168,8 @@ export default function ChatWindowProps() {
       </div>
     </div>
   );
+}
+
+function getModel() {
+  return window.localStorage.getItem("selectedModel") as Model;
 }
