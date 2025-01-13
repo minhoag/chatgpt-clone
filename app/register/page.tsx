@@ -52,16 +52,15 @@ const formSchema = z
   });
 
 export default function Page() {
-  const baseUrl = checkEnvironment();
-  const apiUrl = `${baseUrl}/api/register`;
-  const login = `${baseUrl}/login`;
-
   const { toast } = useToast();
   const [state, setState] = useState<{
     variant: "default" | "destructive";
     message: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
+  const baseUrl = checkEnvironment();
+  const apiUrl = `${baseUrl}/api/register`;
+  const login = `${baseUrl}/login`;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,18 +84,8 @@ export default function Page() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-
     try {
-      let url;
-
-      try {
-        console.log(apiUrl);
-        url = new URL(apiUrl);
-      } catch {
-        url = new URL("http://localhost:3000/api/register");
-      }
-
-      const response = await fetch(url.toString(), {
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),

@@ -12,7 +12,6 @@ export async function GET(request: NextRequest) {
   let isWriterClosed = false;
 
   request.signal.onabort = () => {
-    console.log("closing writer");
     if (!isWriterClosed) {
       writer.close();
       isWriterClosed = true;

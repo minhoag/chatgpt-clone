@@ -79,6 +79,7 @@ export async function POST(req: NextRequest) {
             { role: "assistant", content: msg.answer },
           ])
         : [{ role: "user", content: "" }];
+
     const completion = await openai.chat.completions.create({
       model: model,
       max_tokens: 2048,
