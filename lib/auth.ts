@@ -1,5 +1,3 @@
-import type { JWT } from "next-auth/jwt";
-
 import { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -69,8 +67,12 @@ export const authOptions: NextAuthOptions = {
   },
   session: { strategy: "jwt" },
   callbacks: {
-    jwt: async ({ token }: { token: JWT }) => {
+    jwt: async ({ token, session, trigger }) => {
       if (!token.email) return token;
+      if (trigger === "update" && session?.name) {
+        token.name = session.name;
+        token.picture = session.image;
+      }
       const db_user = await db.user.findFirst({
         where: {
           email: token.email,
@@ -85,17 +87,19 @@ export const authOptions: NextAuthOptions = {
 
       return token;
     },
-    session: ({ session, token }: { session: any; token: JWT }) => {
-      if (token) {
-        session.user.id = token.id;
-        session.user.name = token.name;
-        session.user.email = token.email;
-        session.user.role = token.role;
-        session.user.limit = token.limit;
-        session.user.image = token.picture;
-      }
-
-      return session;
+    session: ({ session, token }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          name: token.name,
+          email: token.email,
+          role: token.role,
+          limit: token.limit,
+          image: token.picture,
+        },
+      };
     },
   },
 };

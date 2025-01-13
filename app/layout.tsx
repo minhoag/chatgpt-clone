@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Space_Grotesk } from "next/font/google";
 import { getServerSession } from "next-auth/next";
+import { Toaster as Toaster2 } from "sonner";
 
 import NextSessionProvider from "@/components/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -40,6 +41,7 @@ export default async function RootLayout({
               <SpeedInsights />
             </main>
             <Toaster />
+            <Toaster2 />
           </NextSessionProvider>
         </ThemeProvider>
       </body>

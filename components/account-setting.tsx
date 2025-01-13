@@ -1,4 +1,3 @@
-"use client";
 import { SettingsIcon } from "lucide-react";
 import * as React from "react";
 
@@ -49,7 +48,7 @@ export function AccountSetting() {
               You can make change for your account here.
             </DialogDescription>
           </DialogHeader>
-          <ProfileForm />
+          <ProfileForm setAction={setOpen} />
         </DialogContent>
       </Dialog>
     );
@@ -75,7 +74,7 @@ export function AccountSetting() {
             You can make change for your account here.
           </DrawerDescription>
         </DrawerHeader>
-        <ProfileForm />
+        <ProfileForm setAction={setOpen} />
         <DrawerFooter className="pt-2">
           <Button>Confirm</Button>
           <DrawerClose asChild>

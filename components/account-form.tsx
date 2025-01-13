@@ -25,7 +25,11 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { checkEnvironment } from "@/lib/utils";
 
-export function ProfileForm() {
+export function ProfileForm({
+  setAction,
+}: {
+  setAction: (value: boolean) => void;
+}) {
   const { data: session, update } = useSession();
 
   if (!session) {
@@ -95,17 +99,16 @@ export function ProfileForm() {
       toast.success("Change Complete", {
         description: "Your account has been updated.",
       });
-      const newSession = {
-        ...session,
-        user: {
-          ...session?.user,
-          email: email,
-        },
-      };
+      update({
+        name: total_value.firstname + " " + total_value.lastname,
+      });
+      setAction(false); // Close the dialog   } catch {
 
-      await update(newSession);
-    } catch {
       return;
+    } catch (error) {
+      toast.error("Internal Error", {
+        description: error,
+      });
     }
   }
 
@@ -163,7 +166,11 @@ export function ProfileForm() {
                       </FormItem>
                     )}
                   />
-                  <Button className="hidden md:block" type="submit">
+                  <Button
+                    className="hidden md:block"
+                    type="submit"
+                    onClick={() => setAction(false)}
+                  >
                     Confirm Change
                   </Button>
                 </form>
