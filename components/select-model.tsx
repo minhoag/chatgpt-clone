@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 
 import {
@@ -11,42 +12,32 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-function onValueChange(value: string) {
-  localStorage.setItem("selectedModel", value);
-}
-
 export function SelectModel() {
-  const [defaultValue, setDefaultValue] = useState("gpt-4o");
+  const [model, setModel] = useState((): string => {
+    if (typeof window !== "undefined") {
+      const from_localStorage = window.localStorage.getItem("selectedModel");
+
+      return from_localStorage ? from_localStorage : "gpt-4o";
+    }
+
+    return "gpt-4o";
+  });
 
   useEffect(() => {
-    const savedValue = window.localStorage.getItem("selectedModel") || "gpt-4o";
-
-    setDefaultValue(savedValue);
-  }, []);
+    window.localStorage.setItem("selectedModel", model);
+  }, [model]);
 
   return (
-    <Select defaultValue={defaultValue} onValueChange={onValueChange}>
+    <Select defaultValue={model} onValueChange={setModel}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select Model" />
       </SelectTrigger>
       <SelectContent className="bg-background border border-1 border-foreground">
         <SelectGroup>
           <SelectLabel>Model</SelectLabel>
-          <SelectItem defaultChecked={defaultValue == "gpt-4o"} value="gpt-4o">
-            gpt-4o
-          </SelectItem>
-          <SelectItem
-            defaultChecked={defaultValue == "gpt-4o-mini"}
-            value="gpt-4o-mini"
-          >
-            gpt-4o-mini
-          </SelectItem>
-          <SelectItem
-            defaultChecked={defaultValue == "gpt-3.5-turbo-0125"}
-            value="gpt-3.5-turbo-0125"
-          >
-            gpt-3.5-turbo-0125
-          </SelectItem>
+          <SelectItem value="gpt-4o">gpt-4o</SelectItem>
+          <SelectItem value="gpt-4o-mini">gpt-4o-mini</SelectItem>
+          <SelectItem value="gpt-3.5-turbo-0125">gpt-3.5-turbo-0125</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   createNewChatSession,
@@ -13,6 +13,10 @@ import { Textarea } from "@/components/ui/textarea";
 
 export const maxDuration = 60;
 
+function getModel() {
+  return window.localStorage.getItem("selectedModel") as Model;
+}
+
 export default function NewInput({
   action,
 }: {
@@ -20,26 +24,12 @@ export default function NewInput({
 }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string>("");
-  const [model, setModel] = useState<Model>("gpt-4o");
-
-  // Get the selected model from localStorage
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const selectedModel = window.localStorage.getItem(
-        "selectedModel",
-      ) as Model;
-
-      if (selectedModel) {
-        setModel(selectedModel);
-      }
-    }
-  }, []);
 
   async function handleSubmit() {
     if (!message) return;
     setLoading(true);
     action(message, true);
-
+    const model = getModel();
     // Create the chat session once
     const chatSession = await createNewChatSession(model, message);
 
