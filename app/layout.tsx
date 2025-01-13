@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Space_Grotesk } from "next/font/google";
-import Script from "next/script";
 import { getServerSession } from "next-auth/next";
 
 import NextSessionProvider from "@/components/session-provider";
@@ -39,7 +38,6 @@ export default async function RootLayout({
             <main className="mx-auto sm:px-10 px-5">
               {children}
               <SpeedInsights />
-              <Script src="/script.js" />
             </main>
             <Toaster />
           </NextSessionProvider>
