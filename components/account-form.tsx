@@ -105,9 +105,9 @@ export function ProfileForm({
       setAction(false); // Close the dialog   } catch {
 
       return;
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Internal Error", {
-        description: error,
+        description: error.message,
       });
     }
   }
