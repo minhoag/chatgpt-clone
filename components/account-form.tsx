@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -59,25 +59,6 @@ export function ProfileForm({
     },
   });
 
-  // Form schema Password
-  const SchemaPassword = z
-    .object({
-      /*oldPassword: z.string({ required_error: "Please fill in this field." }),*/
-      password: z
-        .string({ required_error: "Please fill in this field." })
-        .min(8, { message: "Must be a minimum of 8 characters." })
-        .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-          message: "Password must contain at least one special character.",
-        }),
-      confirmPassword: z
-        .string({ required_error: "Please fill in this field." })
-        .min(8, { message: "Must be a minimum of 8 characters." }),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: "Your passwords don't match",
-      path: ["confirmPassword"],
-    });
-
   //Handle change account submission
   async function onSubmitAccount(values: z.infer<typeof SchemaAccount>) {
     // This is because we are not going to ask for the user email (user already signed in)
@@ -112,9 +93,56 @@ export function ProfileForm({
     }
   }
 
+  // Form schema Password
+  const SchemaPassword = z
+    .object({
+      /*oldPassword: z.string({ required_error: "Please fill in this field." }),*/
+      password: z
+        .string({ required_error: "Please fill in this field." })
+        .min(8, { message: "Must be a minimum of 8 characters." })
+        .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+          message: "Password must contain at least one special character.",
+        }),
+      confirmPassword: z
+        .string({ required_error: "Please fill in this field." })
+        .min(8, { message: "Must be a minimum of 8 characters." }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Your passwords don't match",
+      path: ["confirmPassword"],
+    });
+
+  // Resolve form password
   const formPassword = useForm<z.infer<typeof SchemaPassword>>({
     resolver: zodResolver(SchemaPassword),
   });
+
+  // Handle change password submission
+  async function onSubmitPassword(values: z.infer<typeof SchemaPassword>) {
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, password: values.password }),
+      });
+      const data = await response.json();
+
+      if (data.error) {
+        toast.error("Internal Error", {
+          description: data.error,
+        });
+      }
+      toast.success("Change Complete", {
+        description: "Your password has been updated.",
+      });
+      setAction(false); // Close the dialog
+      signOut({ redirect: true, callbackUrl: "/login" });
+    } catch (error: any) {
+      toast.error("Internal Error", {
+        description: error.message,
+      });
+    }
+  }
 
   return (
     <>
@@ -189,29 +217,22 @@ export function ProfileForm({
             </CardHeader>
             <CardContent className="space-y-2">
               <Form {...formPassword}>
-                <form className="space-y-4">
-                  {/*<FormField
-                    control={formPassword.control}
-                    name="oldPassword"
-                    render={() => (
-                      <div className="space-y-1">
-                        <FormLabel htmlFor="oldPassword">
-                          Current Password
-                        </FormLabel>
-                        <FormControl>
-                          <Input type="password" />
-                        </FormControl>
-                      </div>
-                    )}
-                  />*/}
+                <form
+                  className="space-y-4"
+                  onSubmit={formPassword.handleSubmit(onSubmitPassword)}
+                >
                   <FormField
                     control={formPassword.control}
                     name="password"
-                    render={() => (
+                    render={({ field }) => (
                       <div className="space-y-1">
                         <FormLabel htmlFor="password">New Password</FormLabel>
                         <FormControl>
-                          <Input id="password-change" type="password" />
+                          <Input
+                            id="password-change"
+                            type="password"
+                            {...field}
+                          />
                         </FormControl>
                       </div>
                     )}
@@ -219,13 +240,17 @@ export function ProfileForm({
                   <FormField
                     control={formPassword.control}
                     name={"confirmPassword"}
-                    render={() => (
+                    render={({ field }) => (
                       <div className="space-y-1">
                         <FormLabel htmlFor="confirmPassword">
                           Confirm New Password
                         </FormLabel>
                         <FormControl>
-                          <Input id="confirm-password-change" type="password" />
+                          <Input
+                            id="confirm-password-change"
+                            type="password"
+                            {...field}
+                          />
                         </FormControl>
                       </div>
                     )}

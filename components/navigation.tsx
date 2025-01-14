@@ -26,8 +26,8 @@ export default function Navigation({
         {enableSidebarTrigger ? <SidebarTrigger /> : <></>}
       </div>
       {enableSidebarTrigger ? <SelectModel /> : <></>}
-      <div className="relative flex flex-row items-center justify-center">
-        <ToggleTheme />
+      <div className="relative flex flex-row items-center justify-center gap-4">
+        <ToggleTheme className="bg-transparent hover:bg-transparent" />
         {!session ? (
           <Login />
         ) : (

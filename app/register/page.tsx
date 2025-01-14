@@ -3,8 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { LoadingSpinner } from "@/components/icon/icon";
@@ -19,7 +20,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 import { checkEnvironment } from "@/lib/utils";
 
 const formSchema = z
@@ -52,11 +52,6 @@ const formSchema = z
   });
 
 export default function Page() {
-  const { toast } = useToast();
-  const [state, setState] = useState<{
-    variant: "default" | "destructive";
-    message: string;
-  } | null>(null);
   const [loading, setLoading] = useState(false);
   const baseUrl = checkEnvironment();
   const apiUrl = `${baseUrl}/api/register`;
@@ -73,15 +68,6 @@ export default function Page() {
     },
   });
 
-  useEffect(() => {
-    if (state) {
-      toast({
-        variant: state.variant ?? "default",
-        description: state.message,
-      });
-    }
-  }, [state, toast]);
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
@@ -94,15 +80,11 @@ export default function Page() {
 
       if (data.error) {
         setLoading(false);
-        setState({
-          variant: "destructive",
-          message: data.error,
-        });
+        toast.error(data.error);
       } else {
-        setState({
-          variant: "default",
-          message: "Register successfully! Redirecting you back to homepage.",
-        });
+        toast.success(
+          "Register successfully! Redirecting you back to homepage.",
+        );
         await signIn("credentials", {
           email: values.email,
           password: values.password,
@@ -111,11 +93,9 @@ export default function Page() {
       }
     } catch (error: any) {
       setLoading(false);
-      console.error(error);
-      setState({
-        variant: "destructive",
-        message: "An error occurred. Please try again later.",
-      });
+      toast.error(
+        `Internal Server Error (500). Please try again later. Message: ${error.message}`,
+      );
     }
   }
 

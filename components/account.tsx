@@ -48,12 +48,7 @@ export default function Account({ name, avatar }: AccountProps) {
             side={"bottom"}
             sideOffset={4}
           >
-            <div
-              className="flex items-center m-1.5 p-2.5 text-sm"
-              data-orientation="vertical"
-              data-radix-collection-item=""
-              role="menuitem"
-            >
+            <div className="flex items-center m-1.5 p-2.5 text-sm">
               Hi, {name}
             </div>
             <DropdownMenuSeparator className="mx-5 my-1 h-px bg-[#FFFFFF1A]" />
@@ -89,8 +84,6 @@ export default function Account({ name, avatar }: AccountProps) {
               <div
                 className="flex items-center m-1.5 p-2.5 text-sm cursor-pointer focus-visible:outline-0 radix-disabled:pointer-events-none radix-disabled:opacity-50 group relative hover:bg-[#f5f5f5] focus-visible:bg-[#f5f5f5] radix-state-open:bg-[#f5f5f5] dark:hover:bg-[#424242] dark:focus-visible:bg-[#424242] rounded-md my-0 dark:radix-state-open:bg-[#424242] gap-2.5 py-3"
                 data-orientation="vertical"
-                data-radix-collection-item=""
-                role="menuitem"
                 tabIndex={-1}
                 onClick={() => signOut()}
               >

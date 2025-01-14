@@ -38,7 +38,7 @@ export function AccountSetting() {
             role="menuitem"
           >
             <SettingsIcon className="w-4 h-4" />
-            Settings
+            Edit Account
           </div>
         </DialogTrigger>
         <DialogContent>

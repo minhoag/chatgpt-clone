@@ -3,8 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import Navigation from "@/app/forget/navigation";
@@ -19,7 +20,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 import { checkEnvironment } from "@/lib/utils";
 
 import { formSchema } from "./schema";
@@ -29,24 +29,7 @@ export default function Page() {
   const register = `${baseUrl}/register`;
 
   const router = useRouter();
-  const { toast } = useToast();
-  const [state, setState] = useState<{
-    variant: string;
-    title: string;
-    message: string;
-  } | null>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (state) {
-      toast({
-        //@ts-ignore
-        variant: state.variant ?? "default",
-        title: state.title,
-        description: state.message,
-      });
-    }
-  }, [state, toast]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,15 +55,13 @@ export default function Page() {
       const res = await response.json();
       const userId = res.userId;
 
+      toast.success(`OTP is ${res.otp}. (Testing purposes only)`);
+      await navigator.clipboard.writeText(res.otp);
       router.push(`/forget/${userId}`);
     } else {
       const errorData = await response.json();
 
-      setState({
-        variant: "destructive",
-        title: "Error",
-        message: errorData.message || "Failed to send OTP. Please try again.",
-      });
+      toast.error(errorData.message || "Failed to send OTP. Please try again.");
     }
   }
 

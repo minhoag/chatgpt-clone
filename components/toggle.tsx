@@ -25,6 +25,7 @@ export default function ToggleTheme({ className }: { className?: string }) {
           variant="ghost"
           onClick={() => setTheme("dark")}
         >
+          <span className="sr-only">Dark Mode</span>
           <MoonIcon className="w-5 h-5" />
         </Button>
       ) : (
@@ -34,6 +35,7 @@ export default function ToggleTheme({ className }: { className?: string }) {
           variant="ghost"
           onClick={() => setTheme("light")}
         >
+          <span className="sr-only">Light Mode</span>
           <SunIcon className="w-5 h-5" />
         </Button>
       )}

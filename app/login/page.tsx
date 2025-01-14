@@ -4,8 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { LoadingSpinner } from "@/components/icon/icon";
@@ -20,7 +21,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 import { checkEnvironment } from "@/lib/utils";
 
 import { formSchema } from "./schema";
@@ -30,24 +30,7 @@ export default function Page() {
   const register = `${baseUrl}/register`;
 
   const router = useRouter();
-  const { toast } = useToast();
-  const [state, setState] = useState<{
-    variant: string;
-    title: string;
-    message: string;
-  } | null>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (state) {
-      toast({
-        //@ts-ignore
-        variant: state.variant ?? "default",
-        title: state.title,
-        description: state.message,
-      });
-    }
-  }, [state, toast]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,22 +54,17 @@ export default function Page() {
       if (res?.error) {
         setLoading(false);
 
-        return setState({
-          variant: "destructive",
-          title: "Authentication Failed",
-          message: "Please check again your email and passwords.",
-        });
+        return toast.error(
+          "There is a problem with connecting to the server. Please try again later.",
+        );
       }
+      toast.success("Login successfully. Welcome back!");
 
       return router.push("/");
     } catch (error: any) {
       setLoading(false);
 
-      return setState({
-        variant: "destructive",
-        title: "Something went wrong",
-        message: "Internal Server Error (500). " + error.message,
-      });
+      return toast.error("Internal Server Error (500). " + error.message);
     }
   }
 

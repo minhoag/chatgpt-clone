@@ -126,6 +126,7 @@ export default function ConversationList({
                   variant="ghost"
                 >
                   <div className="hover:text-[#424242] dark:hover:text-white">
+                    <span className="sr-only">Sidebar Open</span>
                     <Ellipsis size={24} />
                   </div>
                 </Button>
