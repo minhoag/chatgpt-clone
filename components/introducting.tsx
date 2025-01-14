@@ -6,9 +6,9 @@ export function Introducing() {
   const isMobile = useIsMobile();
 
   return (
-    <div className="relative flex h-[320px] md:h-[500px] w-full flex-col items-center justify-center overflow-hidden bg-background">
+    <div className="relative flex h-[320px] md:h-[450px] w-full flex-col items-center justify-center overflow-hidden bg-background">
       <span className="mb-2 text-sm text-center">Introducing</span>
-      <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-background to-foreground bg-clip-text text-center text-5xl md:text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-black">
+      <span className="pointer-events-none whitespace-pre-wrap bg-foreground bg-clip-text text-center text-5xl md:text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-black">
         ChatGPT
       </span>
       <span className="mt-2 text-center text-sm md:text-base md:mt-8">

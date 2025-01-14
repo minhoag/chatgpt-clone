@@ -38,20 +38,21 @@ export default function Home() {
   return (
     <>
       <Navigation enableSidebarTrigger={false} />
-      <div className="flex flex-col items-center gap-5 justify-center">
+      <div className="flex flex-col items-center gap-4 justify-center">
         <Introducing />
-        <div className="max-w-xl px-4 py-3 relative text-center">
+        <div className="max-w-xl relative px-4 text-center">
           <strong className="font-bold text-sm md:text-base">
             {session
-              ? `Welcome back, ${session.user.name}!\nYou are using ${role} subscription.`
+              ? `Welcome back, ${session.user.name}`
               : "Hi there, stranger!"}
           </strong>
           <br />
           <span className="block text-sm md:text-base sm:inline">
             {" "}
-            We&#39;re glad to have you here. Get fast, timely answers with links
-            to relevant web sources by clicking the button below.
+            You are currently on the{" "}
+            <span className="font-semibold">{role}</span> plan.
           </span>
+          <br />
         </div>
         <div className="flex flex-col gap-4 md:flex-row md:gap-2">
           <div
