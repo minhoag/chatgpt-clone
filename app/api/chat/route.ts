@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  if (user.role !== "admin" && user.limit >= 10) {
+  if (user.role !== "admin" && user.role !== "premium" && user.limit >= 50) {
     return NextResponse.json({
       status: 403,
       error: {
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
       messages: [...prevChat, { role: "user", content: message }],
     });
 
-    if (user.role !== "admin") {
+    if (user.role !== "admin" && user.role !== "premium") {
       await resetUserLimits(user.email);
       await updateUserLimit(user.email, user.limit + 1);
     }

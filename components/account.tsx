@@ -1,5 +1,9 @@
+"use client";
+
 import { CreditCardIcon, HelpCircleIcon, LogOutIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 import { AccountSetting } from "@/components/account-setting";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LoadingSpinner } from "@/components/icon/icon";
 
 interface AccountProps {
   name: string;
@@ -30,7 +35,20 @@ function getInitials(name: string): string {
 }
 
 export default function Account({ name, avatar }: AccountProps) {
+  const [loading, setLoading] = useState(false);
   const shortName = getInitials(name);
+
+  async function upgradePlan() {
+    setLoading(true);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/upgrade`);
+    const data = await res.json();
+
+    setLoading(false);
+
+    if (data.error) return toast.error(data.error);
+
+    return toast.success(data.message);
+  }
 
   return (
     <>
@@ -41,10 +59,10 @@ export default function Account({ name, avatar }: AccountProps) {
             <AvatarFallback className="rounded-lg">{shortName}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <div className="max-w-xs">
+        <div className="max-w-screen-sm">
           <DropdownMenuContent
             align="end"
-            className="py-2 max-h-[var(--radix-dropdown-menu-content-available-height)] bg-white dark:bg-[#2f2f2f] overflow-y-auto rounded-lg min-w-fit"
+            className="w-48 py-2 max-h-[var(--radix-dropdown-menu-content-available-height)] bg-white dark:bg-[#2f2f2f] overflow-y-auto rounded-lg min-w-full"
             side={"bottom"}
             sideOffset={4}
           >
@@ -60,8 +78,15 @@ export default function Account({ name, avatar }: AccountProps) {
                   data-radix-collection-item=""
                   role="menuitem"
                 >
-                  <CreditCardIcon />
-                  Upgrade Plan
+                  <button
+                    className="flex flex-row gap-2 items-center"
+                    disabled={loading}
+                    onClick={upgradePlan}
+                  >
+                    <CreditCardIcon />
+                    Upgrade Plan{" "}
+                    {loading && <LoadingSpinner className="w-4 h-4" />}
+                  </button>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
@@ -71,8 +96,10 @@ export default function Account({ name, avatar }: AccountProps) {
                   data-radix-collection-item=""
                   role="menuitem"
                 >
-                  <HelpCircleIcon />
-                  Help
+                  <button className="flex flex-row gap-2 items-center">
+                    <HelpCircleIcon />
+                    Help
+                  </button>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
