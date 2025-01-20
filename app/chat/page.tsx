@@ -20,17 +20,17 @@ export default function Page() {
         <div className="flex-grow px-4 overflow-y-auto">
           <ChatBubble
             answer={"Hello, how can I help you today?"}
+            generate={false}
             id={id}
             question={""}
-            timeStamp={"0"}
           />
           {messages.map((msg) => (
             <ChatBubble
               key={msg.id}
               answer={msg.isThinking ? "Bot is thinking..." : ""}
+              generate={false}
               id={msg.id}
               question={msg.question}
-              timeStamp={id}
             />
           ))}
         </div>

@@ -10,7 +10,7 @@ import { ChatGPTAvatar } from "@/components/icon/icon-gpt";
 type ChatBubbleProps = {
   id?: string;
   answer?: string;
-  timeStamps: string;
+  generate: boolean;
 };
 
 const ThinkingAnimation = () => (
@@ -34,18 +34,14 @@ const ThinkingAnimation = () => (
 export default function ChatBubbleGPT({
   id,
   answer = "",
-  timeStamps,
+  generate,
 }: ChatBubbleProps) {
   const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
     if (answer === "Bot is thinking...") return;
 
-    const now = new Date().getTime();
-    const messageTime = new Date(Number(timeStamps)).getTime();
-    const isRecent = now - messageTime < 10000;
-
-    if (isRecent) {
+    if (generate) {
       let currentIndex = 0;
       const interval = setInterval(() => {
         setDisplayedText(answer.slice(0, currentIndex));
@@ -53,13 +49,13 @@ export default function ChatBubbleGPT({
         if (currentIndex > answer.length) {
           clearInterval(interval);
         }
-      }, 20);
+      }, 10);
 
       return () => clearInterval(interval);
     } else {
       setDisplayedText(answer);
     }
-  }, [answer, timeStamps]);
+  }, [answer]);
 
   return (
     <article

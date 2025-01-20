@@ -6,17 +6,16 @@ interface ChatBubbleProps {
   id: string;
   question: string;
   answer: string;
-  timeStamp: string;
+  generate: boolean;
 }
 
 export function ChatBubble({
   id,
   question,
   answer,
-  timeStamp,
+  generate,
 }: ChatBubbleProps) {
-  if (!question)
-    return <ChatGPTBubble answer={answer} timeStamps={timeStamp} />;
+  if (!question) return <ChatGPTBubble answer={answer} generate={generate} />;
 
   return (
     <>
@@ -26,7 +25,7 @@ export function ChatBubble({
       >
         {question}
       </article>
-      <ChatGPTBubble answer={answer} id={id} timeStamps={timeStamp} />
+      <ChatGPTBubble answer={answer} generate={generate} id={id} />
     </>
   );
 }

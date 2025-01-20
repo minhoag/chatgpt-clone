@@ -1,6 +1,7 @@
 # ChatGPT-Clone
 
-This is a chat application built with TypeScript, PostgreSQL, and Next.js. It features a chat interface and can manage multiple conversation sessions.
+This is a chat application built with TypeScript, PostgreSQL, and Next.js. It
+features a chat interface and can manage multiple conversation sessions.
 
 ## Features
 
@@ -15,7 +16,8 @@ This is a chat application built with TypeScript, PostgreSQL, and Next.js. It fe
 
 ## To-Do
 
-- [ ] Create a user profile feature to allow users to change their name, password, etc.
+- [ ] Create a user profile feature to allow users to change their name,
+      password, etc.
 - [x] Implement chat interface
 - [x] Implement chat session management
 - [x] Implement delete chat session
@@ -49,25 +51,25 @@ This is a chat application built with TypeScript, PostgreSQL, and Next.js. It fe
    ```bash
    npm install
    ```
-   
-4. Set up local variables:
+
+3. Set up local variables:
 
    - Rename `.env.example` file to `.env`
    - Fill in all variables.
 
-3. Set up the database:
+4. Set up the database:
 
    ```bash
    npx prisma migrate dev
    ```
 
-4. Start the development server:
+5. Start the development server:
 
    ```bash
    npm run dev
    ```
 
-5. Open your browser and navigate to `http://localhost:3000`.
+6. Open your browser and navigate to `http://localhost:3000`.
 
 ## Project Structure
 
@@ -80,4 +82,5 @@ This is a chat application built with TypeScript, PostgreSQL, and Next.js. It fe
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+This project is licensed under the MIT License. See the `LICENSE` file for more
+details.

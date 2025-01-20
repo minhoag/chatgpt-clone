@@ -13,6 +13,7 @@ export interface Conversation {
   messageId: string;
   question: string;
   answer: string;
+  generate: boolean;
 }
 
 export function cn(...inputs: ClassValue[]) {

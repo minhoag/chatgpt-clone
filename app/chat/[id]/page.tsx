@@ -102,7 +102,12 @@ export default function ChatWindowProps() {
       startTransition(() => {
         setOptimisticMessages((prevMessages) => [
           ...prevMessages,
-          { messageId, question: message, answer: "Bot is thinking..." },
+          {
+            messageId,
+            question: message,
+            answer: "Bot is thinking...",
+            generate: false,
+          },
         ]);
       });
 
@@ -117,12 +122,14 @@ export default function ChatWindowProps() {
         startTransition(() => {
           setOptimisticMessages((prevMessages) =>
             prevMessages.map((msg) =>
-              msg.messageId === messageId ? { ...msg, answer: data } : msg,
+              msg.messageId === messageId
+                ? { ...msg, answer: data, generate: true }
+                : msg,
             ),
           );
           setMessages((prevMessages) => [
             ...prevMessages,
-            { messageId, question: message, answer: data },
+            { messageId, question: message, answer: data, generate: false },
           ]);
         });
       } catch (error: any) {
@@ -146,9 +153,9 @@ export default function ChatWindowProps() {
             <ChatBubble
               key={index}
               answer={msg.answer}
+              generate={msg.generate}
               id={msg.messageId}
               question={msg.question}
-              timeStamp={msg.messageId}
             />
           ))}
           <div ref={scrollRef} />

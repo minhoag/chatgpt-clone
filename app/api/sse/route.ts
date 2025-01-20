@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest) {
   let responseStream = new TransformStream();
   const writer = responseStream.writable.getWriter();
+  const id = request.nextUrl.searchParams.get("id") as string;
   const encoder = new TextEncoder();
   let isWriterClosed = false;
 
@@ -29,6 +30,9 @@ export async function GET(request: NextRequest) {
   async function checkForUpdates() {
     try {
       const conversations = await db.conversation.findMany({
+        where: {
+          userId: id,
+        },
         orderBy: {
           createdAt: "desc",
         },

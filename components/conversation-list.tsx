@@ -4,6 +4,7 @@ import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Ellipsis, Share, Trash } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
 
@@ -33,13 +34,14 @@ export default function ConversationList({
 }: {
   initialConversations: any[];
 }) {
+  const { data: session } = useSession();
   const [conversations, setConversations] = useState(initialConversations);
   const [latestConversationId, setLatestConversationId] = useState<
     string | null
   >(null);
 
   useEffect(() => {
-    const eventSource = new EventSource("/api/sse");
+    const eventSource = new EventSource(`/api/sse/?id=${session?.user.id}`);
 
     eventSource.onmessage = (event) => {
       const newConversations = JSON.parse(event.data);
