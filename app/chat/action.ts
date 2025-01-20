@@ -122,19 +122,12 @@ export async function createNewChatSession(
         ],
       },
     });
-    const timeoutId = setTimeout(() => {
-      const url = `${process.env.NEXT_PUBLIC_URL}/chat/${dataRef.id}`;
-
-      return redirect(url);
-    }, 60_000);
 
     await requestOpenAi(model, dataRef.id, {
       conversationId: dataRef.id,
       messageId: messageId,
       question: message,
     });
-
-    clearTimeout(timeoutId);
     const url = `${process.env.NEXT_PUBLIC_URL}/chat/${dataRef.id}`;
 
     return redirect(url);
