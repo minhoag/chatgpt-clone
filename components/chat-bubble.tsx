@@ -21,7 +21,7 @@ export function ChatBubble({
     <>
       <article
         key={id + "Q"}
-        className="flex w-max max-w-[75%] markdown prose break-words dark:prose-invert rounded-lg px-3 py-2 text-xs ml-auto bg-primary text-primary-foreground md:text-base"
+        className="flex w-max max-w-[75%] text-primary-foreground break-words rounded-lg px-3 py-2 text-xs ml-auto bg-primary md:text-base"
       >
         {question}
       </article>
