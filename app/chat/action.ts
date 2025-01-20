@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 
 import { getUser } from "@/lib/auth";
 import db from "@/lib/prisma";
-import { checkEnvironment } from "@/lib/utils";
 
 export type Conversation = {
   conversationId: string;
@@ -30,7 +29,7 @@ export async function requestOpenAi(
   message: Omit<Conversation, "answer">,
 ): Promise<string> {
   try {
-    const url = checkEnvironment().concat("/api/chat");
+    const url = "/api/chat";
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -151,7 +150,7 @@ export async function deleteChatSession(chatId: string) {
 }
 
 export async function chatNameGenerator(message: string): Promise<any> {
-  const url = checkEnvironment().concat("/api/name");
+  const url = "/api/name";
   const response = await fetch(url, {
     method: "POST",
     headers: {

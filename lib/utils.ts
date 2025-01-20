@@ -22,8 +22,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const checkEnvironment = () => {
   return process.env.NEXT_PUBLIC_RUNTIME === "production"
-    ? process.env.NEXT_PUBLIC_URL ||
-        "https://chatgpt-clone-git-dev-wandak3s-projects.vercel.app/"
+    ? process.env.NEXT_PUBLIC_URL
     : "http://localhost:3000";
 };
 

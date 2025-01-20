@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { checkEnvironment } from "@/lib/utils";
 
 export function ProfileForm({
   setAction,
@@ -42,8 +41,7 @@ export function ProfileForm({
   const lastname: string = session.user.last_name;
   const email: string = session.user.email;
   //Get url when in production
-  const baseUrl = checkEnvironment();
-  const apiUrl = `${baseUrl}/api/change`;
+  const apiUrl = `/api/change`;
 
   // Form schema control Account
   const SchemaAccount = z.object({

@@ -20,7 +20,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { checkEnvironment } from "@/lib/utils";
 
 const formSchema = z
   .object({
@@ -53,9 +52,8 @@ const formSchema = z
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
-  const baseUrl = checkEnvironment();
-  const apiUrl = `${baseUrl}/api/register`;
-  const login = `${baseUrl}/login`;
+  const apiUrl = `/api/register`;
+  const login = `/login`;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

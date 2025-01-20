@@ -20,13 +20,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { checkEnvironment } from "@/lib/utils";
 
 import { formSchema } from "./schema";
 
 export default function Page() {
-  const baseUrl = checkEnvironment();
-  const register = `${baseUrl}/register`;
+  const register = `/register`;
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
