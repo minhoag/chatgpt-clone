@@ -1,16 +1,18 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import SyntaxHighlighter from "react-syntax-highlighter";
+import * as React from "react";
+import { Prism, SyntaxHighlighterProps } from "react-syntax-highlighter";
 import {
   stackoverflowDark,
   stackoverflowLight,
 } from "react-syntax-highlighter/dist/cjs/styles/hljs";
-
 type CodeProps = {
   language: string;
   content: any;
 };
+const SyntaxHighlighter =
+  Prism as typeof React.Component<SyntaxHighlighterProps>;
 
 export default function Code({ language, content }: CodeProps) {
   const theme = useTheme();
