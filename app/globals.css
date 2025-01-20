@@ -187,7 +187,7 @@ pre[class*="language-"] {
 }
 
 .prose,
-  :where(pre code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+:where(pre code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   @apply text-code-foreground;
 }
 

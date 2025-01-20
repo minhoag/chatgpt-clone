@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Space_Grotesk } from "next/font/google";
 import { getServerSession } from "next-auth/next";
 import { Toaster } from "sonner";
@@ -35,10 +34,7 @@ export default async function RootLayout({
           defaultTheme="dark"
         >
           <NextSessionProvider session={session}>
-            <main className="mx-auto sm:px-10 px-5">
-              {children}
-              <SpeedInsights />
-            </main>
+            <main className="mx-auto sm:px-10 px-5">{children}</main>
             <Toaster richColors />
           </NextSessionProvider>
         </ThemeProvider>
