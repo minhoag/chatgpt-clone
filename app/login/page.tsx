@@ -51,7 +51,6 @@ export default function Page() {
 
       if (res?.error) {
         setLoading(false);
-        console.log(res.error);
 
         return toast.error(
           "There is a problem with connecting to the server. Please try again later.",

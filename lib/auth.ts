@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import db from "@/lib/prisma";
+import { getUserFromDb, verifyPassword } from "@/lib/utils";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -26,7 +27,7 @@ export const authOptions: NextAuthOptions = {
 
       async authorize(
         credentials: Record<"email" | "password", string> | undefined,
-      ) {
+      ): Promise<any> {
         if (!credentials) return null;
         const data = {
           email: credentials.email,
@@ -34,27 +35,19 @@ export const authOptions: NextAuthOptions = {
         };
 
         try {
-          const url = "/api/login";
+          const user = await getUserFromDb(data.email);
 
-          const res = await fetch(url, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          });
+          if (!user) return null;
+          const passwordOk =
+            user && verifyPassword(data.password, user.passwordHash);
 
-          if (!res.ok) {
-            return null;
-          }
+          if (!passwordOk) return null;
 
-          const result = await res.json();
-
-          if (result && result.data) {
-            return result.data;
-          } else {
-            return null;
-          }
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.firstname + " " + user.lastname,
+          };
         } catch {
           return null;
         }

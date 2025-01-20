@@ -81,16 +81,6 @@ export function createUser(
   });
 }
 
-export function updateUserDetail(email: string, newPassword: string) {
-  const salt = bcrypt.genSaltSync(10);
-  const hashedPassword = bcrypt.hashSync(newPassword, salt);
-
-  return db.user.update({
-    where: { email: email },
-    data: { passwordHash: hashedPassword },
-  });
-}
-
 export function updateUserLimit(email: string, newLimit: number) {
   return db.user.update({
     where: { email: email },
@@ -127,9 +117,3 @@ export function getChatHistory(conversationId: string): Conversation[] | null {
   return JSON.parse(storedMessages) as Conversation[];
 }
 export const isEmpty = (str: string) => !str.trim().length;
-
-export const reloadSession = () => {
-  const event = new Event("visibilitychange");
-
-  document.dispatchEvent(event);
-};
