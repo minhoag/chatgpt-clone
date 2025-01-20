@@ -32,7 +32,7 @@ export function ProfileForm({
   const { data: session, update } = useSession();
 
   if (!session) {
-    redirect("/login");
+    redirect(`${process.env.NEXT_PUBLIC_URL}/login`);
   }
   // Get user data from session
   //@ts-ignore
@@ -41,7 +41,7 @@ export function ProfileForm({
   const lastname: string = session.user.last_name;
   const email: string = session.user.email;
   //Get url when in production
-  const apiUrl = `/api/change`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/change`;
 
   // Form schema control Account
   const SchemaAccount = z.object({
@@ -134,7 +134,10 @@ export function ProfileForm({
         description: "Your password has been updated.",
       });
       setAction(false); // Close the dialog
-      signOut({ redirect: true, callbackUrl: "/login" });
+      signOut({
+        redirect: true,
+        callbackUrl: `${process.env.NEXT_PUBLIC_URL}/login`,
+      });
     } catch (error: any) {
       toast.error("Internal Error", {
         description: error.message,

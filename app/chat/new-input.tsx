@@ -36,7 +36,6 @@ export default function NewInput({
     if (!chatSession) {
       setLoading(false);
       console.error("Failed to create a new chat session.");
-
       return;
     }
 

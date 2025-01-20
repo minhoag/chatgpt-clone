@@ -20,7 +20,7 @@ export default function Page() {
   const router = useRouter();
 
   const validateOTP = async (otp: string) => {
-    const response = await fetch("/api/verify", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/verify`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

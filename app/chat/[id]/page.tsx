@@ -51,7 +51,7 @@ export default function ChatWindowProps() {
     const signal = controller.signal;
 
     // Params `id` is from the URL: https://{baseUrl}/chat/{id}
-    fetch(`/api/chat?id=${id}`, { signal })
+    fetch(`${process.env.NEXT_PUBLIC_URL}/api/chat?id=${id}`, { signal })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

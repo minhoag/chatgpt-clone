@@ -52,8 +52,8 @@ const formSchema = z
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
-  const apiUrl = `/api/register`;
-  const login = `/login`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/register`;
+  const login = `${process.env.NEXT_PUBLIC_URL}/login`;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

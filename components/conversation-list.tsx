@@ -74,7 +74,7 @@ export default function ConversationList({
   async function handleDelete(chatId: string) {
     await deleteChatSession(chatId);
     setConversations(conversations.filter((cn) => cn.id !== chatId));
-    redirect("/chat");
+    redirect(`${process.env.NEXT_PUBLIC_URL}/chat`);
   }
 
   return (

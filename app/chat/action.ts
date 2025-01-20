@@ -29,7 +29,7 @@ export async function requestOpenAi(
   message: Omit<Conversation, "answer">,
 ): Promise<string> {
   try {
-    const url = "/api/chat";
+    const url = `${process.env.NEXT_PUBLIC_URL}/api/chat`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -106,7 +106,7 @@ export async function createNewChatSession(
   try {
     const session = await getUser();
 
-    if (!session?.user) redirect("/login");
+    if (!session?.user) redirect(`${process.env.NEXT_PUBLIC_URL}/login`);
     const name = await chatNameGenerator(message);
 
     dataRef = await db.conversation.create({
@@ -123,7 +123,7 @@ export async function createNewChatSession(
       },
     });
     const timeoutId = setTimeout(() => {
-      const url = `/chat/${dataRef.id}`;
+      const url = `${process.env.NEXT_PUBLIC_URL}/chat/${dataRef.id}`;
 
       return redirect(url);
     }, 60_000);
@@ -135,12 +135,12 @@ export async function createNewChatSession(
     });
 
     clearTimeout(timeoutId);
+    const url = `${process.env.NEXT_PUBLIC_URL}/chat/${dataRef.id}`;
+
+    return redirect(url);
   } catch (error: any) {
     console.error(`Error creating new chat session: ${error.message}`);
   }
-  const url = `/chat/${dataRef.id}`;
-
-  return redirect(url);
 }
 
 export async function deleteChatSession(chatId: string) {
@@ -150,7 +150,7 @@ export async function deleteChatSession(chatId: string) {
 }
 
 export async function chatNameGenerator(message: string): Promise<any> {
-  const url = "/api/name";
+  const url = `${process.env.NEXT_PUBLIC_URL}/api/name`;
   const response = await fetch(url, {
     method: "POST",
     headers: {
