@@ -102,11 +102,10 @@ export async function createNewChatSession(
 ): Promise<any> {
   let dataRef: any;
   const messageId: string = Date.now().toString();
+  const session = await getUser();
 
+  if (!session?.user) redirect(`${process.env.NEXT_PUBLIC_URL}/login`);
   try {
-    const session = await getUser();
-
-    if (!session?.user) redirect(`${process.env.NEXT_PUBLIC_URL}/login`);
     const name = await chatNameGenerator(message);
 
     dataRef = await db.conversation.create({
@@ -128,11 +127,13 @@ export async function createNewChatSession(
       messageId: messageId,
       question: message,
     });
+  } catch (error: any) {
+    console.log(error);
+    console.error(`Error creating new chat session: ${error.message}`);
+  } finally {
     const url = `${process.env.NEXT_PUBLIC_URL}/chat/${dataRef.id}`;
 
-    return redirect(url);
-  } catch (error: any) {
-    console.error(`Error creating new chat session: ${error.message}`);
+    redirect(url);
   }
 }
 
