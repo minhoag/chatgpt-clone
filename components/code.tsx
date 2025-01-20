@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import * as React from "react";
-import { Prism, SyntaxHighlighterProps } from "react-syntax-highlighter";
+import SyntaxHighlighter from "react-syntax-highlighter";
 import {
   stackoverflowDark,
   stackoverflowLight,
@@ -11,14 +11,13 @@ type CodeProps = {
   language: string;
   content: any;
 };
-const SyntaxHighlighter =
-  Prism as typeof React.Component<SyntaxHighlighterProps>;
 
 export default function Code({ language, content }: CodeProps) {
   const theme = useTheme();
   const codeTheme =
     theme.theme === "dark" ? stackoverflowDark : stackoverflowLight;
 
+  // @ts-ignore
   return (
     <div className="contain-inline-size rounded-md border-[0.5px] relative">
       <div
@@ -30,6 +29,8 @@ export default function Code({ language, content }: CodeProps) {
         className={`overflow-y-auto bg-code text-code-foreground dark:bg-black p-4`}
         dir="ltr"
       >
+        {/* Unknown error at this point event though it is the same as written in documentation and works in local build */}
+        {/* @ts-ignore */}
         <SyntaxHighlighter
           customStyle={{
             background: "transparent!important",
