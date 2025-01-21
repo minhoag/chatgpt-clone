@@ -38,7 +38,7 @@ export default function InputLoading({ text }: InputLoadingProps) {
 
   return (
     <form className="flex flex-row items-center gap-2">
-      <div className="flex w-full cursor-text flex-col rounded-3xl px-2.5 py-1 transition-colors contain-inline-size bg-[#f4f4f4] dark:bg-[#2d2d2d]">
+      <div className="flex w-full cursor-text flex-col rounded-3xl px-2.5 py-1 transition-colors contain-inline-size">
         {memoizedTextarea}
         <div className="flex" style={{ justifyContent: "flex-end" }}>
           {memoizedButton}
