@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
         },
         {
           role: "user",
-          content: `Summarize the conversation in 5 words or fewer: ${message}`,
+          content: `Summarize the conversation in 3 words or fewer in their language: ${message}`,
         },
       ],
     });
