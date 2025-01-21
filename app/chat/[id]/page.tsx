@@ -36,7 +36,7 @@ export default function ChatWindowProps() {
    *
    * @returns {JSX.Element} Chat window for a specific conversation.
    */
-  const scrollRef = useRef<ElementRef<"div">>(null);
+  const inputRef = useRef<ElementRef<"div">>(null);
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<Conversation[]>([]);
@@ -88,7 +88,7 @@ export default function ChatWindowProps() {
   }, [id]);
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    inputRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [optimisticMessages]);
 
   const handleSendMessage = useCallback(
@@ -147,8 +147,8 @@ export default function ChatWindowProps() {
 
   return (
     <div className="relative">
-      <div className="max-w-4xl mx-auto flex flex-col mb-36 md:pr-12">
-        <div className="flex-grow px-4 overflow-y-auto">
+      <div className="max-w-4xl mx-auto flex flex-col pb-36 md:pr-12">
+        <div ref={inputRef} className="flex-grow px-4 overflow-y-auto">
           {optimisticMessages.map((msg: Conversation, index: number) => (
             <ChatBubble
               key={index}
@@ -158,19 +158,21 @@ export default function ChatWindowProps() {
               question={msg.question}
             />
           ))}
-          <div ref={scrollRef} />
         </div>
+        <div ref={inputRef} />
       </div>
-      <div className="relative flex items-center justify-center">
-        <div className="fixed mb-8 w-[90%] pl-4 pt-4 pb-2 bottom-0 bg-chat rounded-3xl text-center md:w-1/2 md:mb-4">
-          {waiting ? (
-            <InputLoading text="Message ChatGPT..." />
-          ) : (
-            <ChatInput action={handleSendMessage} />
-          )}
-          <span className="absolute bottom-3 left-[25%] text-xs text-foreground hidden md:block">
-            ChatGPT can make mistakes. Check important info.
-          </span>
+      <div className="w-full bg-background">
+        <div className="relative flex items-center justify-center">
+          <div className="fixed mb-8 w-full pl-4 pt-4 pb-2 bottom-0 bg-chat rounded-3xl text-center md:w-1/2 md:mb-4">
+            {waiting ? (
+              <InputLoading text="Message ChatGPT..." />
+            ) : (
+              <ChatInput action={handleSendMessage} />
+            )}
+            <span className="absolute bottom-3 left-[25%] text-xs text-foreground hidden md:block">
+              ChatGPT can make mistakes. Check important info.
+            </span>
+          </div>
         </div>
       </div>
     </div>
