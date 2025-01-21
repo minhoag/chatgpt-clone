@@ -24,9 +24,9 @@ export default function ChatInput({ action }: ChatInputProps) {
 
   return (
     <div className="flex flex-row items-center gap-2">
-      <div className="flex w-full cursor-text flex-col rounded-3xl px-2.5 py-1 transition-colors contain-inline-size bg-[#f4f4f4] dark:bg-[#2d2d2d]">
+      <div className="flex w-full cursor-text flex-col rounded-3xl px-2.5 py-1 transition-colors contain-inline-size">
         <Textarea
-          className="block h-10 w-full text-base border-0 bg-transparent p-0"
+          className="block h-10 w-full text-base bg-transparent p-0"
           name="message"
           placeholder="Message ChatGPT"
           onChange={(e) => setMessage(e.target.value)}

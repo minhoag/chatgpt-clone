@@ -83,7 +83,7 @@ export default function NewInput({
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="flex w-full cursor-text flex-col rounded-3xl px-2.5 py-1 transition-colors contain-inline-size bg-[#f4f4f4] dark:bg-[#2d2d2d]">
+      <div className="flex w-full cursor-text flex-col rounded-3xl px-2.5 py-1 transition-colors contain-inline-size">
         <Textarea
           className="block h-10 w-full text-base border-0 bg-transparent p-0"
           disabled={loading}
